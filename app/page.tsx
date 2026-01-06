@@ -1,55 +1,39 @@
-import { Link } from "@heroui/link";
-import { Snippet } from "@heroui/snippet";
-import { Code } from "@heroui/code";
-import { button as buttonStyles } from "@heroui/theme";
+import { GameCard } from '@/feature/Games';
+import { getGamesServer } from '@/shared/services/games/server/games.server';
+import { Metadata } from 'next';
 
-import { siteConfig } from "@/config/site";
-import { title, subtitle } from "@/components/primitives";
-import { GithubIcon } from "@/components/icons";
+export const metadata: Metadata = {
+  title: 'Teamly - Найдите команду для игры',
+  description:
+    'Найдите команду для любой игры. Удобная система подбора игроков с фильтрами по платформе, времени и голосовому чату.',
+  openGraph: {
+    title: 'Teamly - Найдите команду для игры',
+    description: 'Удобная система подбора игроков для любой игры',
+    type: 'website',
+  },
+};
 
-export default function Home() {
+/**
+ * Home page with Static Site Generation
+ * Games are cached and revalidated every hour
+ */
+export default async function Home() {
+  const data = await getGamesServer({ revalidate: 3600 });
+  const games = data?.games || [];
+
   return (
-    <section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10">
-      <div className="inline-block max-w-xl text-center justify-center">
-        <span className={title()}>Make&nbsp;</span>
-        <span className={title({ color: "violet" })}>beautiful&nbsp;</span>
-        <br />
-        <span className={title()}>
-          websites regardless of your design experience.
-        </span>
-        <div className={subtitle({ class: "mt-4" })}>
-          Beautiful, fast and modern React UI library.
-        </div>
+    <section className="container mx-auto px-4 py-8">
+      <div className="mb-6 md:mb-8">
+        <h1 className="text-2xl font-bold md:text-4xl">Выберите игру</h1>
+        <p className="mt-2 text-sm text-default-600 md:text-lg">
+          Найдите команду для игры или создайте свою заявку
+        </p>
       </div>
 
-      <div className="flex gap-3">
-        <Link
-          isExternal
-          className={buttonStyles({
-            color: "primary",
-            radius: "full",
-            variant: "shadow",
-          })}
-          href={siteConfig.links.docs}
-        >
-          Documentation
-        </Link>
-        <Link
-          isExternal
-          className={buttonStyles({ variant: "bordered", radius: "full" })}
-          href={siteConfig.links.github}
-        >
-          <GithubIcon size={20} />
-          GitHub
-        </Link>
-      </div>
-
-      <div className="mt-8">
-        <Snippet hideCopyButton hideSymbol variant="bordered">
-          <span>
-            Get started by editing <Code color="primary">app/page.tsx</Code>
-          </span>
-        </Snippet>
+      <div className="grid gap-4 sm:grid-cols-2 md:gap-6 lg:grid-cols-3 xl:grid-cols-4">
+        {games.map((game) => (
+          <GameCard key={game.id} game={game} />
+        ))}
       </div>
     </section>
   );
