@@ -24,7 +24,9 @@ export function PlayersStep({ control }: PlayersStepProps) {
     <div className="space-y-4">
       <div>
         <h3 className="text-lg font-semibold">Настройки группы</h3>
-        <p className="text-sm text-default-500">Укажите количество игроков и платформу</p>
+        <p className="text-sm text-default-500">
+          Укажите количество игроков и платформу
+        </p>
       </div>
       <Spacer y={2} />
 
@@ -88,9 +90,7 @@ export function PlayersStep({ control }: PlayersStepProps) {
             }}
           >
             {platforms.map((platform) => (
-              <SelectItem key={platform.value} value={platform.value}>
-                {platform.label}
-              </SelectItem>
+              <SelectItem key={platform.value}>{platform.label}</SelectItem>
             ))}
           </Select>
         )}
@@ -103,7 +103,9 @@ export function PlayersStep({ control }: PlayersStepProps) {
           <Switch isSelected={field.value} onValueChange={field.onChange}>
             <div className="flex flex-col gap-1">
               <p className="text-sm font-medium">Голосовой чат</p>
-              <p className="text-xs text-default-500">Требуется микрофон и голосовая связь</p>
+              <p className="text-xs text-default-500">
+                Требуется микрофон и голосовая связь
+              </p>
             </div>
           </Switch>
         )}

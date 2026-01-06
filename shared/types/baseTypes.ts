@@ -5,3 +5,5 @@ export type ErrorResponseTypes = 'Incorect password' | 'Email not found';
 export type IconSvgProps = SVGProps<SVGSVGElement> & {
   size?: number;
 };
+
+export type ApplicationStatus = 'pending' | 'accepted' | 'rejected';

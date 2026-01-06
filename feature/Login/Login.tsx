@@ -6,7 +6,7 @@ import {
   getLoginErrorResponseType,
   routes,
   useLogin,
-} from '@/shared/';
+} from '@/shared';
 import { Button } from '@heroui/button';
 import { Card, CardFooter, CardHeader } from '@heroui/card';
 import { Form } from '@heroui/form';

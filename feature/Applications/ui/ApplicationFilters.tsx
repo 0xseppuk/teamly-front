@@ -89,7 +89,7 @@ export function ApplicationFilters({
         <Button
           variant="flat"
           onPress={onClearFilters}
-          className={isMobile ? 'w-full' : ''}
+          className={isMobile ? 'w-full' : 'h-[56px]'}
         >
           Сбросить фильтры
         </Button>

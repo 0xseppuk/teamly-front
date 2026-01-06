@@ -1,4 +1,8 @@
-import { ApplicationCard, ApplicationFiltersClient, EmptyState } from '@/feature/Applications/ui';
+import {
+  ApplicationCard,
+  ApplicationFiltersClient,
+  EmptyState,
+} from '@/feature/Applications/ui';
 import { getAllApplicationsServer } from '@/shared/services/applications/server/applications.server';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 import { Metadata } from 'next';
@@ -27,11 +31,13 @@ export async function generateMetadata({
   if (params.platform) filters.push('платформа');
   if (params.with_voice_chat) filters.push('с голосовым чатом');
 
-  const title = filters.length > 0
-    ? `Заявки: ${filters.join(', ')} | Teamly`
-    : 'Все заявки | Teamly';
+  const title =
+    filters.length > 0
+      ? `Заявки: ${filters.join(', ')} | Teamly`
+      : 'Все заявки | Teamly';
 
-  const description = 'Найдите команду для игры или создайте свою заявку. Удобная система подбора игроков.';
+  const description =
+    'Найдите команду для игры или создайте свою заявку. Удобная система подбора игроков.';
 
   return {
     title,
@@ -76,7 +82,11 @@ export default async function ApplicationsPage({
       </div>
 
       {/* Client component for interactive filters */}
-      <Suspense fallback={<div className="mb-6 h-14 animate-pulse rounded-lg bg-default-200" />}>
+      <Suspense
+        fallback={
+          <div className="mb-6 h-14 animate-pulse rounded-lg bg-default-200" />
+        }
+      >
         <ApplicationFiltersClient games={games} initialFilters={params} />
       </Suspense>
 

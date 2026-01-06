@@ -46,9 +46,12 @@ export function ApplicationFiltersClient({
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // Get current values from URL or use initial
-  const selectedGame = searchParams.get('game_id') || initialFilters.game_id || '';
-  const selectedPlatform = searchParams.get('platform') || initialFilters.platform || '';
-  const withVoiceChat = searchParams.get('with_voice_chat') || initialFilters.with_voice_chat || '';
+  const selectedGame =
+    searchParams.get('game_id') || initialFilters.game_id || '';
+  const selectedPlatform =
+    searchParams.get('platform') || initialFilters.platform || '';
+  const withVoiceChat =
+    searchParams.get('with_voice_chat') || initialFilters.with_voice_chat || '';
 
   const updateFilters = (updates: {
     gameId?: string;
@@ -57,9 +60,12 @@ export function ApplicationFiltersClient({
   }) => {
     const params = new URLSearchParams(searchParams.toString());
 
-    const finalGameId = updates.gameId !== undefined ? updates.gameId : selectedGame;
-    const finalPlatform = updates.platform !== undefined ? updates.platform : selectedPlatform;
-    const finalVoiceChat = updates.voiceChat !== undefined ? updates.voiceChat : withVoiceChat;
+    const finalGameId =
+      updates.gameId !== undefined ? updates.gameId : selectedGame;
+    const finalPlatform =
+      updates.platform !== undefined ? updates.platform : selectedPlatform;
+    const finalVoiceChat =
+      updates.voiceChat !== undefined ? updates.voiceChat : withVoiceChat;
 
     // Remove all filter params first
     params.delete('game_id');
@@ -142,7 +148,7 @@ export function ApplicationFiltersClient({
         <Button
           variant="flat"
           onPress={handleClearFilters}
-          className={isMobile ? 'w-full' : ''}
+          className={isMobile ? 'w-full' : 'h-[56px]'}
           isDisabled={isPending}
         >
           Сбросить фильтры

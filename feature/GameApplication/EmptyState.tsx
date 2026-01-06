@@ -27,11 +27,11 @@ export function EmptyState({ onCreateClick }: EmptyStateProps) {
         <div className="max-w-md space-y-2">
           <h3 className="text-lg font-semibold">Нет активных заявок</h3>
           <p className="text-sm text-default-500">
-            Создайте свою первую заявку, чтобы найти команду для игры. Укажите игру,
-            расписание и требования к игрокам.
+            Создайте свою первую заявку, чтобы найти команду для игры. Укажите
+            игру, расписание и требования к игрокам.
           </p>
         </div>
-        <Button color="primary" size="lg" onPress={onCreateClick}>
+        <Button color="secondary" size="lg" onPress={onCreateClick}>
           Создать первую заявку
         </Button>
       </CardBody>

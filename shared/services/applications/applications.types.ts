@@ -1,5 +1,6 @@
 import { User } from '../../types';
 import { Game } from '../games/games.types';
+import { ResponseStatus } from '../responses/responses.types';
 
 export type Platform =
   | 'pc'
@@ -7,8 +8,6 @@ export type Platform =
   | 'xbox'
   | 'nintendo_switch'
   | 'mobile';
-
-export type ApplicationStatus = 'pending' | 'accepted' | 'rejected';
 
 export interface GameApplication {
   id: string;
@@ -29,6 +28,10 @@ export interface GameApplication {
   created_at: string;
   updated_at: string;
   user: User;
+  // Информация об отклике текущего пользователя (приходит только для авторизованных)
+  user_has_responded?: boolean;
+  user_response_status?: ResponseStatus;
+  user_response_message?: string;
 }
 
 export interface CreateApplicationDTO {

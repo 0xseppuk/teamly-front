@@ -1,4 +1,4 @@
-import { ErrorResponseTypes } from '@/shared/';
+import { ErrorResponseTypes } from '@/shared/types/baseTypes';
 
 export function getLoginErrorResponseType(message: ErrorResponseTypes) {
   const ErrorResponseType = {
