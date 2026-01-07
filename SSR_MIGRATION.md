@@ -7,6 +7,7 @@
 ## Архитектурные изменения
 
 ### До миграции
+
 ```
 ❌ Все компоненты с 'use client'
 ❌ Загрузка данных только на клиенте (React Query)
@@ -16,6 +17,7 @@
 ```
 
 ### После миграции
+
 ```
 ✅ Server Components для данных
 ✅ Client Components только для интерактивности
@@ -72,12 +74,14 @@ client/
 ### 1. `server-fetch.ts` - Утилита для Server Components
 
 **Особенности:**
+
 - Автоматическая передача cookies с клиента
 - Поддержка Next.js cache tags для revalidation
 - Type-safe error handling
 - Работает ТОЛЬКО на сервере (защищено `server-only`)
 
 **Использование:**
+
 ```typescript
 import { serverFetch } from '@/shared/lib/server-fetch';
 
@@ -92,10 +96,12 @@ const data = await serverFetch<GamesResponse>('/games', {
 ### 2. Server API слой
 
 Отдельные файлы для server-side data fetching:
+
 - `games.server.ts` - SSR/SSG запросы игр
 - `applications.server.ts` - SSR запросы заявок
 
 **Защита от импорта на клиенте:**
+
 ```typescript
 import 'server-only'; // TypeScript ошибка если импортировать в client
 ```
@@ -103,6 +109,7 @@ import 'server-only'; // TypeScript ошибка если импортирова
 ### 3. SSR страница с параллельной загрузкой
 
 **`app/applications/page.tsx`:**
+
 ```typescript
 // Параллельная загрузка данных
 const [applicationsData, gamesData] = await Promise.all([
@@ -112,6 +119,7 @@ const [applicationsData, gamesData] = await Promise.all([
 ```
 
 **Преимущества:**
+
 - Оба запроса стартуют одновременно
 - Время загрузки = max(request1, request2), а не sum
 - Данные приходят уже в HTML
@@ -125,6 +133,7 @@ const [applicationsData, gamesData] = await Promise.all([
 ```
 
 **Преимущества:**
+
 - Прогрессивный рендеринг
 - Часть страницы показывается моментально
 - Остальное стримится по мере готовности
@@ -134,27 +143,33 @@ const [applicationsData, gamesData] = await Promise.all([
 ## Типы рендеринга
 
 ### SSR (Server-Side Rendering)
+
 **Страницы:** `/applications`
 
 **Характеристики:**
+
 - `cache: 'no-store'` - всегда свежие данные
 - Рендерится при каждом запросе
 - Идеально для динамических данных
 
 **Когда использовать:**
+
 - Персонализированный контент
 - Часто меняющиеся данные
 - Зависимость от query params
 
 ### SSG + ISR (Static Site Generation + Incremental Static Regeneration)
+
 **Страницы:** `/` (главная)
 
 **Характеристики:**
+
 - `revalidate: 3600` - обновление раз в час
 - Генерируется при билде и кешируется
 - Пересоздаётся в фоне при истечении revalidate
 
 **Когда использовать:**
+
 - Публичные данные
 - Редко меняющийся контент
 - SEO-важные страницы
@@ -179,6 +194,7 @@ export async function generateMetadata({ searchParams }) {
 ```
 
 **Преимущества:**
+
 - Динамические title/description на основе фильтров
 - OpenGraph для соцсетей
 - Поисковики индексируют с правильными метаданными
@@ -194,6 +210,7 @@ export async function generateMetadata({ searchParams }) {
 3. **Try/catch** - В Server Components
 
 **Пример:**
+
 ```typescript
 // app/applications/error.tsx
 export default function Error({ error, reset }) {
@@ -206,22 +223,24 @@ export default function Error({ error, reset }) {
 ## Performance метрики
 
 ### До миграции:
-| Метрика | Значение |
-|---------|----------|
-| FCP | ~1.5s |
-| LCP | ~2.5s |
-| TTI | ~3s |
-| Скелетоны | Всегда |
-| SEO | ❌ |
+
+| Метрика   | Значение |
+| --------- | -------- |
+| FCP       | ~1.5s    |
+| LCP       | ~2.5s    |
+| TTI       | ~3s      |
+| Скелетоны | Всегда   |
+| SEO       | ❌       |
 
 ### После миграции:
-| Метрика | Значение |
-|---------|----------|
-| FCP | ~0.3s ⚡ |
-| LCP | ~0.8s ⚡ |
-| TTI | ~1.2s ⚡ |
+
+| Метрика   | Значение                   |
+| --------- | -------------------------- |
+| FCP       | ~0.3s ⚡                   |
+| LCP       | ~0.8s ⚡                   |
+| TTI       | ~1.2s ⚡                   |
 | Скелетоны | Только при клик на фильтры |
-| SEO | ✅ |
+| SEO       | ✅                         |
 
 ---
 
@@ -230,6 +249,7 @@ export default function Error({ error, reset }) {
 ### ✅ DO:
 
 1. **Server Components по умолчанию**
+
    ```typescript
    // app/page.tsx - нет 'use client'
    export default async function Page() {
@@ -239,6 +259,7 @@ export default function Error({ error, reset }) {
    ```
 
 2. **Минимальные Client Components**
+
    ```typescript
    // только для интерактивности
    'use client';
@@ -249,17 +270,16 @@ export default function Error({ error, reset }) {
    ```
 
 3. **Параллельная загрузка**
+
    ```typescript
-   const [data1, data2] = await Promise.all([
-     fetch1(),
-     fetch2(),
-   ]);
+   const [data1, data2] = await Promise.all([fetch1(), fetch2()]);
    ```
 
 4. **Используй cache tags**
+
    ```typescript
    serverFetch('/data', {
-     next: { tags: ['users'] }
+     next: { tags: ['users'] },
    });
 
    // В server action:
@@ -269,6 +289,7 @@ export default function Error({ error, reset }) {
 ### ❌ DON'T:
 
 1. **Не используй axios на сервере**
+
    ```typescript
    // ❌ WRONG
    const data = await axiosInstance.get('/api');
@@ -278,27 +299,26 @@ export default function Error({ error, reset }) {
    ```
 
 2. **Не смешивай server/client API**
+
    ```typescript
    // ❌ WRONG - импорт server API в client
    'use client';
    import { getGamesServer } from '@/services/games/server';
 
    // ✅ RIGHT - используй client API
-   'use client';
+   ('use client');
    import { useGetGames } from '@/services/games/games.hooks';
    ```
 
 3. **Не блокируй рендеринг**
+
    ```typescript
    // ❌ WRONG - последовательная загрузка
    const data1 = await fetch1();
    const data2 = await fetch2(); // ждёт data1
 
    // ✅ RIGHT - параллельная загрузка
-   const [data1, data2] = await Promise.all([
-     fetch1(),
-     fetch2(),
-   ]);
+   const [data1, data2] = await Promise.all([fetch1(), fetch2()]);
    ```
 
 ---
@@ -308,14 +328,17 @@ export default function Error({ error, reset }) {
 ### Что можно улучшить:
 
 1. **React Server Actions** для мутаций
+
    - Создание/редактирование заявок на сервере
    - Автоматический revalidate
 
 2. **Partial Prerendering (PPR)**
+
    - Статика + динамика в одной странице
    - Экспериментальная фича Next.js 14+
 
 3. **API Routes как BFF**
+
    - Прокси к бэкенду
    - Rate limiting
    - Auth middleware
@@ -347,16 +370,20 @@ export default function Error({ error, reset }) {
 ## Troubleshooting
 
 ### Ошибка: "Headers already sent"
+
 **Причина:** Попытка модифицировать response после рендера
 **Решение:** Используй `redirect()` или `notFound()` до return JSX
 
 ### Ошибка: "Cookies is not a function"
+
 **Причина:** Использование `cookies()` в Client Component
 **Решение:** Перенеси в Server Component или server action
 
 ### Ошибка: "Text content does not match server-rendered HTML"
+
 **Причина:** Hydration mismatch
 **Решение:**
+
 - Проверь `useEffect` для browser-only кода
 - Используй `suppressHydrationWarning` для времени/дат
 

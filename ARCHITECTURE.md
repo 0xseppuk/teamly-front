@@ -143,15 +143,16 @@ export default async function Page() {
 
 ### Server Components (fetch) - Используй для:
 
-| Сценарий | Почему |
-|----------|--------|
-| Initial page load | Нет скелетонов, быстрее |
-| Public data | SEO важно |
-| Редко меняющиеся данные | Можно кешировать |
-| Список игр, статей, товаров | Не требует авторизации |
-| Фильтрация через URL | URL = истина, shareable links |
+| Сценарий                    | Почему                        |
+| --------------------------- | ----------------------------- |
+| Initial page load           | Нет скелетонов, быстрее       |
+| Public data                 | SEO важно                     |
+| Редко меняющиеся данные     | Можно кешировать              |
+| Список игр, статей, товаров | Не требует авторизации        |
+| Фильтрация через URL        | URL = истина, shareable links |
 
 **Пример:**
+
 ```typescript
 // app/games/page.tsx
 export default async function GamesPage() {
@@ -162,15 +163,16 @@ export default async function GamesPage() {
 
 ### Client Components (axios) - Используй для:
 
-| Сценарий | Почему |
-|----------|--------|
-| Mutations (POST/PUT/DELETE) | User actions |
-| Real-time updates | WebSocket, polling |
-| User-specific data | После логина |
-| Infinite scroll | Динамическая подгрузка |
-| Optimistic updates | Instant feedback |
+| Сценарий                    | Почему                 |
+| --------------------------- | ---------------------- |
+| Mutations (POST/PUT/DELETE) | User actions           |
+| Real-time updates           | WebSocket, polling     |
+| User-specific data          | После логина           |
+| Infinite scroll             | Динамическая подгрузка |
+| Optimistic updates          | Instant feedback       |
 
 **Пример:**
+
 ```typescript
 'use client';
 export function CreatePost() {
@@ -237,7 +239,7 @@ export async function serverFetch(endpoint: string) {
   const cookieStore = await cookies();
   const cookieHeader = cookieStore
     .getAll()
-    .map(c => `${c.name}=${c.value}`)
+    .map((c) => `${c.name}=${c.value}`)
     .join('; ');
 
   return fetch(`${BACKEND_URL}${endpoint}`, {
@@ -246,7 +248,7 @@ export async function serverFetch(endpoint: string) {
     },
     next: {
       revalidate: 3600, // ← Next.js caching!
-      tags: ['games'],  // ← Invalidation!
+      tags: ['games'], // ← Invalidation!
     },
   });
 }
@@ -290,6 +292,7 @@ export default async function GamesPage() {
 ```
 
 **Почему Server?**
+
 - Public data (не требует auth)
 - SEO critical
 - Редко меняется
@@ -345,6 +348,7 @@ export function ChatRoom() {
 ```
 
 **Почему Client?**
+
 - Real-time updates
 - User-specific
 - Mutations
@@ -357,6 +361,7 @@ export function ChatRoom() {
 ### Можно ли удалить axios?
 
 **НЕТ!** Axios всё ещё нужен для:
+
 - ✅ Mutations (POST/PATCH/DELETE)
 - ✅ Client-side data fetching
 - ✅ Real-time updates
@@ -367,11 +372,13 @@ export function ChatRoom() {
 ### Что изменилось?
 
 **Раньше:**
+
 ```typescript
 100% axios (всё на клиенте)
 ```
 
 **Сейчас:**
+
 ```typescript
 70% Server Components (fetch)    ← Initial data, SEO
 30% Client Components (axios)    ← Mutations, real-time
@@ -396,6 +403,7 @@ Write → Client  → axios  → Mutations, Real-time
 ### Reduce JavaScript bundle
 
 **Раньше:**
+
 ```
 Bundle size: 250KB
 - axios: 15KB
@@ -404,6 +412,7 @@ Bundle size: 250KB
 ```
 
 **Сейчас:**
+
 ```
 Home page: 180KB (-70KB!)
 - No axios (Server Component)
@@ -483,6 +492,7 @@ services/
 **Нужен ли axios?** → Да, но меньше!
 
 **Как это работает?**
+
 ```
 Server Components:
   Next.js Server → fetch → Backend → HTML → Browser
@@ -494,6 +504,7 @@ Client Components:
 ```
 
 **Когда что использовать?**
+
 - Initial load → Server (fetch)
 - Mutations → Client (axios)
 - Public data → Server

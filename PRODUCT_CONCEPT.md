@@ -3,6 +3,7 @@
 ## 🎯 Текущее состояние
 
 ### Есть сейчас:
+
 - ✅ Регистрация/Авторизация
 - ✅ Профиль пользователя
 - ✅ Каталог игр
@@ -11,6 +12,7 @@
 - ✅ Фильтрация заявок (игра, платформа, голосовой чат)
 
 ### Чего не хватает:
+
 - ❌ Отклики на заявки (Application Requests)
 - ❌ Чат/Переписка
 - ❌ Уведомления
@@ -44,7 +46,7 @@ interface Game {
 // GameApplication (есть)
 interface GameApplication {
   id: string;
-  user_id: string;          // Создатель заявки
+  user_id: string; // Создатель заявки
   game_id: string;
   title: string;
   description: string;
@@ -70,10 +72,10 @@ interface GameApplication {
 ```typescript
 interface ApplicationRequest {
   id: string;
-  application_id: string;  // На какую заявку откликнулись
-  user_id: string;         // Кто откликнулся
-  status: RequestStatus;   // pending | accepted | rejected
-  message?: string;        // Сообщение при отклике
+  application_id: string; // На какую заявку откликнулись
+  user_id: string; // Кто откликнулся
+  status: RequestStatus; // pending | accepted | rejected
+  message?: string; // Сообщение при отклике
   created_at: string;
   updated_at: string;
 
@@ -86,6 +88,7 @@ type RequestStatus = 'pending' | 'accepted' | 'rejected';
 ```
 
 **Бизнес-логика:**
+
 - Пользователь видит заявку
 - Кликает "Откликнуться"
 - Заполняет небольшую форму (опционально сообщение)
@@ -99,8 +102,8 @@ type RequestStatus = 'pending' | 'accepted' | 'rejected';
 ```typescript
 interface Conversation {
   id: string;
-  application_id: string;  // Связь с заявкой
-  participants: string[];  // [user_id1, user_id2, ...]
+  application_id: string; // Связь с заявкой
+  participants: string[]; // [user_id1, user_id2, ...]
   last_message_at: string;
   created_at: string;
 
@@ -118,7 +121,7 @@ interface Conversation {
 interface Message {
   id: string;
   conversation_id: string;
-  user_id: string;         // Кто отправил
+  user_id: string; // Кто отправил
   content: string;
   is_read: boolean;
   created_at: string;
@@ -135,21 +138,21 @@ interface Message {
 ```typescript
 interface Notification {
   id: string;
-  user_id: string;         // Кому уведомление
+  user_id: string; // Кому уведомление
   type: NotificationType;
   title: string;
   message: string;
-  link?: string;           // Ссылка на связанную сущность
+  link?: string; // Ссылка на связанную сущность
   is_read: boolean;
   created_at: string;
 }
 
 type NotificationType =
-  | 'new_request'          // Новый отклик на вашу заявку
-  | 'request_accepted'     // Ваш отклик приняли
-  | 'request_rejected'     // Ваш отклик отклонили
-  | 'new_message'          // Новое сообщение
-  | 'application_full'     // Команда набрана
+  | 'new_request' // Новый отклик на вашу заявку
+  | 'request_accepted' // Ваш отклик приняли
+  | 'request_rejected' // Ваш отклик отклонили
+  | 'new_message' // Новое сообщение
+  | 'application_full' // Команда набрана
   | 'application_canceled'; // Заявка отменена
 ```
 
@@ -412,6 +415,7 @@ type NotificationType =
 ### MVP (Минимум для работы):
 
 **Phase 1: Отклики** (1-2 недели)
+
 - [ ] ApplicationRequest model
 - [ ] Кнопка "Откликнуться" на карточке
 - [ ] Список откликов для owner
@@ -419,6 +423,7 @@ type NotificationType =
 - [ ] Обновление счётчика accepted_players
 
 **Phase 2: Базовый чат** (1-2 недели)
+
 - [ ] Conversation model
 - [ ] Message model
 - [ ] Создание conversation при принятии отклика
@@ -427,6 +432,7 @@ type NotificationType =
 - [ ] Polling для обновлений (каждые 5 сек)
 
 **Phase 3: Уведомления** (1 неделя)
+
 - [ ] Notification model
 - [ ] Badge в навбаре
 - [ ] Dropdown с уведомлениями
@@ -437,6 +443,7 @@ type NotificationType =
 ### Nice to have (Потом):
 
 **Phase 4: Улучшения чата**
+
 - [ ] WebSocket для real-time
 - [ ] Typing indicators
 - [ ] Read receipts (прочитано)
@@ -444,6 +451,7 @@ type NotificationType =
 - [ ] File uploads (скриншоты, видео)
 
 **Phase 5: Социальные фичи**
+
 - [ ] Профиль игрока (детальный)
 - [ ] Друзья/Подписки
 - [ ] Рейтинг игроков
@@ -451,6 +459,7 @@ type NotificationType =
 - [ ] Статистика игр
 
 **Phase 6: Gamification**
+
 - [ ] Достижения
 - [ ] Уровни
 - [ ] Бейджи
@@ -604,24 +613,28 @@ Notification ──N:1─→ User
 ## 🚀 Roadmap (Пошаговая реализация)
 
 ### Week 1-2: Application Requests
+
 1. Backend: Models + API
 2. Frontend: UI компоненты
 3. Интеграция
 4. Тестирование
 
 ### Week 3-4: Messaging
+
 1. Backend: Models + API
 2. Frontend: Chat UI
 3. Polling mechanism
 4. Тестирование
 
 ### Week 5: Notifications
+
 1. Backend: Model + API
 2. Frontend: Badge + Dropdown
 3. Event triggers
 4. Тестирование
 
 ### Week 6: Polish & Deploy
+
 1. Bug fixes
 2. UI/UX improvements
 3. Performance optimization
@@ -632,12 +645,14 @@ Notification ──N:1─→ User
 ## 💡 Дополнительные идеи
 
 ### Фильтры для заявок:
+
 - По рангу/уровню
 - По языку
 - По региону/timezone
 - По режиму игры (casual/ranked)
 
 ### Статусы заявки:
+
 - draft (черновик)
 - active (активна)
 - full (набрана)
@@ -646,10 +661,12 @@ Notification ──N:1─→ User
 - canceled (отменена)
 
 ### Групповые чаты:
+
 - Общий чат всей команды
 - Приватные чаты 1-on-1
 
 ### Календарь:
+
 - Запланированные сессии
 - Напоминания
 - Интеграция с Google Calendar
