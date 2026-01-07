@@ -13,13 +13,10 @@ import NextLink from 'next/link';
 
 import { ThemeSwitch } from '@/components/theme-switch';
 import { siteConfig } from '@/config/site';
-import { getCurrentUserServer } from '@/shared/services/profiles/server/profiles.server';
 
 import { ProfileDropdown } from '../ProfileDropdown/ProfileDropdown';
 
 export const Navbar = async () => {
-  const user = await getCurrentUserServer();
-
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -59,7 +56,7 @@ export const Navbar = async () => {
       >
         <NavbarItem className="hidden sm:flex gap-2">
           <ThemeSwitch />
-          <ProfileDropdown user={user} />
+          <ProfileDropdown />
         </NavbarItem>
       </NavbarContent>
 

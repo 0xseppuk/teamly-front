@@ -21,7 +21,11 @@ interface ProfileProps {
   onEdit?: () => void;
 }
 
-export function Profile({ user, isLoading }: ProfileProps) {
+export function Profile({
+  user,
+  isLoading,
+  isOwnProfile = false,
+}: ProfileProps) {
   const [formDisabled, setFormDisabled] = useState<boolean>(true);
 
   const { data: countries } = useGetCountries();
@@ -52,20 +56,23 @@ export function Profile({ user, isLoading }: ProfileProps) {
   }
 
   const toggleEditMode = () => {
+    if (!isOwnProfile) return; // Can't edit other user's profile
     setFormDisabled(!formDisabled);
   };
 
   const onSubmitProfile = (data: ProfileFormData) => {
+    if (!isOwnProfile) return; // Can't submit other user's profile
     setFormDisabled(true);
     updateProfile(data);
   };
 
   return (
-    <div className="flex gap-10 flex-col sm:flex-row">
+    <>
       <Card className="w-full h-[600px] p-6">
         <ProfileHeader
           avatar={user.avatar_url}
           dislikes={user.dislikes_count}
+          isOwnProfile={isOwnProfile}
           likes={user.likes_count}
           nickname={user.nickname}
           onClick={toggleEditMode}
@@ -83,16 +90,19 @@ export function Profile({ user, isLoading }: ProfileProps) {
               languages: user.languages,
             }}
             isEditing={formDisabled}
+            isOwnProfile={isOwnProfile}
             onSubmit={(data) => onSubmitProfile(data)}
           />
         </CardBody>
       </Card>
-      <Card
-        className="w-full overflow-y-auto p-10"
-        style={{ maxHeight: '600px' }}
-      >
-        <AddApplication />
-      </Card>
-    </div>
+      {isOwnProfile && (
+        <Card
+          className="w-full overflow-y-auto p-10"
+          style={{ maxHeight: '600px' }}
+        >
+          <AddApplication />
+        </Card>
+      )}
+    </>
   );
 }

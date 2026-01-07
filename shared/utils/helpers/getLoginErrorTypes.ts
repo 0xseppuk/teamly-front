@@ -2,7 +2,7 @@ import { ErrorResponseTypes } from '@/shared/types/baseTypes';
 
 export function getLoginErrorResponseType(message: ErrorResponseTypes) {
   const ErrorResponseType = {
-    'Incorect password': 'password',
+    'Incorrect password': 'password',
     'Email not found': 'email',
   };
 

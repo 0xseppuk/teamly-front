@@ -28,8 +28,10 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps = {}) {
   });
 
   const { mutate: registerUser } = useRegister({
-    onSuccess: () => {
-      router.push(routes.root);
+    onSuccess: (data) => {
+      // Save token to localStorage
+      localStorage.setItem('auth_token', data.token);
+      window.location.href = routes.root;
     },
     onError: (error: ApiError) => {
       setError('email', {

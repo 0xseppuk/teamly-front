@@ -1,67 +1,38 @@
 'use client';
 
-import { useDisclosure } from '@heroui/use-disclosure';
-import { useState } from 'react';
-
-import { ApplicationResponsesModal } from '../ApplicationResponses';
-
-import {
-  GameApplication,
-  formatTimeRange,
-  getPlatformLabel,
-  useGetUserApplications,
-} from '@/shared';
-import { Button } from '@heroui/button';
-import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
+import { Card, CardBody, CardHeader } from '@heroui/card';
 import { Chip } from '@heroui/chip';
-import { Skeleton } from '@heroui/skeleton';
 import { Spacer } from '@heroui/spacer';
 import Image from 'next/image';
 
-interface ApplicationsListProps {
-  onCreateClick: () => void;
-  onEditClick: (application: GameApplication) => void;
-  onDeleteClick: (id: string) => void;
+import { GameApplication, formatTimeRange, getPlatformLabel } from '@/shared';
+
+interface UserApplicationsListProps {
+  applications: GameApplication[];
 }
 
-export function ApplicationsList({
-  onCreateClick,
-  onEditClick,
-  onDeleteClick,
-}: ApplicationsListProps) {
-  const { data, isLoading } = useGetUserApplications();
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [selectedApplication, setSelectedApplication] = useState<
-    GameApplication | undefined
-  >(undefined);
-
-  const handleViewResponses = (application: GameApplication) => {
-    setSelectedApplication(application);
-    onOpen();
-  };
-
-  if (isLoading) {
+export function UserApplicationsList({
+  applications,
+}: UserApplicationsListProps) {
+  if (!applications || applications.length === 0) {
     return (
-      <div className="space-y-4">
-        <Skeleton className="h-8 w-full rounded-lg" />
-        {[1, 2, 3].map((i) => (
-          <Skeleton key={i} className="h-48 w-full rounded-lg" />
-        ))}
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <p className="text-lg font-semibold text-default-600">
+          Нет активных заявок
+        </p>
+        <p className="mt-2 text-sm text-default-400">
+          У пользователя пока нет активных заявок
+        </p>
       </div>
     );
   }
-
-  const applications = data?.applications || [];
 
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-lg font-semibold">
-          Мои заявки ({applications.length})
+          Заявки ({applications.length})
         </h3>
-        <Button color="primary" size="sm" onPress={onCreateClick}>
-          + Создать заявку
-        </Button>
       </div>
 
       <div className="grid gap-4">
@@ -119,46 +90,10 @@ export function ApplicationsList({
                   )}
                 </div>
               </CardBody>
-              <CardFooter className="gap-2 flex-wrap">
-                <Button
-                  color="secondary"
-                  size="sm"
-                  startContent="💬"
-                  variant="flat"
-                  onPress={() => handleViewResponses(app)}
-                >
-                  Отклики
-                  {/* TODO: Add response count badge when backend adds count to response */}
-                </Button>
-                <Button
-                  size="sm"
-                  variant="flat"
-                  onPress={() => onEditClick(app)}
-                >
-                  Редактировать
-                </Button>
-                <Button
-                  color="danger"
-                  size="sm"
-                  variant="flat"
-                  onPress={() => onDeleteClick(app.id)}
-                >
-                  Удалить
-                </Button>
-              </CardFooter>
             </Card>
           );
         })}
       </div>
-
-      {/* Modal for viewing responses */}
-      {selectedApplication && (
-        <ApplicationResponsesModal
-          application={selectedApplication}
-          isOpen={isOpen}
-          onOpenChange={onOpenChange}
-        />
-      )}
     </div>
   );
 }

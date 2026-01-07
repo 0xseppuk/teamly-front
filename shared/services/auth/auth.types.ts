@@ -22,5 +22,6 @@ export interface RegisterRequest {
 
 export interface RegisterResponse {
   user: User;
+  token: string;
   message: string;
 }

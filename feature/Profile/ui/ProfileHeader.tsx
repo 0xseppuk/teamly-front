@@ -13,6 +13,7 @@ interface ProfileHeaderProps {
   avatar: string | undefined;
   nickname: string;
   onClick: () => void;
+  isOwnProfile?: boolean;
 }
 
 export function ProfileHeader({
@@ -21,6 +22,7 @@ export function ProfileHeader({
   avatar,
   nickname,
   onClick,
+  isOwnProfile = false,
 }: ProfileHeaderProps) {
   const avatarFallback = nickname?.charAt(0).toUpperCase() || '?';
 
@@ -49,15 +51,17 @@ export function ProfileHeader({
           </div>
         </div>
 
-        <Button
-          isIconOnly
-          className="hover:scale-110 transition-transform"
-          radius="full"
-          size="sm"
-          onClick={onClick}
-        >
-          <EditIcon size={18} />
-        </Button>
+        {isOwnProfile && (
+          <Button
+            isIconOnly
+            className="hover:scale-110 transition-transform"
+            radius="full"
+            size="sm"
+            onClick={onClick}
+          >
+            <EditIcon size={18} />
+          </Button>
+        )}
       </CardHeader>
     </CardHeader>
   );

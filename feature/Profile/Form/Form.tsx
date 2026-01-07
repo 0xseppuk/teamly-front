@@ -20,6 +20,7 @@ type ProfileFormProps = {
   onSubmit: (data: ProfileFormData) => void;
   isEditing?: boolean;
   countries?: Country[];
+  isOwnProfile?: boolean;
 };
 
 export function ProfileForm({
@@ -27,6 +28,7 @@ export function ProfileForm({
   onSubmit,
   isEditing = false,
   countries,
+  isOwnProfile = false,
 }: ProfileFormProps) {
   const {
     register,
@@ -137,14 +139,16 @@ export function ProfileForm({
           )}
         />
       </div>
-      <Button
-        className={clsx('w-full', isEditing && 'hidden')}
-        color="secondary"
-        size="lg"
-        onPress={() => handleSubmit(onSubmit)()}
-      >
-        Сохранить
-      </Button>
+      {isOwnProfile && (
+        <Button
+          className={clsx('w-full', isEditing && 'hidden')}
+          color="secondary"
+          size="lg"
+          onPress={() => handleSubmit(onSubmit)()}
+        >
+          Сохранить
+        </Button>
+      )}
     </Form>
   );
 }

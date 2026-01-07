@@ -1,7 +1,6 @@
 'use client';
 
 import { Avatar } from '@heroui/avatar';
-import { Button } from '@heroui/button';
 import {
   Dropdown,
   DropdownItem,
@@ -10,43 +9,25 @@ import {
 } from '@heroui/dropdown';
 import { useRouter } from 'next/navigation';
 
-import { routes, useGetMe, useLogout } from '@/shared';
+import { routes, useGetMe } from '@/shared';
 
 export const ProfileDropdown = () => {
   const router = useRouter();
-  const { data: me, isLoading, error } = useGetMe();
-
-  const { mutate: logout } = useLogout({
-    onSuccess: () => {
-      // Force full page reload to refresh server components and clear state
-      window.location.href = routes.login;
-    },
-    onError: (error) => {
-      console.error('Logout error:', error);
-      // Even on error, try to redirect
-      window.location.href = routes.login;
-    },
-  });
+  const { data: me, isLoading } = useGetMe();
 
   if (isLoading) {
-    return null; // Don't show anything while loading
+    return null;
   }
 
   if (!me?.user) {
-    return (
-      <Button
-        color="secondary"
-        size="sm"
-        variant="flat"
-        onPress={() => router.push('/login')}
-      >
-        Войти
-      </Button>
-    );
+    return null;
   }
 
   const handleLogout = () => {
-    logout();
+    // Clear token from localStorage
+    localStorage.removeItem('auth_token');
+    // Redirect to login
+    window.location.href = routes.login;
   };
 
   return (

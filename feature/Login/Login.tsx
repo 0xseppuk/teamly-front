@@ -11,10 +11,8 @@ import { useForm } from 'react-hook-form';
 import { LoginFormData, loginSchema } from './validation.schema';
 
 import {
-  ApiError,
   ErrorResponseTypes,
   getLoginErrorResponseType,
-  routes,
   useLogin,
 } from '@/shared';
 
@@ -34,11 +32,14 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
   });
 
   const { mutate: login, isPending } = useLogin({
-    onSuccess: () => {
-      window.location.href = routes.root;
+    onSuccess: (data) => {
+      localStorage.setItem('auth_token', data.token);
+      router.push('/');
     },
-    onError: (error: ApiError) => {
-      const errorMessage = error.response || error.message || 'Ошибка входа';
+    onError: (error: any) => {
+      // Extract error message from Axios error response
+      const errorMessage =
+        error?.response?.data?.error || error?.message || 'Ошибка входа';
 
       const loginErrorResponseType = getLoginErrorResponseType(
         errorMessage as ErrorResponseTypes,
@@ -72,14 +73,18 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
           <p className="text-sm text-default-500 mt-2">Войдите в аккаунт</p>
         </div>
       </CardHeader>
-      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
+      <Form
+        className="gap-4"
+        validationBehavior="native"
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <Input
           {...register('email')}
           errorMessage={errors.email?.message}
           isInvalid={!!errors.email}
           label="Email"
           placeholder="your@email.com"
-          type="email"
+          type="text"
           variant="bordered"
         />
 
