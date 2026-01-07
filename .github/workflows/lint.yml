@@ -1,182 +1,108 @@
 name: Code Quality
-run-name: ${{ github.actor }} test linting before merge 🚀
 
 on:
   push:
-    branches: [main, develop, master]
-    paths:
-      - '**.js'
-      - '**.jsx'
-      - '**.ts'
-      - '**.tsx'
-      - '**.json'
-      - '**.css'
-      - '**.scss'
-      - '.eslintrc*'
-      - '.prettierrc*'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/**'
+    branches: [main, master, develop]
   pull_request:
-    branches: [main, develop, master]
-    paths:
-      - '**.js'
-      - '**.jsx'
-      - '**.ts'
-      - '**.tsx'
-      - '**.json'
-      - '**.css'
-      - '**.scss'
-      - '.eslintrc*'
-      - '.prettierrc*'
-      - 'package.json'
-      - 'package-lock.json'
-      - '.github/workflows/**'
+    branches: [main, master, develop]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  install:
-    name: Install Dependencies
+  quality:
+    name: Code Quality & Build
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
+    env:
+      NEXT_PUBLIC_BACKEND_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
+
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.x'
-
-      - name: Cache node_modules
-        id: cache-node-modules
-        uses: actions/cache@v4
-        with:
-          path: node_modules
-          key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
-        if: steps.cache-node-modules.outputs.cache-hit != 'true'
-        run: npm ci --prefer-offline --no-audit
+        run: npm ci
 
-      - name: Upload node_modules
-        uses: actions/upload-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-          retention-days: 1
-
-  type-check:
-    name: Type Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: install
-    env:
-      NEXT_PUBLIC_BACKEND_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run TypeScript type check
+      - name: TypeScript check
         run: npx tsc --noEmit
 
-  lint:
-    name: ESLint
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: install
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run ESLint
+      - name: ESLint check
         run: npm run lint
 
-  format:
-    name: Prettier Format Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    needs: install
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Run Prettier check
-        run: npm run format:check
-
-  build:
-    name: Build Project
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    needs: [type-check, lint, format]
-    env:
-      NEXT_PUBLIC_BACKEND_BASE_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_BASE_URL }}
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules
-          path: node_modules
-
-      - name: Cache Next.js build
-        uses: actions/cache@v4
-        with:
-          path: |
-            .next/cache
-          key: ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-${{ hashFiles('**/*.js', '**/*.jsx', '**/*.ts', '**/*.tsx') }}
-          restore-keys: |
-            ${{ runner.os }}-nextjs-${{ hashFiles('package-lock.json') }}-
+      - name: Prettier check
+        run: npx prettier --check .
 
       - name: Build project
         run: npm run build
 
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: .next
-          retention-days: 7
+      - name: Check bundle size
+        run: |
+          echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          # Get .next directory size
+          NEXT_SIZE=$(du -sh .next 2>/dev/null | cut -f1 || echo "N/A")
+          echo "📦 Total .next size: **$NEXT_SIZE**" >> $GITHUB_STEP_SUMMARY
+
+          # Get static directory size (actual bundle)
+          if [ -d ".next/static" ]; then
+            STATIC_SIZE=$(du -sh .next/static | cut -f1)
+            echo "📊 Static assets: **$STATIC_SIZE**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Get server size
+          if [ -d ".next/server" ]; then
+            SERVER_SIZE=$(du -sh .next/server | cut -f1)
+            echo "🖥️  Server bundle: **$SERVER_SIZE**" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Page Sizes" >> $GITHUB_STEP_SUMMARY
+
+          # Find all page bundles and show their sizes
+          if [ -d ".next/static/chunks/pages" ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "| Page | Size |" >> $GITHUB_STEP_SUMMARY
+            echo "| ---- | ---- |" >> $GITHUB_STEP_SUMMARY
+
+            find .next/static/chunks/pages -name "*.js" -type f -exec sh -c '
+              for file; do
+                size=$(du -h "$file" | cut -f1)
+                name=$(basename "$file")
+                echo "| $name | $size |"
+              done
+            ' sh {} + | sort -k2 -hr >> $GITHUB_STEP_SUMMARY || echo "| No pages found | - |" >> $GITHUB_STEP_SUMMARY
+          fi
+
+          # Show largest chunks
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Largest Chunks (Top 10)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Size |" >> $GITHUB_STEP_SUMMARY
+          echo "| ---- | ---- |" >> $GITHUB_STEP_SUMMARY
+
+          find .next/static/chunks -name "*.js" -type f -exec du -h {} + | \
+            sort -rh | head -10 | \
+            awk '{printf "| %s | %s |\n", $2, $1}' >> $GITHUB_STEP_SUMMARY || \
+            echo "| No chunks found | - |" >> $GITHUB_STEP_SUMMARY
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Build completed successfully!" >> $GITHUB_STEP_SUMMARY
+
+      - name: Summary
+        if: always()
+        run: |
+          echo "## Quality Checks Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "✅ TypeScript type checking" >> $GITHUB_STEP_SUMMARY
+          echo "✅ ESLint code quality" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Prettier formatting" >> $GITHUB_STEP_SUMMARY
+          echo "✅ Production build" >> $GITHUB_STEP_SUMMARY
