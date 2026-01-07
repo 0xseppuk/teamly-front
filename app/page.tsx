@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 
 import { GameCard } from '@/feature/Games';
+import { ClientPagination } from '@/shared';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 
 export const metadata: Metadata = {
@@ -14,13 +15,28 @@ export const metadata: Metadata = {
   },
 };
 
+interface HomeProps {
+  searchParams: Promise<{ page?: string }>;
+}
+
+const GAMES_PER_PAGE = 8;
+
 /**
  * Home page with Static Site Generation
  * Games are cached and revalidated every hour
  */
-export default async function Home() {
-  const data = await getGamesServer({ revalidate: 3600 });
+export default async function Home({ searchParams }: HomeProps) {
+  const params = await searchParams;
+  const currentPage = Number(params.page) || 1;
+
+  const data = await getGamesServer({
+    page: currentPage,
+    limit: GAMES_PER_PAGE,
+    revalidate: 3600,
+  });
+
   const games = data?.games || [];
+  const total = data?.total || data?.count || 0;
 
   return (
     <section className="container mx-auto px-4 py-8">
@@ -36,6 +52,8 @@ export default async function Home() {
           <GameCard key={game.id} game={game} />
         ))}
       </div>
+
+      <ClientPagination perPage={GAMES_PER_PAGE} total={total} />
     </section>
   );
 }

@@ -14,6 +14,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'media.contentapi.ea.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'dajajhtpbblfaocsaeyp.supabase.co',
+      },
     ],
   },
 };

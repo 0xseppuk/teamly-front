@@ -53,11 +53,11 @@ export function GameCard({ game }: GameCardProps) {
         </div>
         <div className="p-3 md:p-4">
           <h3 className="text-lg font-semibold md:text-xl">{game.name}</h3>
-          {game.slug && (
+          {/* {game.slug && (
             <p className="mt-1 text-xs text-default-500 md:text-sm">
               {game.slug}
             </p>
-          )}
+          )} */}
         </div>
       </CardBody>
     </Card>

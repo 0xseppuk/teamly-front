@@ -39,21 +39,21 @@ jobs:
           echo "## Bundle Size Analysis" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
 
-          # Get .next directory size
-          NEXT_SIZE=$(du -sh .next 2>/dev/null | cut -f1 || echo "N/A")
-          echo "📦 Total .next size: **$NEXT_SIZE**" >> $GITHUB_STEP_SUMMARY
-
-          # Get static directory size (actual bundle)
+          # Get static directory size (actual bundle sent to browser)
           if [ -d ".next/static" ]; then
             STATIC_SIZE=$(du -sh .next/static | cut -f1)
-            echo "📊 Static assets: **$STATIC_SIZE**" >> $GITHUB_STEP_SUMMARY
+            echo "📦 Client bundle (static): **$STATIC_SIZE**" >> $GITHUB_STEP_SUMMARY
           fi
 
           # Get server size
           if [ -d ".next/server" ]; then
             SERVER_SIZE=$(du -sh .next/server | cut -f1)
-            echo "🖥️  Server bundle: **$SERVER_SIZE**" >> $GITHUB_STEP_SUMMARY
+            echo "🖥️ Server bundle: **$SERVER_SIZE**" >> $GITHUB_STEP_SUMMARY
           fi
+
+          # Total production size (without cache)
+          PROD_SIZE=$(du -sh --exclude='.next/cache' .next 2>/dev/null | cut -f1 || echo "N/A")
+          echo "📊 Total (without cache): **$PROD_SIZE**" >> $GITHUB_STEP_SUMMARY
 
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Page Sizes" >> $GITHUB_STEP_SUMMARY

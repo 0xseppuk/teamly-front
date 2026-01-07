@@ -4,9 +4,9 @@ import { Metadata, Viewport } from 'next';
 
 import { Providers } from '../shared/providers/providers';
 
-import { Navbar } from '@/components/navbar';
-import { fontIBM } from '@/config/fonts';
+import { fontRubik } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
+import { Navbar } from '@/feature';
 
 export const metadata: Metadata = {
   title: {
@@ -36,8 +36,8 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          'min-h-screen text-foreground bg-background font-ibm antialiased',
-          fontIBM.variable,
+          'min-h-screen text-foreground bg-background font-rubik antialiased',
+          fontRubik.variable,
         )}
       >
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>

@@ -2,23 +2,35 @@ import 'server-only';
 
 import type { Game } from '../games.types';
 
-import { serverFetch } from '@/shared/lib/server-fetch';
+import { buildQueryString, serverFetch } from '@/shared/lib/server-fetch';
 
 export interface GamesResponse {
   games: Game[];
   count: number;
+  total?: number;
+}
+
+export interface GetGamesParams {
+  page?: number;
+  limit?: number;
+  revalidate?: number;
 }
 
 /**
  * Fetch all games on the server
  * Can be cached with Next.js revalidate
  */
-export async function getGamesServer(options?: {
-  revalidate?: number;
-}): Promise<GamesResponse> {
-  return serverFetch<GamesResponse>('/games', {
+export async function getGamesServer(
+  options?: GetGamesParams,
+): Promise<GamesResponse> {
+  const { revalidate, ...params } = options || {};
+  const queryString = buildQueryString(
+    params as Record<string, string | number | boolean | undefined>,
+  );
+
+  return serverFetch<GamesResponse>(`/games${queryString}`, {
     next: {
-      revalidate: options?.revalidate ?? 3600, // 1 hour default
+      revalidate: revalidate ?? 3600, // 1 hour default
       tags: ['games'],
     },
   });

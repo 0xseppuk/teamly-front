@@ -11,18 +11,28 @@ import { link as linkStyles } from '@heroui/theme';
 import clsx from 'clsx';
 import NextLink from 'next/link';
 
-import { DiscordIcon, GithubIcon, Logo, TwitterIcon } from '@/components/icons';
 import { ThemeSwitch } from '@/components/theme-switch';
 import { siteConfig } from '@/config/site';
+import { getCurrentUserServer } from '@/shared/services/profiles/server/profiles.server';
 
-export const Navbar = () => {
+import { ProfileDropdown } from '../ProfileDropdown/ProfileDropdown';
+
+export const Navbar = async () => {
+  const user = await getCurrentUserServer();
+
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-1" href="/">
-            <Logo />
-            <p className="font-bold text-inherit">ACME</p>
+          <NextLink className="flex justify-start items-center gap-2" href="/">
+            {/* <Image
+              unoptimized
+              alt="Teamly logo"
+              height={32}
+              src="/logo.png"
+              width={32}
+            /> */}
+            <p className="font-bold text-inherit">TEAMLY</p>
           </NextLink>
         </NavbarBrand>
         <ul className="hidden lg:flex gap-4 justify-start ml-2">
@@ -48,16 +58,8 @@ export const Navbar = () => {
         justify="end"
       >
         <NavbarItem className="hidden sm:flex gap-2">
-          <Link isExternal aria-label="Twitter" href={siteConfig.links.twitter}>
-            <TwitterIcon className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Discord" href={siteConfig.links.discord}>
-            <DiscordIcon className="text-default-500" />
-          </Link>
-          <Link isExternal aria-label="Github" href={siteConfig.links.github}>
-            <GithubIcon className="text-default-500" />
-          </Link>
           <ThemeSwitch />
+          <ProfileDropdown user={user} />
         </NavbarItem>
       </NavbarContent>
 

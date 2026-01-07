@@ -1,0 +1,1 @@
+export { ClientPagination } from './ClientPagination';

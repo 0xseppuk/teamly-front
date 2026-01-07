@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import { ApiError } from '../axios';
 
-import { login, register } from './auth.api';
+import { login, logout, register } from './auth.api';
 import { LoginResponse, RegisterResponse } from './auth.types';
 
 export const useLogin = ({
@@ -29,6 +29,22 @@ export const useRegister = ({
   return useMutation({
     mutationFn: register,
     onSuccess,
+    onError,
+  });
+};
+
+export const useLogout = ({
+  onSuccess,
+  onError,
+}: {
+  onSuccess: () => void;
+  onError: (error: ApiError) => void;
+}) => {
+  return useMutation({
+    mutationFn: logout,
+    onSuccess: () => {
+      onSuccess();
+    },
     onError,
   });
 };

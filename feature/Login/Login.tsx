@@ -27,24 +27,36 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
 
-  const { mutate: login } = useLogin({
+  const { mutate: login, isPending } = useLogin({
     onSuccess: () => {
-      router.push(routes.root);
+      window.location.href = routes.root;
     },
     onError: (error: ApiError) => {
+      const errorMessage = error.response || error.message || 'Ошибка входа';
+
       const loginErrorResponseType = getLoginErrorResponseType(
-        error.message as ErrorResponseTypes,
+        errorMessage as ErrorResponseTypes,
       );
 
-      errors[loginErrorResponseType as 'email' | 'password'] = {
-        message: error.message,
-        type: 'value',
-      };
+      // If field type is determined, set field error; otherwise set general error
+      if (loginErrorResponseType) {
+        setError(loginErrorResponseType as 'email' | 'password', {
+          message: errorMessage,
+          type: 'manual',
+        });
+      } else {
+        // Set error on password field as fallback
+        setError('password', {
+          message: errorMessage,
+          type: 'manual',
+        });
+      }
     },
   });
 
@@ -54,9 +66,9 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
 
   return (
     <Card className="p-6 bg-content1 shadow-medium">
-      <CardHeader className="text-center">
-        <div className="text-center">
-          <h1 className="text-3xl font-bold text-center">Teamly</h1>
+      <CardHeader className="">
+        <div className="">
+          <h1 className="text-3xl font-bold">Teamly</h1>
           <p className="text-sm text-default-500 mt-2">Войдите в аккаунт</p>
         </div>
       </CardHeader>
@@ -81,8 +93,14 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
           variant="bordered"
         />
 
-        <Button className="w-full" color="secondary" size="lg" type="submit">
-          {'Войти'}
+        <Button
+          className="w-full"
+          color="secondary"
+          isLoading={isPending}
+          size="lg"
+          type="submit"
+        >
+          Войти
         </Button>
       </Form>
       <CardFooter>

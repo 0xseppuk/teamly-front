@@ -33,7 +33,7 @@ export async function register(data: RegisterRequest) {
 
 export async function logout() {
   const response = await axiosInstanse.post(
-    '/auth/signout',
+    '/auth/logout',
     {},
     {
       withCredentials: true,

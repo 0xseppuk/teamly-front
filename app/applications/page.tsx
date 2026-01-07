@@ -5,7 +5,8 @@ import {
   ApplicationCard,
   ApplicationFiltersClient,
   EmptyState,
-} from '@/feature/Applications/ui';
+} from '@/feature';
+import { ClientPagination } from '@/shared';
 import { getAllApplicationsServer } from '@/shared/services/applications/server/applications.server';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 
@@ -75,6 +76,7 @@ export default async function ApplicationsPage({
 
   const applications = applicationsData.applications || [];
   const games = gamesData.games || [];
+  const total = applications.length;
 
   return (
     <div className="container mx-auto px-4 py-4 md:py-8">
@@ -103,6 +105,7 @@ export default async function ApplicationsPage({
           </div>
         )}
       </div>
+      <ClientPagination perPage={8} total={total} />
     </div>
   );
 }
