@@ -1,7 +1,8 @@
-import { Game } from '@/shared/services/games/games.types';
-import { platformOptions, voiceChatOptions } from '@/shared/utils';
 import { Button } from '@heroui/button';
 import { Select, SelectItem } from '@heroui/select';
+
+import { Game } from '@/shared/services/games/games.types';
+import { platformOptions, voiceChatOptions } from '@/shared/utils';
 
 type FilterConfig = {
   label: string;
@@ -67,11 +68,11 @@ export function ApplicationFilters({
       {filterConfigs.map((config, index) => (
         <Select
           key={index}
+          className={isMobile ? 'w-full' : 'max-w-xs'}
           label={config.label}
           placeholder={config.placeholder}
           selectedKeys={config.selectedKeys}
           onChange={(e) => config.onChange(e.target.value)}
-          className={isMobile ? 'w-full' : 'max-w-xs'}
         >
           {config.options.map((option) => {
             const key = config.isGame
@@ -80,6 +81,7 @@ export function ApplicationFilters({
             const label = config.isGame
               ? (option as Game).name
               : (option as { label: string }).label;
+
             return <SelectItem key={key}>{label}</SelectItem>;
           })}
         </Select>
@@ -87,9 +89,9 @@ export function ApplicationFilters({
 
       {hasActiveFilters && (
         <Button
+          className={isMobile ? 'w-full' : 'h-[56px]'}
           variant="flat"
           onPress={onClearFilters}
-          className={isMobile ? 'w-full' : 'h-[56px]'}
         >
           Сбросить фильтры
         </Button>

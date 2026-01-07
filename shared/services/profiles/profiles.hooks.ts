@@ -1,5 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
+
 import { ApiError } from '../axios';
+
 import { getMe, updateProfile } from './profiles.api';
 import { UpdateProfileRequest, UpdateProfileResponse } from './profiles.types';
 

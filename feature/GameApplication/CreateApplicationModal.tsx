@@ -1,10 +1,5 @@
 'use client';
 
-import {
-  useCreateApplication,
-  useUpdateApplication,
-} from '@/shared/services/applications';
-import { GameApplication } from '@/shared/services/applications/applications.types';
 import { Button } from '@heroui/button';
 import {
   Modal,
@@ -18,6 +13,7 @@ import { Spacer } from '@heroui/spacer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+
 import { STEPS } from './constants';
 import { ApplicationFormData, applicationSchema } from './schema';
 import {
@@ -27,6 +23,12 @@ import {
   ScheduleStep,
 } from './steps';
 import { getFieldsForStep } from './utils/fieldsForStep';
+
+import {
+  useCreateApplication,
+  useUpdateApplication,
+} from '@/shared/services/applications';
+import { GameApplication } from '@/shared/services/applications/applications.types';
 
 interface CreateApplicationModalProps {
   isOpen: boolean;
@@ -138,7 +140,7 @@ export function CreateApplicationModal({
     } catch (error) {
       console.error(
         `Failed to ${isEditMode ? 'update' : 'create'} application:`,
-        error
+        error,
       );
     }
   });
@@ -153,14 +155,14 @@ export function CreateApplicationModal({
 
   return (
     <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      size="2xl"
-      scrollBehavior="inside"
-      onClose={handleClose}
       classNames={{
         base: 'max-h-[90vh]',
       }}
+      isOpen={isOpen}
+      scrollBehavior="inside"
+      size="2xl"
+      onClose={handleClose}
+      onOpenChange={onOpenChange}
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
@@ -168,10 +170,10 @@ export function CreateApplicationModal({
             {isEditMode ? 'Редактировать заявку' : 'Создать заявку'}
           </h2>
           <Progress
-            value={progress}
             className="mt-2"
             color="primary"
             size="sm"
+            value={progress}
           />
         </ModalHeader>
 
@@ -196,13 +198,13 @@ export function CreateApplicationModal({
                         <svg
                           className="h-6 w-6"
                           fill="none"
+                          stroke="currentColor"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2.5"
                           viewBox="0 0 24 24"
-                          stroke="currentColor"
                         >
-                          <path d="M5 13l4 4L19 7"></path>
+                          <path d="M5 13l4 4L19 7" />
                         </svg>
                       ) : (
                         step.id
@@ -254,11 +256,11 @@ export function CreateApplicationModal({
           ) : (
             <Button
               color="primary"
-              onPress={() => handleSubmit()}
               isLoading={
                 isEditMode ? updateMutation.isPending : createMutation.isPending
               }
               type="submit"
+              onPress={() => handleSubmit()}
             >
               {isEditMode ? 'Сохранить изменения' : 'Создать заявку'}
             </Button>

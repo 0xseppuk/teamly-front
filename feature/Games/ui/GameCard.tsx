@@ -1,10 +1,11 @@
 'use client';
 
-import { Game } from '@/shared/services/games/games.types';
 import { Card, CardBody } from '@heroui/card';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+
+import { Game } from '@/shared/services/games/games.types';
 
 interface GameCardProps {
   game: Game;
@@ -23,21 +24,21 @@ export function GameCard({ game }: GameCardProps) {
 
   return (
     <Card
-      className="transition-all hover:scale-105 hover:shadow-xl"
       isPressable
+      className="transition-all hover:scale-105 hover:shadow-xl"
       onPress={handleClick}
     >
       <CardBody className="p-0">
         <div className="relative aspect-video w-full overflow-hidden rounded-t-lg bg-default-100">
           {!imageError && game.icon_url ? (
             <Image
-              src={game.icon_url}
-              alt={game.name}
               fill
+              alt={game.name}
               className="object-cover"
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              onError={() => setImageError(true)}
+              src={game.icon_url}
               unoptimized={game.icon_url.startsWith('http')}
+              onError={() => setImageError(true)}
             />
           ) : (
             <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-default-100 to-default-200">

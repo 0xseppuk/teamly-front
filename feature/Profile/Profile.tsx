@@ -1,17 +1,18 @@
 'use client';
 
-import { ProfileIcon } from '@/components/icons';
-import { useGetCountries } from '@/shared/services/country/country.hook';
-import { useUpdateProfile } from '@/shared/services/profiles/profiles.hooks';
-import { User } from '@/shared/types';
 import { Card, CardBody } from '@heroui/card';
 import { addToast } from '@heroui/toast';
 import { useState } from 'react';
+
 import { AddApplication } from '../GameApplication/AddApplication';
+
 import { ProfileForm } from './Form/Form';
 import { ProfileFormData } from './Form/profile.validation.schema';
 import { ProfileHeader } from './ui';
 import { ProfileSkeleton } from './ui/Skeleton';
+
+import { useGetCountries, useUpdateProfile } from '@/shared';
+import { User } from '@/shared/types';
 
 interface ProfileProps {
   user: User;
@@ -20,12 +21,28 @@ interface ProfileProps {
   onEdit?: () => void;
 }
 
-export function Profile({
-  user,
-  isOwnProfile = false,
-  onEdit,
-  isLoading,
-}: ProfileProps) {
+export function Profile({ user, isLoading }: ProfileProps) {
+  const [formDisabled, setFormDisabled] = useState<boolean>(true);
+
+  const { data: countries } = useGetCountries();
+  const { mutate: updateProfile } = useUpdateProfile({
+    onSuccess: () => {
+      addToast({
+        title: 'Обновление профиля',
+        description: 'Профиль обновлен успешно!',
+        color: 'success',
+      });
+    },
+    onError: () => {
+      addToast({
+        title: 'Ошибка',
+        description: 'Не удалось обновить профиль',
+        color: 'danger',
+      });
+    },
+    id: String(user.id),
+  });
+
   if (!user) {
     return null;
   }
@@ -33,24 +50,6 @@ export function Profile({
   if (isLoading) {
     return <ProfileSkeleton />;
   }
-
-  const [formDisabled, setFormDisabled] = useState<boolean>(true);
-
-  const { data: countries } = useGetCountries();
-  const { mutate: updateProfile } = useUpdateProfile({
-    onSuccess: (data) => {
-      addToast({
-        title: 'Обновление профиля',
-        description: 'Профиль обновлен успешно!',
-        color: 'success',
-        icon: <ProfileIcon />,
-      });
-    },
-    onError: (error) => {
-      console.error('Error updating profile:', error);
-    },
-    id: String(user.id),
-  });
 
   const toggleEditMode = () => {
     setFormDisabled(!formDisabled);
@@ -65,14 +64,15 @@ export function Profile({
     <div className="flex gap-10 flex-col sm:flex-row">
       <Card className="w-full h-[600px] p-6">
         <ProfileHeader
-          nickname={user.nickname}
           avatar={user.avatar_url}
-          likes={user.likes_count}
           dislikes={user.dislikes_count}
+          likes={user.likes_count}
+          nickname={user.nickname}
           onClick={toggleEditMode}
         />
         <CardBody>
           <ProfileForm
+            countries={countries?.countries}
             defaultValues={{
               discord: user.discord,
               telegram: user.telegram,
@@ -82,9 +82,8 @@ export function Profile({
               description: user.description,
               languages: user.languages,
             }}
-            onSubmit={(data) => onSubmitProfile(data)}
             isEditing={formDisabled}
-            countries={countries?.countries}
+            onSubmit={(data) => onSubmitProfile(data)}
           />
         </CardBody>
       </Card>

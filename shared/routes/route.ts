@@ -12,6 +12,7 @@ export class Route {
       return this.path;
     }
     const url = new URL(this.path);
+
     if (query) {
       url.search = new URLSearchParams(query).toString();
     }

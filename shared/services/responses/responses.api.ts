@@ -1,10 +1,11 @@
-import { axiosInstanse } from '../axios';
 import type {
   ApplicationResponse,
+  ApplicationResponseWithMessage,
   CreateResponseDTO,
   UpdateResponseStatusDTO,
-  ApplicationResponseWithMessage,
 } from './responses.types';
+
+import { axiosInstanse } from '../axios';
 
 // Создать отклик на заявку
 export async function createApplicationResponse(
@@ -15,6 +16,7 @@ export async function createApplicationResponse(
     `/applications/${applicationId}/responses`,
     data,
   );
+
   return response.data;
 }
 
@@ -23,14 +25,15 @@ export async function getApplicationResponses(applicationId: string) {
   const response = await axiosInstanse.get<ApplicationResponseWithMessage[]>(
     `/applications/${applicationId}/responses`,
   );
+
   return response.data;
 }
 
 // Получить мои отклики (куда я откликнулся)
 export async function getMyResponses() {
-  const response = await axiosInstanse.get<ApplicationResponse[]>(
-    `/responses/my`,
-  );
+  const response =
+    await axiosInstanse.get<ApplicationResponse[]>(`/responses/my`);
+
   return response.data;
 }
 
@@ -43,6 +46,7 @@ export async function updateResponseStatus(
     `/responses/${responseId}`,
     data,
   );
+
   return response.data;
 }
 
@@ -50,6 +54,7 @@ export async function updateResponseStatus(
 export async function checkUserResponse(applicationId: string) {
   try {
     const responses = await getMyResponses();
+
     return responses.find((r) => r.application_id === applicationId);
   } catch {
     return undefined;

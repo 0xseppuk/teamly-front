@@ -1,20 +1,18 @@
-import { defineConfig, globalIgnores } from "eslint/config";
-import { fixupConfigRules, fixupPluginRules } from "@eslint/compat";
-import react from "eslint-plugin-react";
-import nextPlugin from "@next/eslint-plugin-next";
-import unusedImports from "eslint-plugin-unused-imports";
-import _import from "eslint-plugin-import";
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
-import jsxA11Y from "eslint-plugin-jsx-a11y";
-import prettier from "eslint-plugin-prettier";
-import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import jsxA11yPlugin from "eslint-plugin-jsx-a11y";
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
+import js from '@eslint/js';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import tsParser from '@typescript-eslint/parser';
+import _import from 'eslint-plugin-import';
+import jsxA11Y from 'eslint-plugin-jsx-a11y';
+import prettier from 'eslint-plugin-prettier';
+import react from 'eslint-plugin-react';
+import unusedImports from 'eslint-plugin-unused-imports';
+import { defineConfig, globalIgnores } from 'eslint/config';
+import globals from 'globals';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { FlatCompat } from "@eslint/eslintrc";
+import { FlatCompat } from '@eslint/eslintrc';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,60 +24,57 @@ const compat = new FlatCompat({
 
 export default defineConfig([
   globalIgnores([
-    ".now/*",
-    "**/*.css",
-    "**/.changeset",
-    "**/dist",
-    "esm/*",
-    "public/*",
-    "tests/*",
-    "scripts/*",
-    "**/*.config.js",
-    "**/.DS_Store",
-    "**/node_modules",
-    "**/coverage",
-    "**/.next",
-    "**/build",
-    "!**/.commitlintrc.cjs",
-    "!**/.lintstagedrc.cjs",
-    "!**/jest.config.js",
-    "!**/plopfile.js",
-    "!**/react-shim.js",
-    "!**/tsup.config.ts",
+    '.now/*',
+    '**/*.css',
+    '**/.changeset',
+    '**/dist',
+    'esm/*',
+    'public/*',
+    'tests/*',
+    'scripts/*',
+    '**/*.config.js',
+    '**/.DS_Store',
+    '**/node_modules',
+    '**/coverage',
+    '**/.next',
+    '**/build',
+    '!**/.commitlintrc.cjs',
+    '!**/.lintstagedrc.cjs',
+    '!**/jest.config.js',
+    '!**/plopfile.js',
+    '!**/react-shim.js',
+    '!**/tsup.config.ts',
   ]),
   {
     extends: fixupConfigRules(
       compat.extends(
-        "plugin:react/recommended",
-        "plugin:prettier/recommended",
-        "plugin:react-hooks/recommended",
-        "plugin:jsx-a11y/recommended",
-        "plugin:@next/next/recommended"
-      )
+        'plugin:react/recommended',
+        'plugin:prettier/recommended',
+        'plugin:react-hooks/recommended',
+        'plugin:jsx-a11y/recommended',
+      ),
     ),
 
     plugins: {
       react: fixupPluginRules(react),
-      "unused-imports": unusedImports,
+      'unused-imports': unusedImports,
       import: fixupPluginRules(_import),
-      "@typescript-eslint": typescriptEslint,
-      "jsx-a11y": fixupPluginRules(jsxA11Y),
+      '@typescript-eslint': typescriptEslint,
+      'jsx-a11y': fixupPluginRules(jsxA11Y),
       prettier: fixupPluginRules(prettier),
-      "@next/next": nextPlugin,
-      "jsx-a11y": jsxA11yPlugin,
     },
 
     languageOptions: {
       globals: {
         ...Object.fromEntries(
-          Object.entries(globals.browser).map(([key]) => [key, "off"])
+          Object.entries(globals.browser).map(([key]) => [key, 'off']),
         ),
         ...globals.node,
       },
 
       parser: tsParser,
       ecmaVersion: 12,
-      sourceType: "module",
+      sourceType: 'module',
 
       parserOptions: {
         ecmaFeatures: {
@@ -90,64 +85,40 @@ export default defineConfig([
 
     settings: {
       react: {
-        version: "detect",
+        version: 'detect',
       },
     },
 
-    files: ["**/*.ts", "**/*.tsx"],
+    files: ['**/*.ts', '**/*.tsx'],
 
     rules: {
-      "no-console": "warn",
-      "react/prop-types": "off",
-      "react/jsx-uses-react": "off",
-      "react/react-in-jsx-scope": "off",
-      "react-hooks/exhaustive-deps": "off",
-      "jsx-a11y/click-events-have-key-events": "warn",
-      "jsx-a11y/interactive-supports-focus": "warn",
-      "prettier/prettier": "warn",
-      "no-unused-vars": "off",
-      "unused-imports/no-unused-vars": "off",
-      "unused-imports/no-unused-imports": "warn",
+      'no-console': 'warn',
+      'react/prop-types': 'off',
+      'react/jsx-uses-react': 'off',
+      'react/react-in-jsx-scope': 'off',
+      'react-hooks/exhaustive-deps': 'off',
+      'jsx-a11y/click-events-have-key-events': 'warn',
+      'jsx-a11y/interactive-supports-focus': 'warn',
+      'prettier/prettier': 'warn',
+      'no-unused-vars': 'off',
+      'unused-imports/no-unused-vars': 'off',
+      'unused-imports/no-unused-imports': 'warn',
 
-      "@typescript-eslint/no-unused-vars": [
-        "warn",
+      '@typescript-eslint/no-unused-vars': [
+        'warn',
         {
-          args: "after-used",
+          args: 'after-used',
           ignoreRestSiblings: false,
-          argsIgnorePattern: "^_.*?$",
+          argsIgnorePattern: '^_.*?$',
         },
       ],
 
-      "import/order": [
-        "warn",
-        {
-          groups: [
-            "type",
-            "builtin",
-            "object",
-            "external",
-            "internal",
-            "parent",
-            "sibling",
-            "index",
-          ],
+      'import/order': 'off',
 
-          pathGroups: [
-            {
-              pattern: "~/**",
-              group: "external",
-              position: "after",
-            },
-          ],
+      'react/self-closing-comp': 'warn',
 
-          "newlines-between": "always",
-        },
-      ],
-
-      "react/self-closing-comp": "warn",
-
-      "react/jsx-sort-props": [
-        "warn",
+      'react/jsx-sort-props': [
+        'warn',
         {
           callbacksLast: true,
           shorthandFirst: true,
@@ -156,22 +127,22 @@ export default defineConfig([
         },
       ],
 
-      "padding-line-between-statements": [
-        "warn",
+      'padding-line-between-statements': [
+        'warn',
         {
-          blankLine: "always",
-          prev: "*",
-          next: "return",
+          blankLine: 'always',
+          prev: '*',
+          next: 'return',
         },
         {
-          blankLine: "always",
-          prev: ["const", "let", "var"],
-          next: "*",
+          blankLine: 'always',
+          prev: ['const', 'let', 'var'],
+          next: '*',
         },
         {
-          blankLine: "any",
-          prev: ["const", "let", "var"],
-          next: ["const", "let", "var"],
+          blankLine: 'any',
+          prev: ['const', 'let', 'var'],
+          next: ['const', 'let', 'var'],
         },
       ],
     },

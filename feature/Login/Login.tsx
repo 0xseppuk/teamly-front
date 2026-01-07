@@ -1,12 +1,5 @@
 'use client';
 
-import {
-  ApiError,
-  ErrorResponseTypes,
-  getLoginErrorResponseType,
-  routes,
-  useLogin,
-} from '@/shared';
 import { Button } from '@heroui/button';
 import { Card, CardFooter, CardHeader } from '@heroui/card';
 import { Form } from '@heroui/form';
@@ -14,7 +7,16 @@ import { Input } from '@heroui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+
 import { LoginFormData, loginSchema } from './validation.schema';
+
+import {
+  ApiError,
+  ErrorResponseTypes,
+  getLoginErrorResponseType,
+  routes,
+  useLogin,
+} from '@/shared';
 
 interface LoginFormProps {
   onSwitchToRegister?: () => void;
@@ -38,6 +40,7 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
       const loginErrorResponseType = getLoginErrorResponseType(
         error.message as ErrorResponseTypes,
       );
+
       errors[loginErrorResponseType as 'email' | 'password'] = {
         message: error.message,
         type: 'value',
@@ -57,7 +60,7 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
           <p className="text-sm text-default-500 mt-2">Войдите в аккаунт</p>
         </div>
       </CardHeader>
-      <Form onSubmit={handleSubmit(onSubmit)} className="gap-4">
+      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           {...register('email')}
           errorMessage={errors.email?.message}
@@ -88,8 +91,8 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
           {onSwitchToRegister ? (
             <button
               className="text-primary hover:underline"
-              onClick={onSwitchToRegister}
               type="button"
+              onClick={onSwitchToRegister}
             >
               Зарегистрироваться
             </button>

@@ -1,12 +1,5 @@
 'use client';
 
-import { GameApplication } from '@/shared/services/applications/applications.types';
-import {
-  formatTimeRange,
-  getPlatformLabel,
-  getResponseBadgeColor,
-  getResponseBadgeText,
-} from '@/shared/utils';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Chip } from '@heroui/chip';
 import { useDisclosure } from '@heroui/modal';
@@ -14,6 +7,13 @@ import { Spacer } from '@heroui/spacer';
 import Image from 'next/image';
 
 import { CreateResponseModal } from '@/feature/CreateResponse';
+import { GameApplication } from '@/shared/services/applications/applications.types';
+import {
+  formatTimeRange,
+  getPlatformLabel,
+  getResponseBadgeColor,
+  getResponseBadgeText,
+} from '@/shared/utils';
 
 interface ApplicationCardProps {
   application: GameApplication;
@@ -33,18 +33,18 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
   return (
     <>
       <Card
-        className="transition-shadow hover:shadow-lg"
         isPressable
-        onPress={onOpen}
+        className="transition-shadow hover:shadow-lg"
         isDisabled={hasResponded}
+        onPress={onOpen}
       >
         <CardHeader className="flex gap-2 p-3 md:gap-3 md:p-4">
           <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg md:h-12 md:w-12">
             <Image
-              src={application.game.icon_url || '/placeholder-game.png'}
-              alt={application.game.name}
               fill
+              alt={application.game.name}
               className="object-cover"
+              src={application.game.icon_url || '/placeholder-game.png'}
             />
           </div>
           <div className="flex flex-1 flex-col">
@@ -58,20 +58,20 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
           <div className="flex flex-col gap-1">
             {application.is_active && !hasResponded && (
               <Chip
-                size="sm"
-                color="success"
-                variant="flat"
                 className="hidden sm:flex"
+                color="success"
+                size="sm"
+                variant="flat"
               >
                 Активна
               </Chip>
             )}
             {hasResponded && (
               <Chip
-                size="sm"
-                color={getResponseBadgeColor(responseStatus)}
-                variant="flat"
                 className="hidden sm:flex"
+                color={getResponseBadgeColor(responseStatus)}
+                size="sm"
+                variant="flat"
               >
                 {getResponseBadgeText(responseStatus)}
               </Chip>
@@ -82,38 +82,38 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
           <p className="text-xs text-default-600 line-clamp-2 md:text-sm">
             {application.description}
           </p>
-          <Spacer y={2} className="md:y-3" />
+          <Spacer className="md:y-3" y={2} />
           <div className="flex flex-wrap gap-1.5 md:gap-2">
             <Chip
-              size="sm"
-              variant="flat"
-              startContent="👥"
               classNames={{ content: 'text-xs md:text-sm' }}
+              size="sm"
+              startContent="👥"
+              variant="flat"
             >
               {application.accepted_players || 0}/{application.max_players}
             </Chip>
             <Chip
-              size="sm"
-              variant="flat"
-              startContent="🎮"
               classNames={{ content: 'text-xs md:text-sm' }}
+              size="sm"
+              startContent="🎮"
+              variant="flat"
             >
               {getPlatformLabel(application.platform)}
             </Chip>
             <Chip
-              size="sm"
-              variant="flat"
-              startContent="🕐"
               classNames={{ content: 'text-xs md:text-sm' }}
+              size="sm"
+              startContent="🕐"
+              variant="flat"
             >
               {timeRange}
             </Chip>
             {application.with_voice_chat && (
               <Chip
-                size="sm"
-                variant="flat"
-                startContent="🎤"
                 classNames={{ content: 'text-xs md:text-sm' }}
+                size="sm"
+                startContent="🎤"
+                variant="flat"
               >
                 Голосовой чат
               </Chip>
@@ -138,9 +138,9 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
 
       {/* Модалка отклика */}
       <CreateResponseModal
+        application={application}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
-        application={application}
       />
     </>
   );

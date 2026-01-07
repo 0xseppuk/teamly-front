@@ -1,12 +1,14 @@
 'use client';
 
-import { useGetGames } from '@/shared/services/games/games.hooks';
 import { Card, CardBody } from '@heroui/card';
 import { Skeleton } from '@heroui/skeleton';
 import { Spacer } from '@heroui/spacer';
 import Image from 'next/image';
 import { Control, Controller } from 'react-hook-form';
+
 import { ApplicationFormData } from '../schema';
+
+import { useGetGames } from '@/shared/services/games/games.hooks';
 
 interface GameSelectionStepProps {
   control: Control<ApplicationFormData>;
@@ -35,16 +37,16 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
       </div>
       <Spacer y={2} />
       <Controller
-        name="game_id"
         control={control}
+        name="game_id"
         render={({ field, fieldState }) => (
           <div className="space-y-3">
             <div className="grid gap-3">
               {games?.games.map((game) => (
                 <Card
                   key={game.id}
-                  isPressable
                   isHoverable
+                  isPressable
                   className={`border-2 transition-all ${
                     field.value === game.id.toString()
                       ? 'border-primary bg-primary-50/50'
@@ -55,10 +57,10 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
                   <CardBody className="flex-row items-center gap-4 p-4">
                     <div className="relative h-16 w-16 flex-shrink-0 overflow-hidden rounded-lg">
                       <Image
-                        src={game.icon_url || '/placeholder-game.png'}
-                        alt={game.name}
                         fill
+                        alt={game.name}
                         className="object-cover"
+                        src={game.icon_url || '/placeholder-game.png'}
                       />
                     </div>
                     <div className="flex-1">
@@ -69,13 +71,13 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
                         <svg
                           className="h-4 w-4 text-white"
                           fill="none"
+                          stroke="currentColor"
                           strokeLinecap="round"
                           strokeLinejoin="round"
                           strokeWidth="2"
                           viewBox="0 0 24 24"
-                          stroke="currentColor"
                         >
-                          <path d="M5 13l4 4L19 7"></path>
+                          <path d="M5 13l4 4L19 7" />
                         </svg>
                       </div>
                     )}

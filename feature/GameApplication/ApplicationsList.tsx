@@ -1,9 +1,11 @@
 'use client';
 
-import { useGetUserApplications } from '@/shared/services/applications';
-import { GameApplication } from '@/shared/services/applications/applications.types';
-import { formatTimeRange, getPlatformLabel } from '@/shared/utils';
-import { Badge } from '@heroui/badge';
+import {
+  GameApplication,
+  formatTimeRange,
+  getPlatformLabel,
+  useGetUserApplications,
+} from '@/shared';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Chip } from '@heroui/chip';
@@ -40,7 +42,9 @@ export function ApplicationsList({
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold">Мои заявки ({applications.length})</h3>
+        <h3 className="text-lg font-semibold">
+          Мои заявки ({applications.length})
+        </h3>
         <Button color="primary" size="sm" onPress={onCreateClick}>
           + Создать заявку
         </Button>
@@ -58,10 +62,10 @@ export function ApplicationsList({
               <CardHeader className="flex gap-3">
                 <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                   <Image
-                    src={app.game.icon_url || '/placeholder-game.png'}
-                    alt={app.game.name}
                     fill
+                    alt={app.game.name}
                     className="object-cover"
+                    src={app.game.icon_url || '/placeholder-game.png'}
                   />
                 </div>
                 <div className="flex flex-1 flex-col">
@@ -70,12 +74,12 @@ export function ApplicationsList({
                 </div>
                 <div className="flex gap-2">
                   {app.is_active && (
-                    <Chip size="sm" color="success" variant="flat">
+                    <Chip color="success" size="sm" variant="flat">
                       Активна
                     </Chip>
                   )}
                   {app.is_full && (
-                    <Chip size="sm" color="warning" variant="flat">
+                    <Chip color="warning" size="sm" variant="flat">
                       Набор закрыт
                     </Chip>
                   )}
@@ -85,17 +89,17 @@ export function ApplicationsList({
                 <p className="text-sm text-default-600">{app.description}</p>
                 <Spacer y={3} />
                 <div className="flex flex-wrap gap-2">
-                  <Chip size="sm" variant="flat" startContent="👥">
+                  <Chip size="sm" startContent="👥" variant="flat">
                     {app.accepted_players}/{app.max_players} игроков
                   </Chip>
-                  <Chip size="sm" variant="flat" startContent="🎮">
+                  <Chip size="sm" startContent="🎮" variant="flat">
                     {getPlatformLabel(app.platform)}
                   </Chip>
-                  <Chip size="sm" variant="flat" startContent="🕐">
+                  <Chip size="sm" startContent="🕐" variant="flat">
                     {timeRange}
                   </Chip>
                   {app.with_voice_chat && (
-                    <Chip size="sm" variant="flat" startContent="🎤">
+                    <Chip size="sm" startContent="🎤" variant="flat">
                       Голосовой чат
                     </Chip>
                   )}
@@ -110,9 +114,9 @@ export function ApplicationsList({
                   Редактировать
                 </Button>
                 <Button
+                  color="danger"
                   size="sm"
                   variant="flat"
-                  color="danger"
                   onPress={() => onDeleteClick(app.id)}
                 >
                   Удалить

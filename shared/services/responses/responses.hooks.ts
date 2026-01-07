@@ -1,3 +1,8 @@
+import type {
+  CreateResponseDTO,
+  UpdateResponseStatusDTO,
+} from './responses.types';
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
@@ -6,7 +11,6 @@ import {
   getMyResponses,
   updateResponseStatus,
 } from './responses.api';
-import type { CreateResponseDTO, UpdateResponseStatusDTO } from './responses.types';
 
 // Создать отклик
 export const useCreateApplicationResponse = () => {

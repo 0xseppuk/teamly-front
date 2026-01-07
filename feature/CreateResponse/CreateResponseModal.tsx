@@ -1,7 +1,10 @@
 'use client';
 
+import type { GameApplication } from '@/shared/services/applications/applications.types';
+
 import { Button } from '@heroui/button';
 import { Chip } from '@heroui/chip';
+import { Textarea } from '@heroui/input';
 import {
   Modal,
   ModalBody,
@@ -9,17 +12,15 @@ import {
   ModalFooter,
   ModalHeader,
 } from '@heroui/modal';
-import { Textarea } from '@heroui/input';
 import { addToast } from '@heroui/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import type { GameApplication } from '@/shared/services/applications/applications.types';
-import { useCreateApplicationResponse } from '@/shared/services/responses/responses.hooks';
-import { formatTimeRange, getPlatformLabel } from '@/shared/utils';
-
 import { createResponseSchema, type CreateResponseFormData } from './schema';
 import { ResponseForm } from './ui/ResponseForm';
+
+import { useCreateApplicationResponse } from '@/shared/services/responses/responses.hooks';
+import { formatTimeRange, getPlatformLabel } from '@/shared/utils';
 
 interface CreateResponseModalProps {
   isOpen: boolean;
@@ -61,7 +62,7 @@ export function CreateResponseModal({
     } catch (error) {
       addToast({
         title: 'Ошибка',
-        description: 'Не удалось отправить отклик. Попробуйте позже',
+        description: `Не удалось отправить отклик. Попробуйте позже ${error}`,
         color: 'danger',
       });
     }
@@ -74,11 +75,11 @@ export function CreateResponseModal({
 
   return (
     <Modal
+      classNames={{ base: 'max-h-[90vh]' }}
       isOpen={isOpen}
-      onOpenChange={onOpenChange}
       size="lg"
       onClose={handleClose}
-      classNames={{ base: 'max-h-[90vh]' }}
+      onOpenChange={onOpenChange}
     >
       <ModalContent>
         <ModalHeader className="flex flex-col gap-1">
@@ -93,10 +94,10 @@ export function CreateResponseModal({
           <div className="rounded-lg bg-default-100 p-4">
             <div className="mb-2 flex flex-wrap items-center gap-2">
               <p className="text-sm font-medium">{application.game.name}</p>
-              <Chip size="sm" variant="flat" className="text-xs">
+              <Chip className="text-xs" size="sm" variant="flat">
                 {getPlatformLabel(application.platform)}
               </Chip>
-              <Chip size="sm" variant="flat" className="text-xs">
+              <Chip className="text-xs" size="sm" variant="flat">
                 {formatTimeRange(
                   application.prime_time_start,
                   application.prime_time_end,
@@ -122,19 +123,20 @@ export function CreateResponseModal({
                 </p>
               </div>
 
-              {responseStatus === 'pending' && application.user_response_message && (
-                <Textarea
-                  label="Ваше сообщение"
-                  variant="bordered"
-                  value={application.user_response_message}
-                  isReadOnly
-                  minRows={6}
-                  classNames={{
-                    input: 'text-sm',
-                    label: 'text-sm font-medium',
-                  }}
-                />
-              )}
+              {responseStatus === 'pending' &&
+                application.user_response_message && (
+                  <Textarea
+                    isReadOnly
+                    classNames={{
+                      input: 'text-sm',
+                      label: 'text-sm font-medium',
+                    }}
+                    label="Ваше сообщение"
+                    minRows={6}
+                    value={application.user_response_message}
+                    variant="bordered"
+                  />
+                )}
             </>
           )}
 
@@ -154,8 +156,8 @@ export function CreateResponseModal({
           {!hasResponded && (
             <Button
               color="secondary"
-              onPress={() => handleSubmit(onSubmit)()}
               isLoading={createMutation.isPending}
+              onPress={() => handleSubmit(onSubmit)()}
             >
               Отправить отклик
             </Button>

@@ -1,9 +1,10 @@
 'use client';
 
-import { LightBulbIcon } from '@/components/icons';
 import { Button } from '@heroui/button';
 import { Card, CardBody } from '@heroui/card';
 import { useEffect } from 'react';
+
+import { LightBulbIcon } from '@/components/icons';
 
 /**
  * Error boundary for the applications page
@@ -18,7 +19,6 @@ export default function Error({
 }) {
   useEffect(() => {
     // Log error to error reporting service
-    console.error('Applications page error:', error);
   }, [error]);
 
   return (

@@ -1,8 +1,8 @@
 import 'server-only';
 
-import { serverFetch } from '@/shared/lib/server-fetch';
-
 import type { Game } from '../games.types';
+
+import { serverFetch } from '@/shared/lib/server-fetch';
 
 export interface GamesResponse {
   games: Game[];

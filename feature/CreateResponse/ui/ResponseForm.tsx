@@ -1,9 +1,9 @@
 'use client';
 
+import type { CreateResponseFormData } from '../schema';
+
 import { Textarea } from '@heroui/input';
 import { Control, Controller } from 'react-hook-form';
-
-import type { CreateResponseFormData } from '../schema';
 
 interface ResponseFormProps {
   control: Control<CreateResponseFormData>;
@@ -14,20 +14,20 @@ export function ResponseForm({ control, isDisabled }: ResponseFormProps) {
   return (
     <div className="space-y-4">
       <Controller
-        name="message"
         control={control}
+        name="message"
         render={({ field, fieldState }) => (
           <Textarea
             {...field}
+            description="Расскажите о себе и почему хотите присоединиться (10-500 символов)"
+            errorMessage={fieldState.error?.message}
+            isDisabled={isDisabled}
+            isInvalid={!!fieldState.error}
             label="Сопроводительное сообщение"
+            maxRows={10}
+            minRows={6}
             placeholder="Привет! Хочу присоединиться к вашей команде. Играю на позиции саппорта, ранк Gold Nova 3..."
             variant="bordered"
-            minRows={6}
-            maxRows={10}
-            isInvalid={!!fieldState.error}
-            errorMessage={fieldState.error?.message}
-            description="Расскажите о себе и почему хотите присоединиться (10-500 символов)"
-            isDisabled={isDisabled}
           />
         )}
       />

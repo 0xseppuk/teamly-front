@@ -6,6 +6,7 @@ export function getPlatformLabel(platform: string): string {
     nintendo_switch: 'Nintendo Switch',
     mobile: 'Mobile',
   };
+
   return labels[platform] || platform;
 }
 

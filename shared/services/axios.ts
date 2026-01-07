@@ -12,13 +12,6 @@ export const axiosInstanse = axios.create({
 axiosInstanse.interceptors.response.use(
   (response: AxiosResponse) => response,
   async (error: AxiosError) => {
-    console.error('API Error:', {
-      message: error.message,
-      response: error.response?.data,
-      status: error.response?.status,
-      url: error.config?.url,
-    });
-
     // Redirect to login on 401 Unauthorized
 
     return Promise.reject(error);

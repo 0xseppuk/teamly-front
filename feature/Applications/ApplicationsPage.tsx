@@ -10,8 +10,6 @@
 
 'use client';
 
-import { useGetAllApplications } from '@/shared/services/applications';
-import { useGetGames } from '@/shared/services/games/games.hooks';
 import { Button } from '@heroui/button';
 import {
   Modal,
@@ -30,10 +28,13 @@ import {
   EmptyState,
 } from './ui';
 
+import { useGetAllApplications } from '@/shared/services/applications';
+import { useGetGames } from '@/shared/services/games/games.hooks';
+
 export function ApplicationsPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
+  const [_, startTransition] = useTransition();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [selectedGame, setSelectedGame] = useState<string>(
@@ -90,6 +91,7 @@ export function ApplicationsPage() {
     if (finalVoiceChat) params.set('with_voice_chat', finalVoiceChat);
 
     const query = params.toString();
+
     startTransition(() => {
       router.push(`/applications${query ? `?${query}` : ''}`);
     });
@@ -124,47 +126,47 @@ export function ApplicationsPage() {
     <div className="container mx-auto px-4 py-4 md:py-8">
       <div className="mb-4 flex items-center justify-between md:mb-8">
         <h1 className="text-2xl font-bold md:text-3xl">Все заявки</h1>
-        <Button onPress={onOpen} className="md:hidden" variant="flat" size="sm">
+        <Button className="md:hidden" size="sm" variant="flat" onPress={onOpen}>
           Фильтры
         </Button>
       </div>
 
       <div className="mb-6 hidden flex-wrap gap-4 md:flex">
         <ApplicationFilters
+          games={games}
           selectedGame={selectedGame}
           selectedPlatform={selectedPlatform}
           withVoiceChat={withVoiceChat}
-          games={games}
+          onClearFilters={handleClearFilter}
           onGameChange={handleGameChange}
           onPlatformChange={handlePlatformChange}
           onVoiceChatChange={handleVoiceChatChange}
-          onClearFilters={handleClearFilter}
         />
       </div>
 
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="bottom"
-        scrollBehavior="inside"
         classNames={{
           base: 'md:hidden',
           body: 'gap-4',
         }}
+        isOpen={isOpen}
+        placement="bottom"
+        scrollBehavior="inside"
+        onClose={onClose}
       >
         <ModalContent>
           <ModalHeader>Фильтры</ModalHeader>
           <ModalBody className="pb-6">
             <ApplicationFilters
+              games={games}
+              isMobile={true}
               selectedGame={selectedGame}
               selectedPlatform={selectedPlatform}
               withVoiceChat={withVoiceChat}
-              games={games}
+              onClearFilters={handleClearFilter}
               onGameChange={handleGameChange}
               onPlatformChange={handlePlatformChange}
               onVoiceChatChange={handleVoiceChatChange}
-              onClearFilters={handleClearFilter}
-              isMobile={true}
             />
           </ModalBody>
         </ModalContent>

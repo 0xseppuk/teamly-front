@@ -1,7 +1,5 @@
 'use client';
 
-import { Game } from '@/shared/services/games/games.types';
-import { platformOptions, voiceChatOptions } from '@/shared/utils';
 import { Button } from '@heroui/button';
 import {
   Modal,
@@ -13,6 +11,9 @@ import {
 import { Select, SelectItem } from '@heroui/select';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useTransition } from 'react';
+
+import { Game } from '@/shared/services/games/games.types';
+import { platformOptions, voiceChatOptions } from '@/shared/utils';
 
 type FilterConfig = {
   label: string;
@@ -125,12 +126,12 @@ export function ApplicationFiltersClient({
       {filterConfigs.map((config, index) => (
         <Select
           key={index}
+          className={isMobile ? 'w-full' : 'max-w-xs'}
+          isDisabled={isPending}
           label={config.label}
           placeholder={config.placeholder}
           selectedKeys={config.selectedKeys}
           onChange={(e) => config.onChange(e.target.value)}
-          className={isMobile ? 'w-full' : 'max-w-xs'}
-          isDisabled={isPending}
         >
           {config.options.map((option) => {
             const key = config.isGame
@@ -139,6 +140,7 @@ export function ApplicationFiltersClient({
             const label = config.isGame
               ? (option as Game).name
               : (option as { label: string }).label;
+
             return <SelectItem key={key}>{label}</SelectItem>;
           })}
         </Select>
@@ -146,10 +148,10 @@ export function ApplicationFiltersClient({
 
       {hasActiveFilters && (
         <Button
-          variant="flat"
-          onPress={handleClearFilters}
           className={isMobile ? 'w-full' : 'h-[56px]'}
           isDisabled={isPending}
+          variant="flat"
+          onPress={handleClearFilters}
         >
           Сбросить фильтры
         </Button>
@@ -166,21 +168,21 @@ export function ApplicationFiltersClient({
 
       {/* Mobile filter button */}
       <div className="mb-4 flex items-center justify-between md:hidden">
-        <Button onPress={onOpen} variant="flat" size="sm">
+        <Button size="sm" variant="flat" onPress={onOpen}>
           Фильтры
         </Button>
       </div>
 
       {/* Mobile filter modal */}
       <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        placement="bottom"
-        scrollBehavior="inside"
         classNames={{
           base: 'md:hidden',
           body: 'gap-4',
         }}
+        isOpen={isOpen}
+        placement="bottom"
+        scrollBehavior="inside"
+        onClose={onClose}
       >
         <ModalContent>
           <ModalHeader>Фильтры</ModalHeader>

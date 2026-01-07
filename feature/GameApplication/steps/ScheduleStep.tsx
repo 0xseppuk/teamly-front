@@ -3,6 +3,7 @@
 import { Input } from '@heroui/input';
 import { Spacer } from '@heroui/spacer';
 import { Control, Controller } from 'react-hook-form';
+
 import { ApplicationFormData } from '../schema';
 
 interface ScheduleStepProps {
@@ -29,33 +30,33 @@ export function ScheduleStep({ control }: ScheduleStepProps) {
 
       <div className="grid grid-cols-2 gap-4">
         <Controller
-          name="prime_time_start"
           control={control}
+          name="prime_time_start"
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              type="time"
-              label="Начало"
-              variant="bordered"
-              isInvalid={!!fieldState.error}
-              errorMessage={fieldState.error?.message}
               description="С какого времени"
+              errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label="Начало"
+              type="time"
+              variant="bordered"
             />
           )}
         />
 
         <Controller
-          name="prime_time_end"
           control={control}
+          name="prime_time_end"
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              type="time"
-              label="Конец"
-              variant="bordered"
-              isInvalid={!!fieldState.error}
-              errorMessage={fieldState.error?.message}
               description="До какого времени"
+              errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label="Конец"
+              type="time"
+              variant="bordered"
             />
           )}
         />
@@ -63,8 +64,9 @@ export function ScheduleStep({ control }: ScheduleStepProps) {
 
       <div className="rounded-lg border border-default-200 p-4">
         <p className="text-xs text-default-500">
-          💡 <span className="font-medium">Совет:</span> Укажите реалистичное время, когда
-          вы действительно сможете играть. Это поможет найти подходящих игроков.
+          💡 <span className="font-medium">Совет:</span> Укажите реалистичное
+          время, когда вы действительно сможете играть. Это поможет найти
+          подходящих игроков.
         </p>
       </div>
     </div>

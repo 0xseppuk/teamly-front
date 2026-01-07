@@ -1,11 +1,11 @@
 import 'server-only';
 
-import { buildQueryString, serverFetch } from '@/shared/lib/server-fetch';
-
 import type {
   ApplicationsResponse,
   GameApplication,
 } from '../applications.types';
+
+import { buildQueryString, serverFetch } from '@/shared/lib/server-fetch';
 
 export interface GetApplicationsParams {
   game_id?: string;

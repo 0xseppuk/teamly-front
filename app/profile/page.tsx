@@ -1,9 +1,10 @@
 'use client';
 
-import { Profile as ProfileWidget } from '@/feature/Profile/Profile';
-import { useGetMe } from '@/shared/services/profiles/profiles.hooks';
 import { Card, CardBody } from '@heroui/card';
 import { Spinner } from '@heroui/spinner';
+
+import { Profile as ProfileWidget } from '@/feature/Profile/Profile';
+import { useGetMe } from '@/shared/services/profiles/profiles.hooks';
 
 export default function Profile() {
   const { data, isLoading, error } = useGetMe();
@@ -11,7 +12,7 @@ export default function Profile() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Spinner size="lg" color="primary" />
+        <Spinner color="primary" size="lg" />
       </div>
     );
   }
@@ -49,7 +50,7 @@ export default function Profile() {
 
   return (
     <div>
-      <ProfileWidget user={data.user} isOwnProfile={true} />
+      <ProfileWidget isOwnProfile={true} user={data.user} />
     </div>
   );
 }

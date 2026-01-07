@@ -1,5 +1,3 @@
-import { Country } from '@/shared/types';
-import { formatToISODate, parseISODate } from '@/shared/utils/date';
 import { Button } from '@heroui/button';
 import { DateInput } from '@heroui/date-input';
 import { Form } from '@heroui/form';
@@ -8,10 +6,14 @@ import { Select, SelectItem } from '@heroui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import clsx from 'clsx';
 import { Controller, useForm } from 'react-hook-form';
+
 import {
   ProfileFormData,
   profileValidationSchema,
 } from './profile.validation.schema';
+
+import { Country } from '@/shared/types';
+import { formatToISODate, parseISODate } from '@/shared/utils/date';
 
 type ProfileFormProps = {
   defaultValues?: ProfileFormData;
@@ -41,30 +43,30 @@ export function ProfileForm({
       <div className="flex gap-4 w-full">
         <Input
           {...register('discord')}
+          className="w-full"
+          isDisabled={isEditing}
           label="Discord"
           readOnly={isEditing}
           variant="bordered"
-          isDisabled={isEditing}
-          className="w-full"
         />
         <Input
           {...register('telegram')}
+          className="w-full"
+          isDisabled={isEditing}
           label="Telegram"
           readOnly={isEditing}
           variant="bordered"
-          isDisabled={isEditing}
-          className="w-full"
         />
       </div>
       <div className="flex gap-4 w-full">
         <Controller
-          name="gender"
           control={control}
+          name="gender"
           render={({ field }) => (
             <Select
-              label="Пол"
               className="w-full"
               isDisabled={isEditing}
+              label="Пол"
               selectedKeys={field.value ? [field.value] : []}
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
             >
@@ -76,13 +78,13 @@ export function ProfileForm({
       </div>
       <div className="flex gap-4 w-full">
         <Controller
-          name="birth_date"
           control={control}
+          name="birth_date"
           render={({ field }) => (
             <DateInput
+              className="w-full"
               isDisabled={isEditing}
               label="Дата рождения"
-              className="w-full"
               value={parseISODate(field.value)}
               onChange={(date) => field.onChange(formatToISODate(date))}
             />
@@ -91,17 +93,17 @@ export function ProfileForm({
       </div>
       <div className="flex gap-4 w-full">
         <Controller
-          name="country_code"
           control={control}
+          name="country_code"
           render={({ field }) => (
             <Select
-              isDisabled={isEditing}
-              label="Страна"
               className="w-full"
+              isDisabled={isEditing}
+              isLoading={!countries}
+              label="Страна"
               placeholder="Выберите страну"
               selectedKeys={field.value ? [field.value] : []}
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
-              isLoading={!countries}
             >
               {countries?.map((country) => (
                 <SelectItem
@@ -117,15 +119,15 @@ export function ProfileForm({
       </div>
       <div className="flex gap-4 w-full">
         <Controller
-          name="languages"
           control={control}
+          name="languages"
           render={({ field }) => (
             <Select
+              className="w-full"
               isDisabled={isEditing}
               label="Языки"
-              className="w-full"
-              selectionMode="multiple"
               selectedKeys={field.value || []}
+              selectionMode="multiple"
               onSelectionChange={(keys) => field.onChange(Array.from(keys))}
             >
               <SelectItem key="russian">Русский</SelectItem>
@@ -136,10 +138,10 @@ export function ProfileForm({
         />
       </div>
       <Button
-        onPress={() => handleSubmit(onSubmit)()}
         className={clsx('w-full', isEditing && 'hidden')}
         color="secondary"
         size="lg"
+        onPress={() => handleSubmit(onSubmit)()}
       >
         Сохранить
       </Button>

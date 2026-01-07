@@ -1,3 +1,6 @@
+import { Metadata } from 'next';
+import { Suspense } from 'react';
+
 import {
   ApplicationCard,
   ApplicationFiltersClient,
@@ -5,8 +8,6 @@ import {
 } from '@/feature/Applications/ui';
 import { getAllApplicationsServer } from '@/shared/services/applications/server/applications.server';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
-import { Metadata } from 'next';
-import { Suspense } from 'react';
 
 interface SearchParams {
   game_id?: string;

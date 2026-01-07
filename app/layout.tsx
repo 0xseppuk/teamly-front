@@ -2,11 +2,11 @@ import '@/shared/styles/globals.css';
 import clsx from 'clsx';
 import { Metadata, Viewport } from 'next';
 
-import { siteConfig } from '@/config/site';
 import { Providers } from '../shared/providers/providers';
 
 import { Navbar } from '@/components/navbar';
 import { fontIBM } from '@/config/fonts';
+import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
   title: {

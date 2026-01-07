@@ -1,9 +1,10 @@
 'use client';
 
-import { LightBulbIcon } from '@/components/icons';
 import { Button } from '@heroui/button';
 import { Card, CardBody } from '@heroui/card';
 import { useEffect } from 'react';
+
+import { LightBulbIcon } from '@/components/icons';
 
 export default function Error({
   error,
@@ -12,9 +13,7 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
-  useEffect(() => {
-    console.error('Home page error:', error);
-  }, [error]);
+  useEffect(() => {}, [error]);
 
   return (
     <div className="container mx-auto px-4 py-8">

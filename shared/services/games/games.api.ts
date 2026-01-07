@@ -1,4 +1,5 @@
 import { axiosInstanse } from '../axios';
+
 import { Game } from './games.types';
 
 export async function getGames() {
@@ -6,10 +7,12 @@ export async function getGames() {
     games: Game[];
     count: number;
   }>('/games');
+
   return response.data;
 }
 
 export async function getGameById(id: number) {
   const response = await axiosInstanse.get<Game>(`/games/${id}`);
+
   return response.data;
 }

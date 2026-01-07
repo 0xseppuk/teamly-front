@@ -1,4 +1,4 @@
-import { CalendarDate, DateValue, parseDate } from '@internationalized/date';
+import { DateValue, parseDate } from '@internationalized/date';
 
 /**
  * Утилиты для работы с датами
@@ -23,7 +23,9 @@ export function parseISODate(isoString?: string): DateValue | undefined {
  * @param date - DateValue объект из NextUI
  * @returns Строка в формате YYYY-MM-DD
  */
-export function formatToISODate(date: DateValue | null | undefined): string | undefined {
+export function formatToISODate(
+  date: DateValue | null | undefined,
+): string | undefined {
   if (!date) return undefined;
 
   // DateValue имеет year, month, day
@@ -39,13 +41,16 @@ export function formatToISODate(date: DateValue | null | undefined): string | un
  * @param birthDate - Дата рождения в формате ISO, DateValue или Date объект
  * @returns Возраст в годах
  */
-export function calculateAge(birthDate: string | DateValue | Date | undefined): number | undefined {
+export function calculateAge(
+  birthDate: string | DateValue | Date | undefined,
+): number | undefined {
   if (!birthDate) return undefined;
 
   let birthYear: number, birthMonth: number, birthDay: number;
 
   if (typeof birthDate === 'string') {
     const date = new Date(birthDate);
+
     birthYear = date.getFullYear();
     birthMonth = date.getMonth() + 1; // Month is 0-indexed in Date
     birthDay = date.getDate();
@@ -68,7 +73,10 @@ export function calculateAge(birthDate: string | DateValue | Date | undefined): 
 
   let age = currentYear - birthYear;
 
-  if (currentMonth < birthMonth || (currentMonth === birthMonth && currentDay < birthDay)) {
+  if (
+    currentMonth < birthMonth ||
+    (currentMonth === birthMonth && currentDay < birthDay)
+  ) {
     age--;
   }
 
@@ -83,7 +91,7 @@ export function calculateAge(birthDate: string | DateValue | Date | undefined): 
  */
 export function formatDateForDisplay(
   date: string | DateValue | Date | undefined,
-  locale: string = 'ru-RU'
+  locale: string = 'ru-RU',
 ): string | undefined {
   if (!date) return undefined;
 
@@ -123,6 +131,9 @@ export function formatTime(date: string | Date): string {
  * @param end - Конечная дата/время
  * @returns Строка формата "HH:MM - HH:MM"
  */
-export function formatTimeRange(start: string | Date, end: string | Date): string {
+export function formatTimeRange(
+  start: string | Date,
+  end: string | Date,
+): string {
   return `${formatTime(start)} - ${formatTime(end)}`;
 }

@@ -1,4 +1,5 @@
 import { axiosInstanse } from '../axios';
+
 import {
   MeResponse,
   UpdateProfileRequest,
@@ -9,6 +10,7 @@ export async function getMe() {
   const response = await axiosInstanse.get<MeResponse>('/auth/me', {
     withCredentials: true,
   });
+
   return response.data;
 }
 
@@ -20,5 +22,6 @@ export async function updateProfile(data: UpdateProfileRequest, id: string) {
       withCredentials: true,
     },
   );
+
   return response.data;
 }

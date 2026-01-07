@@ -1,6 +1,7 @@
+import { Metadata } from 'next';
+
 import { GameCard } from '@/feature/Games';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
-import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Teamly - Найдите команду для игры',

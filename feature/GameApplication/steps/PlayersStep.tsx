@@ -5,6 +5,7 @@ import { Select, SelectItem } from '@heroui/select';
 import { Spacer } from '@heroui/spacer';
 import { Switch } from '@heroui/switch';
 import { Control, Controller } from 'react-hook-form';
+
 import { ApplicationFormData } from '../schema';
 
 interface PlayersStepProps {
@@ -32,60 +33,61 @@ export function PlayersStep({ control }: PlayersStepProps) {
 
       <div className="grid grid-cols-2 gap-4">
         <Controller
-          name="min_players"
           control={control}
+          name="min_players"
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              type="number"
-              label="Минимум игроков"
-              placeholder="1"
-              variant="bordered"
-              min={1}
-              max={100}
-              value={field.value?.toString() || ''}
-              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
-              isInvalid={!!fieldState.error}
               errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label="Минимум игроков"
+              max={100}
+              min={1}
+              placeholder="1"
+              type="number"
+              value={field.value?.toString() || ''}
+              variant="bordered"
+              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
             />
           )}
         />
 
         <Controller
-          name="max_players"
           control={control}
+          name="max_players"
           render={({ field, fieldState }) => (
             <Input
               {...field}
-              type="number"
-              label="Максимум игроков"
-              placeholder="5"
-              variant="bordered"
-              min={1}
-              max={100}
-              value={field.value?.toString() || ''}
-              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
-              isInvalid={!!fieldState.error}
               errorMessage={fieldState.error?.message}
+              isInvalid={!!fieldState.error}
+              label="Максимум игроков"
+              max={100}
+              min={1}
+              placeholder="5"
+              type="number"
+              value={field.value?.toString() || ''}
+              variant="bordered"
+              onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
             />
           )}
         />
       </div>
 
       <Controller
-        name="platform"
         control={control}
+        name="platform"
         render={({ field, fieldState }) => (
           <Select
             {...field}
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error}
             label="Платформа"
             placeholder="Выберите платформу"
-            variant="bordered"
-            isInvalid={!!fieldState.error}
-            errorMessage={fieldState.error?.message}
             selectedKeys={field.value ? [field.value] : []}
+            variant="bordered"
             onSelectionChange={(keys) => {
               const value = Array.from(keys)[0];
+
               field.onChange(value);
             }}
           >
@@ -97,8 +99,8 @@ export function PlayersStep({ control }: PlayersStepProps) {
       />
 
       <Controller
-        name="with_voice_chat"
         control={control}
+        name="with_voice_chat"
         render={({ field }) => (
           <Switch isSelected={field.value} onValueChange={field.onChange}>
             <div className="flex flex-col gap-1">

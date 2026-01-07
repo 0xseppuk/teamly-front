@@ -15,13 +15,13 @@ export function EmptyState({ onCreateClick }: EmptyStateProps) {
           <svg
             className="h-12 w-12 text-default-400"
             fill="none"
+            stroke="currentColor"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth="2"
             viewBox="0 0 24 24"
-            stroke="currentColor"
           >
-            <path d="M12 4v16m8-8H4"></path>
+            <path d="M12 4v16m8-8H4" />
           </svg>
         </div>
         <div className="max-w-md space-y-2">

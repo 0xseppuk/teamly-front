@@ -1,5 +1,6 @@
-import { LightBulbIcon } from '@/components/icons';
 import { Card, CardBody } from '@heroui/card';
+
+import { LightBulbIcon } from '@/components/icons';
 
 interface EmptyStateProps {
   hasFilters?: boolean;

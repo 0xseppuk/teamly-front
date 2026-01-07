@@ -1,9 +1,9 @@
 'use client';
 
-import { Input } from '@heroui/input';
+import { Input, Textarea } from '@heroui/input';
 import { Spacer } from '@heroui/spacer';
-import { Textarea } from '@heroui/input';
 import { Control, Controller } from 'react-hook-form';
+
 import { ApplicationFormData } from '../schema';
 
 interface DetailsStepProps {
@@ -20,35 +20,35 @@ export function DetailsStep({ control }: DetailsStepProps) {
       <Spacer y={2} />
 
       <Controller
-        name="title"
         control={control}
+        name="title"
         render={({ field, fieldState }) => (
           <Input
             {...field}
+            description="Краткое описание того, что вы ищете"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error}
             label="Название заявки"
             placeholder="Например: Прохождение кампании в кооперативе"
             variant="bordered"
-            isInvalid={!!fieldState.error}
-            errorMessage={fieldState.error?.message}
-            description="Краткое описание того, что вы ищете"
           />
         )}
       />
 
       <Controller
-        name="description"
         control={control}
+        name="description"
         render={({ field, fieldState }) => (
           <Textarea
             {...field}
+            description="Минимум 10 символов, максимум 500"
+            errorMessage={fieldState.error?.message}
+            isInvalid={!!fieldState.error}
             label="Описание"
+            maxRows={8}
+            minRows={4}
             placeholder="Опишите подробнее, чего вы ожидаете от игроков, какой у вас опыт, что планируете делать..."
             variant="bordered"
-            minRows={4}
-            maxRows={8}
-            isInvalid={!!fieldState.error}
-            errorMessage={fieldState.error?.message}
-            description="Минимум 10 символов, максимум 500"
           />
         )}
       />

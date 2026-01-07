@@ -1,8 +1,9 @@
-import { EditIcon } from '@/components/icons';
 import { Avatar } from '@heroui/avatar';
 import { Button } from '@heroui/button';
 import { CardHeader } from '@heroui/card';
 import { Chip } from '@heroui/chip';
+
+import { EditIcon } from '@/components/icons';
 
 //likes dislikes avatar nickname
 
@@ -22,19 +23,20 @@ export function ProfileHeader({
   onClick,
 }: ProfileHeaderProps) {
   const avatarFallback = nickname?.charAt(0).toUpperCase() || '?';
+
   return (
     <CardHeader>
       <CardHeader className="flex gap-5 justify-between">
         <div className="flex items-center gap-4">
           <Avatar
             isBordered
-            radius="full"
-            size="lg"
-            src={avatar}
-            name={avatarFallback}
             classNames={{
               name: 'text-white font-semibold text-lg',
             }}
+            name={avatarFallback}
+            radius="full"
+            size="lg"
+            src={avatar}
           />
           <h1 className="text-xl">{nickname}</h1>
           <div className="flex gap-2">
@@ -49,9 +51,9 @@ export function ProfileHeader({
 
         <Button
           isIconOnly
-          size="sm"
-          radius="full"
           className="hover:scale-110 transition-transform"
+          radius="full"
+          size="sm"
           onClick={onClick}
         >
           <EditIcon size={18} />

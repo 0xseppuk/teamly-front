@@ -1,6 +1,5 @@
 'use client';
 
-import { ApiError, routes, useRegister } from '@/shared/';
 import { Button } from '@heroui/button';
 import { Card, CardFooter, CardHeader } from '@heroui/card';
 import { Form } from '@heroui/form';
@@ -8,7 +7,10 @@ import { Input } from '@heroui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
+
 import { RegisterFormData, registerSchema } from './validation.schema';
+
+import { ApiError, routes, useRegister } from '@/shared/';
 
 interface RegisterFormProps {
   onSwitchToLogin?: () => void;
@@ -49,49 +51,49 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps = {}) {
           <p className="text-sm text-default-500 mt-2">Создайте аккаунт</p>
         </div>
       </CardHeader>
-      <Form onSubmit={handleSubmit(onSubmit)} className="gap-4">
+      <Form className="gap-4" onSubmit={handleSubmit(onSubmit)}>
         <Input
           {...register('email')}
+          isRequired
           errorMessage={errors.email?.message}
           isInvalid={!!errors.email}
           label="Email"
           placeholder="your@email.com"
           type="email"
           variant="bordered"
-          isRequired
         />
 
         <Input
           {...register('nickname')}
+          isRequired
           errorMessage={errors.nickname?.message}
           isInvalid={!!errors.nickname}
           label="Никнейм"
           placeholder="Введите никнейм"
           type="text"
           variant="bordered"
-          isRequired
         />
 
         <Input
           {...register('password')}
+          isRequired
           errorMessage={errors.password?.message}
           isInvalid={!!errors.password}
           label="Пароль"
           placeholder="Введите пароль"
           type="password"
           variant="bordered"
-          isRequired
         />
 
         <Input
           {...register('passwordRepeat')}
+          isRequired
           errorMessage={errors.passwordRepeat?.message}
           isInvalid={!!errors.passwordRepeat}
           label="Повторите пароль"
           placeholder="Повторите пароль"
           type="password"
           variant="bordered"
-          isRequired
         />
 
         <Input
@@ -124,8 +126,8 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps = {}) {
           {onSwitchToLogin ? (
             <button
               className="text-primary hover:underline"
-              onClick={onSwitchToLogin}
               type="button"
+              onClick={onSwitchToLogin}
             >
               Войти
             </button>

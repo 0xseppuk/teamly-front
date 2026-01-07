@@ -1,10 +1,5 @@
 'use client';
 
-import {
-  useGetUserApplications,
-  useDeleteApplication,
-} from '@/shared/services/applications';
-import { GameApplication } from '@/shared/services/applications/applications.types';
 import { Button } from '@heroui/button';
 import {
   Modal,
@@ -16,9 +11,16 @@ import {
 import { addToast } from '@heroui/toast';
 import { useDisclosure } from '@heroui/use-disclosure';
 import { useState } from 'react';
+
 import { ApplicationsList } from './ApplicationsList';
 import { CreateApplicationModal } from './CreateApplicationModal';
 import { EmptyState } from './EmptyState';
+
+import {
+  useDeleteApplication,
+  useGetUserApplications,
+} from '@/shared/services/applications';
+import { GameApplication } from '@/shared/services/applications/applications.types';
 
 export function AddApplication() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -68,7 +70,7 @@ export function AddApplication() {
     } catch (error) {
       addToast({
         title: 'Ошибка',
-        description: 'Не удалось удалить заявку',
+        description: `Не удалось удалить заявку ${error}`,
         color: 'danger',
       });
     }
@@ -91,20 +93,20 @@ export function AddApplication() {
       {hasApplications ? (
         <ApplicationsList
           onCreateClick={handleCreateClick}
-          onEditClick={handleEditClick}
           onDeleteClick={handleDeleteClick}
+          onEditClick={handleEditClick}
         />
       ) : (
         <EmptyState onCreateClick={handleCreateClick} />
       )}
       <CreateApplicationModal
+        editApplication={editingApplication}
         isOpen={isOpen}
         onOpenChange={handleModalClose}
-        editApplication={editingApplication}
       />
 
       {/* Delete Confirmation Modal */}
-      <Modal isOpen={isDeleteOpen} onOpenChange={onDeleteOpenChange} size="sm">
+      <Modal isOpen={isDeleteOpen} size="sm" onOpenChange={onDeleteOpenChange}>
         <ModalContent>
           <ModalHeader>Удалить заявку?</ModalHeader>
           <ModalBody>
@@ -119,8 +121,8 @@ export function AddApplication() {
             </Button>
             <Button
               color="danger"
-              onPress={handleConfirmDelete}
               isLoading={deleteMutation.isPending}
+              onPress={handleConfirmDelete}
             >
               Удалить
             </Button>

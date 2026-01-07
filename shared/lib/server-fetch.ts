@@ -2,7 +2,8 @@ import 'server-only';
 
 import { cookies } from 'next/headers';
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:3001/api';
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:3001/api';
 
 /**
  * Server-side fetch utility with automatic cookie forwarding
@@ -76,7 +77,9 @@ export class ServerFetchError extends Error {
 /**
  * Type-safe query params builder
  */
-export function buildQueryString(params: Record<string, string | number | boolean | undefined>): string {
+export function buildQueryString(
+  params: Record<string, string | number | boolean | undefined>,
+): string {
   const searchParams = new URLSearchParams();
 
   Object.entries(params).forEach(([key, value]) => {
@@ -86,5 +89,6 @@ export function buildQueryString(params: Record<string, string | number | boolea
   });
 
   const queryString = searchParams.toString();
+
   return queryString ? `?${queryString}` : '';
 }

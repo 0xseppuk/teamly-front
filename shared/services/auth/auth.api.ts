@@ -1,4 +1,5 @@
 import { axiosInstanse } from '../axios';
+
 import {
   LoginRequest,
   LoginResponse,
@@ -14,6 +15,7 @@ export async function login(data: LoginRequest) {
       withCredentials: true,
     },
   );
+
   return response.data;
 }
 
@@ -25,6 +27,7 @@ export async function register(data: RegisterRequest) {
       withCredentials: true,
     },
   );
+
   return response.data;
 }
 
@@ -36,5 +39,6 @@ export async function logout() {
       withCredentials: true,
     },
   );
+
   return response.data;
 }
