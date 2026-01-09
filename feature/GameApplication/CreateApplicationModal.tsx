@@ -34,12 +34,14 @@ interface CreateApplicationModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   editApplication?: GameApplication;
+  onSuccess?: () => void;
 }
 
 export function CreateApplicationModal({
   isOpen,
   onOpenChange,
   editApplication,
+  onSuccess,
 }: CreateApplicationModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const createMutation = useCreateApplication();
@@ -62,7 +64,6 @@ export function CreateApplicationModal({
     },
   });
 
-  // Заполняем форму при редактировании или сбрасываем при создании
   useEffect(() => {
     if (isOpen) {
       if (editApplication) {
@@ -137,6 +138,7 @@ export function CreateApplicationModal({
       onOpenChange(false);
       form.reset();
       setCurrentStep(0);
+      onSuccess?.();
     } catch (error) {
       console.error(
         `Failed to ${isEditMode ? 'update' : 'create'} application:`,
@@ -171,7 +173,7 @@ export function CreateApplicationModal({
           </h2>
           <Progress
             className="mt-2"
-            color="primary"
+            color="secondary"
             size="sm"
             value={progress}
           />
@@ -186,11 +188,11 @@ export function CreateApplicationModal({
                   {/* Step Column */}
                   <div className="flex flex-col items-center gap-3">
                     <div
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full border-2 font-semibold shadow-sm transition-all ${
+                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-semibold shadow-sm transition-all ${
                         index < currentStep
                           ? 'border-success bg-success text-white shadow-success/20'
                           : index === currentStep
-                            ? 'border-primary bg-primary text-white shadow-primary/30'
+                            ? 'bg-secondary text-white shadow-primary/30'
                             : 'border-default-300 bg-default-50 text-default-400'
                       }`}
                     >

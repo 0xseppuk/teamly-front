@@ -5,6 +5,7 @@ import { addToast } from '@heroui/toast';
 import { useState } from 'react';
 
 import { AddApplication } from '../GameApplication/AddApplication';
+import { MyResponsesList } from '../MyResponses';
 
 import { ProfileForm } from './Form/Form';
 import { ProfileFormData } from './Form/profile.validation.schema';
@@ -67,8 +68,8 @@ export function Profile({
   };
 
   return (
-    <>
-      <Card className="w-full h-[600px] p-6">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
+      <Card className="w-full h-fit lg:h-[600px] p-6 max-md:p-3">
         <ProfileHeader
           avatar={user.avatar_url}
           dislikes={user.dislikes_count}
@@ -96,13 +97,21 @@ export function Profile({
         </CardBody>
       </Card>
       {isOwnProfile && (
-        <Card
-          className="w-full overflow-y-auto p-10"
-          style={{ maxHeight: '600px' }}
-        >
-          <AddApplication />
-        </Card>
+        <>
+          <Card
+            className="w-full overflow-y-auto p-10 max-md:p-3"
+            style={{ maxHeight: '600px' }}
+          >
+            <AddApplication />
+          </Card>
+          <Card
+            className="w-full overflow-y-auto p-10 max-md:p-3 lg:col-span-2"
+            style={{ maxHeight: '600px' }}
+          >
+            <MyResponsesList />
+          </Card>
+        </>
       )}
-    </>
+    </div>
   );
 }

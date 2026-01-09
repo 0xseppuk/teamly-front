@@ -1,3 +1,5 @@
+'use client';
+
 import { Link } from '@heroui/link';
 import {
   Navbar as HeroUINavbar,
@@ -16,7 +18,7 @@ import { siteConfig } from '@/config/site';
 
 import { ProfileDropdown } from '../ProfileDropdown/ProfileDropdown';
 
-export const Navbar = async () => {
+export const Navbar = () => {
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
       <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
@@ -50,11 +52,8 @@ export const Navbar = async () => {
         </ul>
       </NavbarContent>
 
-      <NavbarContent
-        className="hidden sm:flex basis-1/5 sm:basis-full"
-        justify="end"
-      >
-        <NavbarItem className="hidden sm:flex gap-2">
+      <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">
+        <NavbarItem className="flex gap-2">
           <ThemeSwitch />
           <ProfileDropdown />
         </NavbarItem>

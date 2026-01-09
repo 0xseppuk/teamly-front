@@ -11,6 +11,7 @@ import {
   getPlatformLabel,
   useGetUserApplications,
 } from '@/shared';
+import { Badge } from '@heroui/badge';
 import { Button } from '@heroui/button';
 import { Card, CardBody, CardFooter, CardHeader } from '@heroui/card';
 import { Chip } from '@heroui/chip';
@@ -59,7 +60,7 @@ export function ApplicationsList({
         <h3 className="text-lg font-semibold">
           Мои заявки ({applications.length})
         </h3>
-        <Button color="primary" size="sm" onPress={onCreateClick}>
+        <Button color="secondary" size="sm" onPress={onCreateClick}>
           + Создать заявку
         </Button>
       </div>
@@ -120,16 +121,26 @@ export function ApplicationsList({
                 </div>
               </CardBody>
               <CardFooter className="gap-2 flex-wrap">
-                <Button
-                  color="secondary"
-                  size="sm"
-                  startContent="💬"
-                  variant="flat"
-                  onPress={() => handleViewResponses(app)}
+                <Badge
+                  color="danger"
+                  content={app.pending_responses_count}
+                  isInvisible={
+                    !app.pending_responses_count ||
+                    app.pending_responses_count === 0
+                  }
+                  shape="circle"
+                  showOutline={false}
                 >
-                  Отклики
-                  {/* TODO: Add response count badge when backend adds count to response */}
-                </Button>
+                  <Button
+                    color="secondary"
+                    size="sm"
+                    startContent="💬"
+                    variant="flat"
+                    onPress={() => handleViewResponses(app)}
+                  >
+                    Отклики
+                  </Button>
+                </Badge>
                 <Button
                   size="sm"
                   variant="flat"

@@ -1,0 +1,159 @@
+'use client';
+
+import { Card, CardBody, CardHeader } from '@heroui/card';
+import { Chip } from '@heroui/chip';
+import { Skeleton } from '@heroui/skeleton';
+import { Spacer } from '@heroui/spacer';
+import { useDisclosure } from '@heroui/use-disclosure';
+import Image from 'next/image';
+import { useState } from 'react';
+
+import { MyResponseModal } from './MyResponseModal';
+
+import {
+  ApplicationResponse,
+  formatRelativeTime,
+  formatTimeRange,
+  getPlatformLabel,
+  getResponseBadgeColor,
+  getResponseBadgeText,
+  useGetMyResponses,
+} from '@/shared';
+
+export function MyResponsesList() {
+  const { data: responses, isLoading } = useGetMyResponses();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedResponse, setSelectedResponse] = useState<
+    ApplicationResponse | undefined
+  >(undefined);
+
+  const handleViewResponse = (response: ApplicationResponse) => {
+    setSelectedResponse(response);
+    onOpen();
+  };
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        <Skeleton className="h-8 w-full rounded-lg" />
+        {[1, 2, 3].map((i) => (
+          <Skeleton key={i} className="h-32 w-full rounded-lg" />
+        ))}
+      </div>
+    );
+  }
+
+  if (!responses || responses.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <p className="text-lg font-semibold text-default-600">Нет откликов</p>
+        <p className="mt-2 text-sm text-default-400">
+          Вы еще не откликались ни на одну заявку
+        </p>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <h3 className="text-lg font-semibold">
+          Мои отклики ({responses.length})
+        </h3>
+      </div>
+
+      <div className="grid gap-4">
+        {responses.map((response) => {
+          if (!response.application) return null;
+
+          const app = response.application;
+          const timeRange = formatTimeRange(
+            app.prime_time_start,
+            app.prime_time_end,
+          );
+
+          const firstMessage = response.conversation?.messages?.[0];
+
+          const isAccepted = response.status === 'accepted';
+
+          return (
+            <Card
+              key={response.id}
+              isPressable
+              className="hover:shadow-lg transition-shadow"
+              onPress={() => handleViewResponse(response)}
+            >
+              <CardHeader className="flex gap-3">
+                <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
+                  <Image
+                    fill
+                    alt={app.game.name}
+                    className="object-cover"
+                    src={app.game.icon_url || '/placeholder-game.png'}
+                  />
+                </div>
+                <div className="flex flex-1 flex-col">
+                  <p className="text-sm text-default-500">{app.game.name}</p>
+                  <h4 className="font-semibold">{app.title}</h4>
+                  {isAccepted && (
+                    <p className="text-xs text-success mt-1">
+                      Вы приняты в команду
+                    </p>
+                  )}
+                </div>
+                <Chip
+                  color={getResponseBadgeColor(response.status)}
+                  size="sm"
+                  variant="flat"
+                >
+                  {getResponseBadgeText(response.status)}
+                </Chip>
+              </CardHeader>
+              <CardBody>
+                {firstMessage && (
+                  <>
+                    <p className="text-sm text-default-600 line-clamp-2">
+                      {firstMessage.content}
+                    </p>
+                    <Spacer y={2} />
+                  </>
+                )}
+                <p className="text-xs text-default-500">
+                  Отправлено {formatRelativeTime(response.created_at)}
+                  {response.status !== 'pending' &&
+                    ` • ${response.status === 'accepted' ? 'Принят' : 'Отклонён'} ${formatRelativeTime(response.updated_at)}`}
+                </p>
+                <Spacer y={3} />
+                <div className="flex flex-wrap gap-2">
+                  <Chip size="sm" startContent="👥" variant="flat">
+                    {app.accepted_players}/{app.max_players} игроков
+                  </Chip>
+                  <Chip size="sm" startContent="🎮" variant="flat">
+                    {getPlatformLabel(app.platform)}
+                  </Chip>
+                  <Chip size="sm" startContent="🕐" variant="flat">
+                    {timeRange}
+                  </Chip>
+                  {app.with_voice_chat && (
+                    <Chip size="sm" startContent="🎤" variant="flat">
+                      Голосовой чат
+                    </Chip>
+                  )}
+                </div>
+              </CardBody>
+            </Card>
+          );
+        })}
+      </div>
+
+      {/* Modal for viewing response details */}
+      {selectedResponse && (
+        <MyResponseModal
+          isOpen={isOpen}
+          response={selectedResponse}
+          onOpenChange={onOpenChange}
+        />
+      )}
+    </div>
+  );
+}

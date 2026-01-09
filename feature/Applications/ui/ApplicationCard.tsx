@@ -7,7 +7,9 @@ import { Spacer } from '@heroui/spacer';
 import Image from 'next/image';
 
 import { CreateResponseModal } from '@/feature/CreateResponse';
+import { OwnApplicationModal } from '@/feature/GameApplication/OwnApplicationModal';
 import { GameApplication } from '@/shared/services/applications/applications.types';
+import { useGetMe } from '@/shared/services/profiles/profiles.hooks';
 import {
   formatTimeRange,
   getPlatformLabel,
@@ -21,9 +23,16 @@ interface ApplicationCardProps {
 
 export function ApplicationCard({ application }: ApplicationCardProps) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const {
+    isOpen: isOwnOpen,
+    onOpen: onOwnOpen,
+    onOpenChange: onOwnOpenChange,
+  } = useDisclosure();
+  const { data: meData } = useGetMe();
 
   const hasResponded = application.user_has_responded || false;
   const responseStatus = application.user_response_status;
+  const isOwnApplication = meData?.user?.id?.toString() === application.user_id;
 
   const timeRange = formatTimeRange(
     application.prime_time_start,
@@ -36,7 +45,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
         isPressable
         className="transition-shadow hover:shadow-lg"
         isDisabled={hasResponded}
-        onPress={onOpen}
+        onPress={isOwnApplication ? onOwnOpen : onOpen}
       >
         <CardHeader className="flex gap-2 p-3 md:gap-3 md:p-4">
           <div className="relative h-10 w-10 flex-shrink-0 overflow-hidden rounded-lg md:h-12 md:w-12">
@@ -56,7 +65,30 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
             </h4>
           </div>
           <div className="flex flex-col gap-1">
-            {application.is_active && !hasResponded && (
+            {isOwnApplication && (
+              <>
+                <Chip
+                  className="hidden sm:flex"
+                  color="primary"
+                  size="sm"
+                  variant="flat"
+                >
+                  Ваша заявка
+                </Chip>
+                {application.pending_responses_count !== undefined &&
+                  application.pending_responses_count > 0 && (
+                    <Chip
+                      className="hidden sm:flex"
+                      color="danger"
+                      size="sm"
+                      variant="solid"
+                    >
+                      {application.pending_responses_count} новых
+                    </Chip>
+                  )}
+              </>
+            )}
+            {!isOwnApplication && application.is_active && !hasResponded && (
               <Chip
                 className="hidden sm:flex"
                 color="success"
@@ -121,7 +153,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
           </div>
         </CardBody>
         <CardFooter className="p-3 md:p-4">
-          <div className="flex w-full items-center gap-2">
+          <div className="flex w-full items-center justify-between gap-2">
             <div className="flex items-center gap-1.5 md:gap-2">
               <div className="flex h-7 w-7 items-center justify-center rounded-full bg-default-100 md:h-8 md:w-8">
                 <span className="text-xs font-medium md:text-sm">
@@ -132,16 +164,29 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
                 {application.user?.nickname || 'Пользователь'}
               </span>
             </div>
+            {isOwnApplication && (
+              <span className="text-xs text-default-400 italic">
+                Вы не можете откликнуться на свою заявку
+              </span>
+            )}
           </div>
         </CardFooter>
       </Card>
 
-      {/* Модалка отклика */}
-      <CreateResponseModal
-        application={application}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-      />
+      {/* Показываем разные модалки в зависимости от того, своя ли это заявка */}
+      {isOwnApplication ? (
+        <OwnApplicationModal
+          application={application}
+          isOpen={isOwnOpen}
+          onOpenChange={onOwnOpenChange}
+        />
+      ) : (
+        <CreateResponseModal
+          application={application}
+          isOpen={isOpen}
+          onOpenChange={onOpenChange}
+        />
+      )}
     </>
   );
 }

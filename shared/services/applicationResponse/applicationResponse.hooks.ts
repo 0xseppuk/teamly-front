@@ -65,11 +65,21 @@ export const useUpdateResponseStatus = () => {
       data: UpdateResponseStatusDTO;
     }) => updateResponseStatus(responseId, data),
     onSuccess: () => {
+      // Инвалидируем все связанные кэши
       queryClient.invalidateQueries({
         queryKey: ['application-responses'],
       });
       queryClient.invalidateQueries({
         queryKey: ['my-responses'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['applications', 'my'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['applications'],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['application'],
       });
     },
   });

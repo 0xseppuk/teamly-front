@@ -49,7 +49,7 @@ export default function Profile() {
   }
 
   return (
-    <div className="flex gap-10 flex-col sm:flex-row">
+    <div className="flex gap-6 flex-col">
       <ProfileWidget isOwnProfile={true} user={data.user} />
     </div>
   );

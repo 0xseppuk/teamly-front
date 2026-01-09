@@ -38,7 +38,7 @@ export function AddApplication() {
     string | null
   >(null);
 
-  const hasApplications = (data?.applications.length || 0) > 0;
+  const hasApplications = (data?.applications?.length || 0) > 0;
 
   const handleCreateClick = () => {
     setEditingApplication(undefined);

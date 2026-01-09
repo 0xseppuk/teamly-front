@@ -41,7 +41,7 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
         name="game_id"
         render={({ field, fieldState }) => (
           <div className="space-y-3">
-            <div className="grid gap-3">
+            <div className="grid gap-3 grid-cols-3">
               {games?.games.map((game) => (
                 <Card
                   key={game.id}

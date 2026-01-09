@@ -32,6 +32,8 @@ export interface GameApplication {
   user_has_responded?: boolean;
   user_response_status?: ResponseStatus;
   user_response_message?: string;
+  // Количество новых (pending) откликов на заявку (только для владельца)
+  pending_responses_count?: number;
 }
 
 export interface CreateApplicationDTO {
