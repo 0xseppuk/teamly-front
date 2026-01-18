@@ -7,7 +7,7 @@ export type Country = {
 };
 
 export type User = {
-  id: number;
+  id: string;
   email: string;
   nickname: string;
   avatar_url?: string;

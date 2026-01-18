@@ -18,6 +18,7 @@ export interface RegisterRequest {
   avatarUrl?: string;
   discord?: string;
   telegram?: string;
+  recaptchaToken?: string;
 }
 
 export interface RegisterResponse {

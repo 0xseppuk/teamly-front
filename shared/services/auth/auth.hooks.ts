@@ -3,7 +3,17 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { ApiError } from '../axios';
 
 import { login, logout, register } from './auth.api';
-import { LoginResponse, RegisterResponse } from './auth.types';
+import {
+  LoginRequest,
+  LoginResponse,
+  RegisterRequest,
+  RegisterResponse,
+} from './auth.types';
+
+type LoginMutationVars = {
+  data: LoginRequest;
+  recaptchaToken: string;
+};
 
 export const useLogin = ({
   onSuccess,
@@ -15,7 +25,8 @@ export const useLogin = ({
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: login,
+    mutationFn: ({ data, recaptchaToken }: LoginMutationVars) =>
+      login(data, recaptchaToken),
     onSuccess: (data) => {
       // Set user data directly in cache (server already returned it)
       queryClient.setQueryData(['me'], { user: data.user });
@@ -24,6 +35,11 @@ export const useLogin = ({
     },
     onError,
   });
+};
+
+type RegisterMutationVars = {
+  data: RegisterRequest;
+  recaptchaToken: string;
 };
 
 export const useRegister = ({
@@ -36,13 +52,14 @@ export const useRegister = ({
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: register,
-    onSuccess: (data, variables, context) => {
-      // Set user data directly in cache (server already returned it)
+    mutationFn: ({ data, recaptchaToken }: RegisterMutationVars) =>
+      register(data, recaptchaToken),
+
+    onSuccess: (data) => {
       queryClient.setQueryData(['me'], { user: data.user });
-      // Call the user's onSuccess callback
       onSuccess(data);
     },
+
     onError,
   });
 };

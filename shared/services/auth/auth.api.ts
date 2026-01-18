@@ -7,24 +7,30 @@ import {
   RegisterResponse,
 } from './auth.types';
 
-export async function login(data: LoginRequest) {
+export async function login(data: LoginRequest, recaptchaToken: string) {
   const response = await axiosInstanse.post<LoginResponse>(
     '/auth/login',
     data,
     {
       withCredentials: true,
+      headers: {
+        'X-Recaptcha-Token': recaptchaToken,
+      },
     },
   );
 
   return response.data;
 }
 
-export async function register(data: RegisterRequest) {
+export async function register(data: RegisterRequest, recaptchaToken: string) {
   const response = await axiosInstanse.post<RegisterResponse>(
     '/auth/register',
     data,
     {
       withCredentials: true,
+      headers: {
+        'X-Recaptcha-Token': recaptchaToken,
+      },
     },
   );
 

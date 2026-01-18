@@ -252,12 +252,12 @@ export function CreateApplicationModal({
             </Button>
           )}
           {currentStep < STEPS.length - 1 ? (
-            <Button color="primary" onPress={handleNext}>
+            <Button color="secondary" onPress={handleNext}>
               Далее
             </Button>
           ) : (
             <Button
-              color="primary"
+              color="secondary"
               isLoading={
                 isEditMode ? updateMutation.isPending : createMutation.isPending
               }

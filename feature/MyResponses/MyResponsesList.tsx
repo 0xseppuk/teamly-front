@@ -64,7 +64,8 @@ export function MyResponsesList() {
 
       <div className="grid gap-4">
         {responses.map((response) => {
-          if (!response.application) return null;
+          if (!response.application || !response.application.is_active)
+            return null;
 
           const app = response.application;
           const timeRange = formatTimeRange(

@@ -5,7 +5,7 @@ import { Card, CardFooter, CardHeader } from '@heroui/card';
 import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import { RegisterFormData, registerSchema } from './validation.schema';
@@ -17,7 +17,6 @@ interface RegisterFormProps {
 }
 
 export function RegisterForm({ onSwitchToLogin }: RegisterFormProps = {}) {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -41,8 +40,22 @@ export function RegisterForm({ onSwitchToLogin }: RegisterFormProps = {}) {
     },
   });
 
-  const onSubmit = (data: RegisterFormData) => {
-    registerUser(data);
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
+  const onSubmit = async (data: RegisterFormData) => {
+    if (!executeRecaptcha) {
+      setError('email', { message: 'Recaptcha not ready', type: 'manual' });
+
+      return;
+    }
+    try {
+      const recaptchaToken = await executeRecaptcha('register');
+
+      console.log();
+      registerUser({ data, recaptchaToken });
+    } catch (error) {
+      setError('email', { message: 'Recaptcha failed', type: 'manual' });
+    }
   };
 
   return (

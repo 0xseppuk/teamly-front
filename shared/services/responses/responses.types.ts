@@ -1,6 +1,6 @@
+import type { Conversation, Message } from '@/shared';
 import type { GameApplication } from '@/shared/services/applications/applications.types';
 import type { User } from '@/shared/types';
-
 // Статус отклика
 export type ResponseStatus = 'pending' | 'accepted' | 'rejected';
 
@@ -15,31 +15,6 @@ export interface ApplicationResponse {
   created_at: string;
   updated_at: string;
   conversation?: Conversation;
-}
-
-// Модели для чата (для будущего)
-export interface Conversation {
-  id: string;
-  response_id: string;
-  participant1_id: string;
-  participant2_id: string;
-  last_message_at: string | null;
-  is_archived: boolean;
-  created_at: string;
-  updated_at: string;
-  messages?: Message[];
-}
-
-export interface Message {
-  id: string;
-  conversation_id: string;
-  sender_id: string;
-  sender?: User;
-  content: string;
-  is_read: boolean;
-  read_at: string | null;
-  created_at: string;
-  updated_at: string;
 }
 
 // DTO для создания отклика

@@ -6,6 +6,7 @@ import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import { LoginFormData, loginSchema } from './validation.schema';
@@ -22,6 +23,7 @@ interface LoginFormProps {
 
 export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
   const router = useRouter();
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const {
     register,
     handleSubmit,
@@ -61,8 +63,19 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    login(data);
+  const onSubmit = async (data: LoginFormData) => {
+    if (!executeRecaptcha) {
+      setError('email', { message: 'Recaptcha не готова', type: 'manual' });
+
+      return;
+    }
+    try {
+      const recaptchaToken = await executeRecaptcha('login');
+
+      login({ data, recaptchaToken });
+    } catch {
+      setError('email', { message: 'Ошибка Recaptcha', type: 'manual' });
+    }
   };
 
   return (

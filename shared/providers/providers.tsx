@@ -8,6 +8,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ThemeProvider as NextThemesProvider } from 'next-themes';
 import { useRouter } from 'next/navigation';
 import * as React from 'react';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -37,14 +38,18 @@ export function Providers({ children, themeProps }: ProvidersProps) {
       }),
   );
 
+  const recapchaKey = process.env.NEXT_PUBLIC_RECAPTCHA_TOKEN;
+
   return (
     <QueryClientProvider client={queryClient}>
-      <HeroUIProvider navigate={router.push}>
-        <NextThemesProvider {...themeProps}>
-          {children}
-          <ToastProvider />
-        </NextThemesProvider>
-      </HeroUIProvider>
+      <GoogleReCaptchaProvider reCaptchaKey={recapchaKey ?? ''}>
+        <HeroUIProvider navigate={router.push}>
+          <NextThemesProvider {...themeProps}>
+            {children}
+            <ToastProvider />
+          </NextThemesProvider>
+        </HeroUIProvider>
+      </GoogleReCaptchaProvider>
     </QueryClientProvider>
   );
 }
