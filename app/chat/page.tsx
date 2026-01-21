@@ -172,15 +172,8 @@ export default function ChatPage() {
 
   /* ==================== RENDER ==================== */
   return (
-    <div className="relative h-[calc(100vh-100px)]">
-      {/* Background decorations */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-purple-500/10 rounded-full blur-3xl" />
-      </div>
-
-      {/* Main content */}
-      <div className="relative flex h-full gap-4">
+    <div className="h-[calc(100vh-100px)]">
+      <div className="flex h-full gap-4">
         <ChatSidebar
           conversations={conversations}
           isCollapsed={isSidebarCollapsed}

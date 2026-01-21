@@ -1,4 +1,3 @@
-import { Card } from '@heroui/card';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -38,14 +37,14 @@ export default async function UserProfilePage({
     const { user, applications } = await getUserByIdServer(id);
 
     return (
-      <div className="flex gap-10 flex-col sm:flex-row">
+      <div className="flex gap-6 flex-col lg:flex-row">
         <ProfileWidget isOwnProfile={false} user={user} />
-        <Card
-          className="w-full overflow-y-auto p-10"
-          style={{ maxHeight: '600px' }}
-        >
-          <UserApplicationsList applications={applications} />
-        </Card>
+        <div className="relative flex-1 rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden max-h-[600px]">
+          <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+          <div className="p-6 overflow-y-auto h-full">
+            <UserApplicationsList applications={applications} />
+          </div>
+        </div>
       </div>
     );
   } catch (error) {

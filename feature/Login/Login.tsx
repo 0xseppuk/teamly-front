@@ -1,33 +1,25 @@
 'use client';
 
 import { Button } from '@heroui/button';
-import { Card, CardFooter, CardHeader } from '@heroui/card';
-import { Form } from '@heroui/form';
 import { Input } from '@heroui/input';
+import { addToast } from '@heroui/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
 import { LoginFormData, loginSchema } from './validation.schema';
 
-import {
-  ErrorResponseTypes,
-  getLoginErrorResponseType,
-  useLogin,
-} from '@/shared';
+import { useLogin } from '@/shared';
 
-interface LoginFormProps {
-  onSwitchToRegister?: () => void;
-}
-
-export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
+export function LoginForm() {
   const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
+
   const {
     register,
     handleSubmit,
-    setError,
     formState: { errors },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -36,109 +28,132 @@ export function LoginForm({ onSwitchToRegister }: LoginFormProps = {}) {
   const { mutate: login, isPending } = useLogin({
     onSuccess: (data) => {
       localStorage.setItem('auth_token', data.token);
+      addToast({
+        title: 'Добро пожаловать!',
+        description: 'Вы успешно вошли в аккаунт',
+        color: 'success',
+      });
       router.push('/');
     },
     onError: (error: any) => {
-      // Extract error message from Axios error response
       const errorMessage =
         error?.response?.data?.error || error?.message || 'Ошибка входа';
 
-      const loginErrorResponseType = getLoginErrorResponseType(
-        errorMessage as ErrorResponseTypes,
-      );
-
-      // If field type is determined, set field error; otherwise set general error
-      if (loginErrorResponseType) {
-        setError(loginErrorResponseType as 'email' | 'password', {
-          message: errorMessage,
-          type: 'manual',
-        });
-      } else {
-        // Set error on password field as fallback
-        setError('password', {
-          message: errorMessage,
-          type: 'manual',
-        });
-      }
+      addToast({
+        title: 'Ошибка входа',
+        description: getErrorMessage(errorMessage),
+        color: 'danger',
+      });
     },
   });
 
   const onSubmit = async (data: LoginFormData) => {
     if (!executeRecaptcha) {
-      setError('email', { message: 'Recaptcha не готова', type: 'manual' });
-
+      addToast({
+        title: 'Ошибка',
+        description: 'reCAPTCHA не готова. Попробуйте обновить страницу.',
+        color: 'danger',
+      });
       return;
     }
+
     try {
       const recaptchaToken = await executeRecaptcha('login');
-
       login({ data, recaptchaToken });
     } catch {
-      setError('email', { message: 'Ошибка Recaptcha', type: 'manual' });
+      addToast({
+        title: 'Ошибка',
+        description: 'Не удалось пройти проверку reCAPTCHA',
+        color: 'danger',
+      });
     }
   };
 
   return (
-    <Card className="p-6 bg-content1 shadow-medium">
-      <CardHeader className="">
-        <div className="">
-          <h1 className="text-3xl font-bold">Teamly</h1>
-          <p className="text-sm text-default-500 mt-2">Войдите в аккаунт</p>
-        </div>
-      </CardHeader>
-      <Form
-        className="gap-4"
-        validationBehavior="native"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        <Input
-          {...register('email')}
-          errorMessage={errors.email?.message}
-          isInvalid={!!errors.email}
-          label="Email"
-          placeholder="your@email.com"
-          type="text"
-          variant="bordered"
-        />
+    <div className="w-full max-w-md">
+      {/* Glass card */}
+      <div className="relative rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
+        {/* Gradient accent */}
+        <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
 
-        <Input
-          {...register('password')}
-          errorMessage={errors.password?.message}
-          isInvalid={!!errors.password}
-          label="Пароль"
-          placeholder="Введите пароль"
-          type="password"
-          variant="bordered"
-        />
-
-        <Button
-          className="w-full"
-          color="secondary"
-          isLoading={isPending}
-          size="lg"
-          type="submit"
-        >
-          Войти
-        </Button>
-      </Form>
-      <CardFooter>
-        <div className="text-center text-sm w-full">
-          <span className="">Нет аккаунта? </span>
-          {onSwitchToRegister ? (
-            <button
-              className="text-primary hover:underline"
-              type="button"
-              onClick={onSwitchToRegister}
-            >
-              Зарегистрироваться
-            </button>
-          ) : (
-            <a className="text-primary hover:underline" href="/register">
-              Зарегистрироваться
-            </a>
-          )}
+        {/* Header */}
+        <div className="mb-8 text-center">
+          <h1 className="text-3xl font-bold tracking-tight">Teamly</h1>
+          <p className="mt-2 text-default-500">Войдите в аккаунт</p>
         </div>
-      </CardFooter>
-    </Card>
+
+        {/* Form */}
+        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+          <Input
+            {...register('email')}
+            classNames={{
+              inputWrapper:
+                'bg-white/5 border-white/10 hover:bg-white/10 group-data-[focus=true]:bg-white/10',
+            }}
+            errorMessage={errors.email?.message}
+            isInvalid={!!errors.email}
+            label="Email"
+            placeholder="your@email.com"
+            size="lg"
+            type="email"
+            variant="bordered"
+          />
+
+          <Input
+            {...register('password')}
+            classNames={{
+              inputWrapper:
+                'bg-white/5 border-white/10 hover:bg-white/10 group-data-[focus=true]:bg-white/10',
+            }}
+            errorMessage={errors.password?.message}
+            isInvalid={!!errors.password}
+            label="Пароль"
+            placeholder="Введите пароль"
+            size="lg"
+            type="password"
+            variant="bordered"
+          />
+
+          <Button
+            className="w-full font-semibold"
+            color="secondary"
+            isLoading={isPending}
+            size="lg"
+            type="submit"
+          >
+            Войти
+          </Button>
+        </form>
+
+        {/* Footer */}
+        <div className="mt-6 text-center text-sm">
+          <span className="text-default-500">Нет аккаунта? </span>
+          <Link
+            className="font-medium text-secondary hover:text-secondary-400 transition-colors"
+            href="/register"
+          >
+            Зарегистрироваться
+          </Link>
+        </div>
+
+        {/* reCAPTCHA notice */}
+        <p className="mt-4 text-center text-xs text-default-400">
+          Защищено reCAPTCHA
+        </p>
+      </div>
+    </div>
   );
+}
+
+function getErrorMessage(error: string): string {
+  const errorMap: Record<string, string> = {
+    'Email not found': 'Пользователь с таким email не найден',
+    'Incorrect password': 'Неверный пароль',
+    'recaptcha failed': 'Проверка reCAPTCHA не пройдена',
+    'recaptcha token missing': 'Ошибка reCAPTCHA. Обновите страницу.',
+    'Слишком много попыток. Подождите минуту.':
+      'Слишком много попыток входа. Подождите минуту и попробуйте снова.',
+  };
+
+  return errorMap[error] || error;
 }

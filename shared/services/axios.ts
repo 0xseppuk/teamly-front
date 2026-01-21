@@ -36,11 +36,12 @@ axiosInstanse.interceptors.response.use(
 
     // If 401, clear token and redirect to login
     // BUT: skip if it's a login/register request (those should show validation errors)
-    // AND: skip if already on login page
+    // AND: skip if already on auth pages
     if (
       error.response?.status === 401 &&
       typeof window !== 'undefined' &&
       !window.location.pathname.startsWith('/login') &&
+      !window.location.pathname.startsWith('/register') &&
       !isAuthRequest
     ) {
       localStorage.removeItem(TOKEN_KEY);
