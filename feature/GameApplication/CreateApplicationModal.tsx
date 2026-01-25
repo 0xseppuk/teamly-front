@@ -141,18 +141,13 @@ export function CreateApplicationModal({
       setCurrentStep(0);
       onSuccess?.();
     } catch (error: any) {
-      const errorMessage =
-        error?.response?.data?.error || 'Произошла ошибка';
+      const errorMessage = error?.response?.data?.error || 'Произошла ошибка';
 
       // Обработка rate limit ошибки
-      if (
-        error?.response?.status === 429 ||
-        errorMessage.includes('лимит')
-      ) {
+      if (error?.response?.status === 429 || errorMessage.includes('лимит')) {
         addToast({
           title: 'Лимит достигнут',
-          description:
-            'Вы создали слишком много заявок. Попробуйте через час.',
+          description: 'Вы создали слишком много заявок. Попробуйте через час.',
           color: 'warning',
         });
       } else {

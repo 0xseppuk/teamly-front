@@ -1,10 +1,14 @@
 import { axiosInstanse } from '../axios';
 
 import {
+  ForgotPasswordRequest,
+  ForgotPasswordResponse,
   LoginRequest,
   LoginResponse,
   RegisterRequest,
   RegisterResponse,
+  ResetPasswordRequest,
+  ResetPasswordResponse,
 } from './auth.types';
 
 export async function login(data: LoginRequest, recaptchaToken: string) {
@@ -44,6 +48,32 @@ export async function logout() {
     {
       withCredentials: true,
     },
+  );
+
+  return response.data;
+}
+
+export async function forgotPassword(
+  data: ForgotPasswordRequest,
+  recaptchaToken: string,
+) {
+  const response = await axiosInstanse.post<ForgotPasswordResponse>(
+    '/auth/forgot-password',
+    data,
+    {
+      headers: {
+        'X-Recaptcha-Token': recaptchaToken,
+      },
+    },
+  );
+
+  return response.data;
+}
+
+export async function resetPassword(data: ResetPasswordRequest) {
+  const response = await axiosInstanse.post<ResetPasswordResponse>(
+    '/auth/reset-password',
+    data,
   );
 
   return response.data;

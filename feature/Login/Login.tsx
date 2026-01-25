@@ -26,8 +26,8 @@ export function LoginForm() {
   });
 
   const { mutate: login, isPending } = useLogin({
-    onSuccess: (data) => {
-      localStorage.setItem('auth_token', data.token);
+    onSuccess: () => {
+      // Cookie устанавливается сервером автоматически (HTTP-only)
       addToast({
         title: 'Добро пожаловать!',
         description: 'Вы успешно вошли в аккаунт',
@@ -54,11 +54,13 @@ export function LoginForm() {
         description: 'reCAPTCHA не готова. Попробуйте обновить страницу.',
         color: 'danger',
       });
+
       return;
     }
 
     try {
       const recaptchaToken = await executeRecaptcha('login');
+
       login({ data, recaptchaToken });
     } catch {
       addToast({
@@ -99,20 +101,30 @@ export function LoginForm() {
             variant="bordered"
           />
 
-          <Input
-            {...register('password')}
-            classNames={{
-              inputWrapper:
-                'bg-white/5 border-white/10 hover:bg-white/10 group-data-[focus=true]:bg-white/10',
-            }}
-            errorMessage={errors.password?.message}
-            isInvalid={!!errors.password}
-            label="Пароль"
-            placeholder="Введите пароль"
-            size="lg"
-            type="password"
-            variant="bordered"
-          />
+          <div>
+            <Input
+              {...register('password')}
+              classNames={{
+                inputWrapper:
+                  'bg-white/5 border-white/10 hover:bg-white/10 group-data-[focus=true]:bg-white/10',
+              }}
+              errorMessage={errors.password?.message}
+              isInvalid={!!errors.password}
+              label="Пароль"
+              placeholder="Введите пароль"
+              size="lg"
+              type="password"
+              variant="bordered"
+            />
+            <div className="mt-2 text-right">
+              <Link
+                className="text-sm text-default-400 hover:text-secondary transition-colors"
+                href="/forgot-password"
+              >
+                Забыли пароль?
+              </Link>
+            </div>
+          </div>
 
           <Button
             className="w-full font-semibold"

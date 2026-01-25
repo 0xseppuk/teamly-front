@@ -11,7 +11,7 @@ import {
 import { useRouter } from 'next/navigation';
 import { useMemo } from 'react';
 
-import { routes, useGetMe } from '@/shared';
+import { routes, useGetMe, useLogout } from '@/shared';
 import { useGetUserApplications } from '@/shared/services/applications';
 import { useGetUnreadCount } from '@/shared/services/conversations';
 
@@ -20,6 +20,16 @@ export const ProfileDropdown = () => {
   const { data: me, isLoading } = useGetMe();
   const { data } = useGetUserApplications(!!me?.user);
   const { data: unreadData } = useGetUnreadCount(!!me?.user);
+
+  const { mutate: logoutMutation } = useLogout({
+    onSuccess: () => {
+      window.location.href = routes.login;
+    },
+    onError: () => {
+      // Даже при ошибке перенаправляем на логин
+      window.location.href = routes.login;
+    },
+  });
 
   const totalPendingResponses = useMemo(() => {
     if (!data?.applications) return 0;
@@ -42,10 +52,8 @@ export const ProfileDropdown = () => {
   }
 
   const handleLogout = () => {
-    // Clear token from localStorage
-    localStorage.removeItem('auth_token');
-    // Redirect to login
-    window.location.href = routes.login;
+    // Вызываем API logout - сервер удалит HTTP-only cookie
+    logoutMutation();
   };
 
   return (

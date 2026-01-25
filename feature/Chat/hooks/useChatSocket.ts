@@ -1,3 +1,4 @@
+import { axiosInstanse } from '@/shared/services/axios';
 import { Message } from '@/shared/services/conversations';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
@@ -26,6 +27,19 @@ interface UseChatSocketReturn {
   sendMessage: (content: string) => void;
   sendTyping: (isTyping: boolean) => void;
   markAsRead: (messageId?: string) => void;
+}
+
+// Получить токен для WebSocket через API (использует HTTP-only cookie)
+async function getWebSocketToken(): Promise<string | null> {
+  try {
+    const response = await axiosInstanse.get<{ token: string }>(
+      '/auth/ws-token',
+    );
+
+    return response.data.token;
+  } catch {
+    return null;
+  }
 }
 
 export function useChatSocket({
@@ -62,57 +76,70 @@ export function useChatSocket({
 
   // Initialize socket connection
   useEffect(() => {
-    const token = localStorage.getItem('auth_token');
+    let socket: Socket | null = null;
+    let mounted = true;
 
-    if (!token) {
-      setStatus('error');
+    async function connect() {
+      setStatus('connecting');
 
-      return;
+      // Получаем токен через API (HTTP-only cookie -> токен для WebSocket)
+      const token = await getWebSocketToken();
+
+      if (!mounted) return;
+
+      if (!token) {
+        setStatus('error');
+
+        return;
+      }
+
+      socket = io(`${CHAT_SOCKET_URL}/chat`, {
+        auth: { token },
+        transports: ['websocket'],
+        reconnection: true,
+        reconnectionAttempts: 5,
+        reconnectionDelay: 1000,
+        reconnectionDelayMax: 5000,
+      });
+
+      socket.on('connect', () => {
+        if (mounted) setStatus('connected');
+      });
+
+      socket.on('disconnect', (reason) => {
+        if (mounted) setStatus('disconnected');
+        if (reason === 'io server disconnect') {
+          socket?.connect();
+        }
+      });
+
+      socket.on('connect_error', (error) => {
+        if (mounted) setStatus('error');
+        callbacksRef.current.onError?.(error);
+      });
+
+      socket.on('error', (error) => {
+        callbacksRef.current.onError?.(
+          new Error(error?.message || 'Socket error'),
+        );
+      });
+
+      // Global event - fires for any conversation update (via userId room)
+      socket.on('conversation_updated', (update: ConversationUpdate) => {
+        callbacksRef.current.onConversationUpdated?.(update);
+      });
+
+      socketRef.current = socket;
     }
 
-    setStatus('connecting');
-
-    const socket = io(`${CHAT_SOCKET_URL}/chat`, {
-      auth: { token },
-      transports: ['websocket'],
-      reconnection: true,
-      reconnectionAttempts: 5,
-      reconnectionDelay: 1000,
-      reconnectionDelayMax: 5000,
-    });
-
-    socket.on('connect', () => {
-      setStatus('connected');
-    });
-
-    socket.on('disconnect', (reason) => {
-      setStatus('disconnected');
-      if (reason === 'io server disconnect') {
-        socket.connect();
-      }
-    });
-
-    socket.on('connect_error', (error) => {
-      setStatus('error');
-      callbacksRef.current.onError?.(error);
-    });
-
-    socket.on('error', (error) => {
-      callbacksRef.current.onError?.(
-        new Error(error?.message || 'Socket error'),
-      );
-    });
-
-    // Global event - fires for any conversation update (via userId room)
-    socket.on('conversation_updated', (update: ConversationUpdate) => {
-      callbacksRef.current.onConversationUpdated?.(update);
-    });
-
-    socketRef.current = socket;
+    void connect();
 
     return () => {
-      socket.off('conversation_updated');
-      socket.close();
+      mounted = false;
+      if (socket) {
+        socket.off('conversation_updated');
+        socket.close();
+      }
       socketRef.current = null;
       setStatus('disconnected');
     };

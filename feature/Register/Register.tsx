@@ -26,8 +26,8 @@ export function RegisterForm() {
   });
 
   const { mutate: registerUser, isPending } = useRegister({
-    onSuccess: (data) => {
-      localStorage.setItem('auth_token', data.token);
+    onSuccess: () => {
+      // Cookie устанавливается сервером автоматически (HTTP-only)
       addToast({
         title: 'Добро пожаловать!',
         description: 'Аккаунт успешно создан',
@@ -54,11 +54,13 @@ export function RegisterForm() {
         description: 'reCAPTCHA не готова. Попробуйте обновить страницу.',
         color: 'danger',
       });
+
       return;
     }
 
     try {
       const recaptchaToken = await executeRecaptcha('register');
+
       registerUser({ data, recaptchaToken });
     } catch {
       addToast({
@@ -135,9 +137,7 @@ export function RegisterForm() {
 
           {/* Optional fields */}
           <div className="pt-2">
-            <p className="mb-3 text-xs text-default-400">
-              Необязательные поля
-            </p>
+            <p className="mb-3 text-xs text-default-400">Необязательные поля</p>
             <div className="space-y-4">
               <Input
                 {...register('discord')}

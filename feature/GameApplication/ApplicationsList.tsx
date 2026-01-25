@@ -73,7 +73,10 @@ export function ApplicationsList({
           );
 
           return (
-            <Card key={app.id} className="bg-white/5 border border-white/10 hover:bg-white/10 transition-all">
+            <Card
+              key={app.id}
+              className="bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+            >
               <CardHeader className="flex gap-3">
                 <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                   <Image

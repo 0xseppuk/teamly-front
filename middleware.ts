@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 // Public pages that don't require authentication
-const publicPages = ['/', '/login', '/register', '/applications'];
+const publicPages = ['/', '/login', '/register', '/applications', '/forgot-password', '/reset-password'];
 
 export function middleware(req: NextRequest) {
   const currentPath = req.nextUrl.pathname;

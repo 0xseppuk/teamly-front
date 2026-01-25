@@ -67,9 +67,13 @@ export function Profile({
   };
 
   return (
-    <div className={`grid gap-6 w-full ${isOwnProfile ? 'grid-cols-1 lg:grid-cols-2' : 'max-w-2xl mx-auto'}`}>
+    <div
+      className={`grid gap-6 w-full ${isOwnProfile ? 'grid-cols-1 lg:grid-cols-2' : 'max-w-2xl mx-auto'}`}
+    >
       {/* Profile Card */}
-      <div className={`relative rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden ${isOwnProfile ? 'h-fit' : ''}`}>
+      <div
+        className={`relative rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden ${isOwnProfile ? 'h-fit' : ''}`}
+      >
         {/* Gradient accent */}
         <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
 

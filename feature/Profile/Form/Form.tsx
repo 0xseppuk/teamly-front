@@ -39,11 +39,7 @@ export function ProfileForm({
   countries,
   isOwnProfile = false,
 }: ProfileFormProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-  } = useForm<ProfileFormData>({
+  const { register, handleSubmit, control } = useForm<ProfileFormData>({
     resolver: zodResolver(profileValidationSchema),
     defaultValues,
   });
@@ -158,7 +154,9 @@ export function ProfileForm({
         label="О себе"
         maxRows={4}
         minRows={3}
-        placeholder={isOwnProfile ? 'Расскажите о себе, своём игровом опыте...' : ''}
+        placeholder={
+          isOwnProfile ? 'Расскажите о себе, своём игровом опыте...' : ''
+        }
         variant="bordered"
       />
 

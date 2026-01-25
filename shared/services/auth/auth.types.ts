@@ -7,7 +7,6 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   user: User;
-  token: string;
   message: string;
 }
 
@@ -23,6 +22,22 @@ export interface RegisterRequest {
 
 export interface RegisterResponse {
   user: User;
+  message: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ForgotPasswordResponse {
+  message: string;
+}
+
+export interface ResetPasswordRequest {
   token: string;
+  newPassword: string;
+}
+
+export interface ResetPasswordResponse {
   message: string;
 }
