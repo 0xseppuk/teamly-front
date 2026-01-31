@@ -49,9 +49,9 @@ export default function RootLayout({
             <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-purple-600/10 blur-[100px]" />
           </div>
 
-          <div className="relative z-10 flex flex-col h-screen">
+          <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-4 flex-grow">
+            <main className="container mx-auto max-w-7xl px-4 pt-4 pb-8 flex-grow">
               {children}
             </main>
             {/* <footer className="w-full flex items-center justify-center py-3">

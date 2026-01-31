@@ -44,20 +44,20 @@ export function ApplicationResponsesModal({
               {application.title}
             </h3>
             <div className="flex flex-wrap gap-2 text-sm">
-              <Chip size="sm" startContent="🎮" variant="flat">
+              <Chip size="sm" variant="flat">
                 {application.game.name}
               </Chip>
-              <Chip size="sm" startContent="👥" variant="flat">
+              <Chip size="sm" variant="flat">
                 {application.accepted_players || 0}/{application.max_players}
               </Chip>
-              <Chip size="sm" startContent="🎮" variant="flat">
+              <Chip size="sm" variant="flat">
                 {getPlatformLabel(application.platform)}
               </Chip>
-              <Chip size="sm" startContent="🕐" variant="flat">
+              <Chip size="sm" variant="flat">
                 {timeRange}
               </Chip>
               {application.with_voice_chat && (
-                <Chip size="sm" startContent="🎤" variant="flat">
+                <Chip size="sm" variant="flat">
                   Голосовой чат
                 </Chip>
               )}

@@ -90,17 +90,17 @@ export function UserApplicationsList({
                 <p className="text-sm text-default-600">{app.description}</p>
                 <Spacer y={3} />
                 <div className="flex flex-wrap gap-2">
-                  <Chip size="sm" startContent="👥" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {app.accepted_players}/{app.max_players} игроков
                   </Chip>
-                  <Chip size="sm" startContent="🎮" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {getPlatformLabel(app.platform)}
                   </Chip>
-                  <Chip size="sm" startContent="🕐" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {timeRange}
                   </Chip>
                   {app.with_voice_chat && (
-                    <Chip size="sm" startContent="🎤" variant="flat">
+                    <Chip size="sm" variant="flat">
                       Голосовой чат
                     </Chip>
                   )}
