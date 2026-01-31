@@ -45,11 +45,26 @@ export function MyResponsesList() {
 
   if (!responses || responses.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <p className="text-lg font-semibold text-default-600">Нет откликов</p>
-        <p className="mt-2 text-sm text-default-400">
-          Вы еще не откликались ни на одну заявку
-        </p>
+      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+        <div className="rounded-full bg-white/10 p-4">
+          <svg
+            className="h-10 w-10 text-default-400"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+          </svg>
+        </div>
+        <div className="max-w-md space-y-2">
+          <h3 className="text-lg font-semibold">Нет откликов</h3>
+          <p className="text-sm text-default-500">
+            Вы ещё не откликались на заявки других игроков
+          </p>
+        </div>
       </div>
     );
   }
@@ -64,7 +79,8 @@ export function MyResponsesList() {
 
       <div className="grid gap-4">
         {responses.map((response) => {
-          if (!response.application) return null;
+          if (!response.application || !response.application.is_active)
+            return null;
 
           const app = response.application;
           const timeRange = formatTimeRange(
@@ -80,7 +96,7 @@ export function MyResponsesList() {
             <Card
               key={response.id}
               isPressable
-              className="hover:shadow-lg transition-shadow"
+              className="bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
               onPress={() => handleViewResponse(response)}
             >
               <CardHeader className="flex gap-3">

@@ -1,10 +1,9 @@
 'use client';
 
-import { Card, CardBody } from '@heroui/card';
-import { Spinner } from '@heroui/spinner';
-
 import { Profile as ProfileWidget } from '@/feature/Profile/Profile';
 import { useGetMe } from '@/shared/services/profiles/profiles.hooks';
+import { Card, CardBody } from '@heroui/card';
+import { Spinner } from '@heroui/spinner';
 
 export default function Profile() {
   const { data, isLoading, error } = useGetMe();

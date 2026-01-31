@@ -10,6 +10,7 @@ import {
 } from '@heroui/modal';
 import { Progress } from '@heroui/progress';
 import { Spacer } from '@heroui/spacer';
+import { addToast } from '@heroui/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -139,11 +140,23 @@ export function CreateApplicationModal({
       form.reset();
       setCurrentStep(0);
       onSuccess?.();
-    } catch (error) {
-      console.error(
-        `Failed to ${isEditMode ? 'update' : 'create'} application:`,
-        error,
-      );
+    } catch (error: any) {
+      const errorMessage = error?.response?.data?.error || 'Произошла ошибка';
+
+      // Обработка rate limit ошибки
+      if (error?.response?.status === 429 || errorMessage.includes('лимит')) {
+        addToast({
+          title: 'Лимит достигнут',
+          description: 'Вы создали слишком много заявок. Попробуйте через час.',
+          color: 'warning',
+        });
+      } else {
+        addToast({
+          title: isEditMode ? 'Ошибка редактирования' : 'Ошибка создания',
+          description: errorMessage,
+          color: 'danger',
+        });
+      }
     }
   });
 
@@ -252,12 +265,12 @@ export function CreateApplicationModal({
             </Button>
           )}
           {currentStep < STEPS.length - 1 ? (
-            <Button color="primary" onPress={handleNext}>
+            <Button color="secondary" onPress={handleNext}>
               Далее
             </Button>
           ) : (
             <Button
-              color="primary"
+              color="secondary"
               isLoading={
                 isEditMode ? updateMutation.isPending : createMutation.isPending
               }

@@ -36,14 +36,22 @@ export default function RootLayout({
       <head />
       <body
         className={clsx(
-          'min-h-screen text-foreground bg-background font-rubik antialiased',
+          'min-h-screen text-foreground font-rubik antialiased',
           fontRubik.variable,
         )}
       >
         <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
-          <div className="relative flex flex-col h-screen">
+          {/* Global background */}
+          <div className="fixed inset-0 overflow-hidden bg-background">
+            {/* Accent blurs */}
+            <div className="absolute -left-1/4 -top-1/4 h-[700px] w-[700px] rounded-full bg-secondary/20 blur-[150px]" />
+            <div className="absolute -bottom-1/4 -right-1/4 h-[600px] w-[600px] rounded-full bg-primary/15 blur-[120px]" />
+            <div className="absolute left-1/2 top-1/3 h-[500px] w-[500px] -translate-x-1/2 rounded-full bg-purple-600/10 blur-[100px]" />
+          </div>
+
+          <div className="relative z-10 flex flex-col min-h-screen">
             <Navbar />
-            <main className="container mx-auto max-w-7xl pt-4 px-6 flex-grow">
+            <main className="container mx-auto max-w-7xl px-4 pt-4 pb-8 flex-grow">
               {children}
             </main>
             {/* <footer className="w-full flex items-center justify-center py-3">

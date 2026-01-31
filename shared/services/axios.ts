@@ -1,30 +1,14 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 
-const TOKEN_KEY = 'auth_token';
-
 export const axiosInstanse = axios.create({
-  baseURL:
-    process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:3001/api',
+  // Используем относительный URL - запросы идут через Next.js прокси
+  // Это решает проблему с cross-origin cookies на localhost
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_BASE_URL || '/api',
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true, // Важно для отправки HTTP-only cookies
 });
-
-// Request interceptor - add Bearer token to all requests
-axiosInstanse.interceptors.request.use(
-  (config) => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem(TOKEN_KEY);
-
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
-    }
-
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
 
 // Response interceptor
 axiosInstanse.interceptors.response.use(
@@ -34,16 +18,18 @@ axiosInstanse.interceptors.response.use(
       error.config?.url?.includes('/auth/login') ||
       error.config?.url?.includes('/auth/register');
 
-    // If 401, clear token and redirect to login
+    // If 401, redirect to login
     // BUT: skip if it's a login/register request (those should show validation errors)
-    // AND: skip if already on login page
+    // AND: skip if already on auth pages
     if (
       error.response?.status === 401 &&
       typeof window !== 'undefined' &&
       !window.location.pathname.startsWith('/login') &&
+      !window.location.pathname.startsWith('/register') &&
+      !window.location.pathname.startsWith('/forgot-password') &&
+      !window.location.pathname.startsWith('/reset-password') &&
       !isAuthRequest
     ) {
-      localStorage.removeItem(TOKEN_KEY);
       window.location.href = '/login';
     }
 

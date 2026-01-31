@@ -14,6 +14,21 @@ export const useGetMe = () => {
   });
 };
 
+/**
+ * Hook для проверки состояния авторизации
+ * Использует HTTP-only cookie, поэтому проверяет через API запрос
+ */
+export const useAuth = () => {
+  const { data, isLoading, isError } = useGetMe();
+
+  return {
+    user: data?.user ?? null,
+    isAuthenticated: !!data?.user,
+    isLoading,
+    isError,
+  };
+};
+
 export const useUpdateProfile = ({
   onSuccess,
   onError,

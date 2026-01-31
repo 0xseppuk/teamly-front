@@ -41,13 +41,10 @@ export function GameCard({ game }: GameCardProps) {
               onError={() => setImageError(true)}
             />
           ) : (
-            <div className="flex h-full w-full items-center justify-center bg-gradient-to-br from-default-100 to-default-200">
-              <div className="text-center">
-                <div className="mb-2 text-4xl">🎮</div>
-                <p className="px-4 text-sm font-medium text-default-600">
-                  {game.name}
-                </p>
-              </div>
+            <div className="flex h-full w-full items-center justify-center bg-default-100">
+              <p className="px-4 text-sm font-medium text-default-500">
+                {game.name}
+              </p>
             </div>
           )}
         </div>

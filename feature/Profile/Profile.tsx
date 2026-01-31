@@ -1,6 +1,5 @@
 'use client';
 
-import { Card, CardBody } from '@heroui/card';
 import { addToast } from '@heroui/toast';
 import { useState } from 'react';
 
@@ -33,8 +32,8 @@ export function Profile({
   const { mutate: updateProfile } = useUpdateProfile({
     onSuccess: () => {
       addToast({
-        title: 'Обновление профиля',
-        description: 'Профиль обновлен успешно!',
+        title: 'Профиль обновлён',
+        description: 'Изменения сохранены',
         color: 'success',
       });
     },
@@ -57,28 +56,36 @@ export function Profile({
   }
 
   const toggleEditMode = () => {
-    if (!isOwnProfile) return; // Can't edit other user's profile
+    if (!isOwnProfile) return;
     setFormDisabled(!formDisabled);
   };
 
   const onSubmitProfile = (data: ProfileFormData) => {
-    if (!isOwnProfile) return; // Can't submit other user's profile
+    if (!isOwnProfile) return;
     setFormDisabled(true);
     updateProfile(data);
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 w-full">
-      <Card className="w-full h-fit lg:h-[600px] p-6 max-md:p-3">
+    <div
+      className={`grid gap-6 w-full ${isOwnProfile ? 'grid-cols-1 lg:grid-cols-2' : 'max-w-2xl mx-auto'}`}
+    >
+      {/* Profile Card */}
+      <div
+        className={`relative rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden ${isOwnProfile ? 'h-fit' : ''}`}
+      >
+        {/* Gradient accent */}
+        <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
+
         <ProfileHeader
           avatar={user.avatar_url}
-          dislikes={user.dislikes_count}
           isOwnProfile={isOwnProfile}
-          likes={user.likes_count}
           nickname={user.nickname}
+          userId={String(user.id)}
           onClick={toggleEditMode}
         />
-        <CardBody>
+
+        <div className="px-6 pb-6">
           <ProfileForm
             countries={countries?.countries}
             defaultValues={{
@@ -94,22 +101,26 @@ export function Profile({
             isOwnProfile={isOwnProfile}
             onSubmit={(data) => onSubmitProfile(data)}
           />
-        </CardBody>
-      </Card>
+        </div>
+      </div>
+
       {isOwnProfile && (
         <>
-          <Card
-            className="w-full overflow-y-auto p-10 max-md:p-3"
-            style={{ maxHeight: '600px' }}
-          >
-            <AddApplication />
-          </Card>
-          <Card
-            className="w-full overflow-y-auto p-10 max-md:p-3 lg:col-span-2"
-            style={{ maxHeight: '600px' }}
-          >
-            <MyResponsesList />
-          </Card>
+          {/* Applications Card */}
+          <div className="relative rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden max-h-[600px]">
+            <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+            <div className="p-6 overflow-y-auto h-full">
+              <AddApplication />
+            </div>
+          </div>
+
+          {/* Responses Card */}
+          <div className="relative rounded-2xl border border-white/10 bg-white/5 shadow-xl backdrop-blur-xl overflow-hidden lg:col-span-2 max-h-[600px]">
+            <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
+            <div className="p-6 overflow-y-auto h-full">
+              <MyResponsesList />
+            </div>
+          </div>
         </>
       )}
     </div>

@@ -1,6 +1,7 @@
 export * from './applications';
 export * from './auth';
 export * from './axios';
+export * from './conversations';
 export * from './country';
 export * from './games';
 export * from './profiles';

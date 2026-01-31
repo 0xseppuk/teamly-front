@@ -1,19 +1,19 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
 import {
   createApplication,
+  CreateApplicationDTO,
   deleteApplication,
   getAllApplications,
   getApplicationById,
   getUserApplications,
   updateApplication,
-} from './applications.api';
-import { CreateApplicationDTO } from './applications.types';
+} from '@/shared';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
-export const useGetUserApplications = () => {
+export const useGetUserApplications = (enabled?: boolean) => {
   return useQuery({
     queryKey: ['applications', 'my'],
     queryFn: getUserApplications,
+    enabled,
   });
 };
 

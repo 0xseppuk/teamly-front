@@ -13,6 +13,7 @@ export interface GamesResponse {
 export interface GetGamesParams {
   page?: number;
   limit?: number;
+  search?: string;
   revalidate?: number;
 }
 

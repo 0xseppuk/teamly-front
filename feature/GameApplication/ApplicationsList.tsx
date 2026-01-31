@@ -73,7 +73,10 @@ export function ApplicationsList({
           );
 
           return (
-            <Card key={app.id} className="hover:shadow-lg transition-shadow">
+            <Card
+              key={app.id}
+              className="bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+            >
               <CardHeader className="flex gap-3">
                 <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                   <Image
@@ -104,17 +107,17 @@ export function ApplicationsList({
                 <p className="text-sm text-default-600">{app.description}</p>
                 <Spacer y={3} />
                 <div className="flex flex-wrap gap-2">
-                  <Chip size="sm" startContent="👥" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {app.accepted_players}/{app.max_players} игроков
                   </Chip>
-                  <Chip size="sm" startContent="🎮" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {getPlatformLabel(app.platform)}
                   </Chip>
-                  <Chip size="sm" startContent="🕐" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {timeRange}
                   </Chip>
                   {app.with_voice_chat && (
-                    <Chip size="sm" startContent="🎤" variant="flat">
+                    <Chip size="sm" variant="flat">
                       Голосовой чат
                     </Chip>
                   )}

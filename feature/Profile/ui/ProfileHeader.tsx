@@ -1,68 +1,65 @@
 import { Avatar } from '@heroui/avatar';
 import { Button } from '@heroui/button';
-import { CardHeader } from '@heroui/card';
-import { Chip } from '@heroui/chip';
 
 import { EditIcon } from '@/components/icons';
-
-//likes dislikes avatar nickname
+import { getAvatarColor } from '@/shared/utils/getAvatarColor';
 
 interface ProfileHeaderProps {
-  likes: number;
-  dislikes: number;
   avatar: string | undefined;
   nickname: string;
+  userId?: string;
   onClick: () => void;
   isOwnProfile?: boolean;
 }
 
 export function ProfileHeader({
-  likes,
-  dislikes,
   avatar,
   nickname,
+  userId,
   onClick,
   isOwnProfile = false,
 }: ProfileHeaderProps) {
   const avatarFallback = nickname?.charAt(0).toUpperCase() || '?';
+  const avatarColorClass = getAvatarColor(userId || nickname);
 
   return (
-    <CardHeader>
-      <CardHeader className="flex gap-5 justify-between">
-        <div className="flex items-center gap-4">
+    <div className="flex items-center justify-between p-4">
+      <div className="flex items-center gap-4">
+        <div className="relative">
           <Avatar
             isBordered
             classNames={{
-              name: 'text-white font-semibold text-lg',
+              base: `${!avatar ? avatarColorClass : ''} ring-secondary/50`,
+              name: 'text-white font-semibold text-xl',
             }}
             name={avatarFallback}
             radius="full"
             size="lg"
             src={avatar}
           />
-          <h1 className="text-xl">{nickname}</h1>
-          <div className="flex gap-2">
-            <Chip color="success" size="sm">
-              + {likes}
-            </Chip>
-            <Chip color="danger" size="sm">
-              - {dislikes}
-            </Chip>
-          </div>
+          {/* Online indicator */}
+          <div className="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background bg-success" />
         </div>
+        <div>
+          <h1 className="text-xl font-semibold">{nickname}</h1>
+          <p className="text-sm text-default-400">
+            {isOwnProfile ? 'Это ваш профиль' : 'Профиль игрока'}
+          </p>
+        </div>
+      </div>
 
-        {isOwnProfile && (
-          <Button
-            isIconOnly
-            className="hover:scale-110 transition-transform"
-            radius="full"
-            size="sm"
-            onClick={onClick}
-          >
-            <EditIcon size={18} />
-          </Button>
-        )}
-      </CardHeader>
-    </CardHeader>
+      {isOwnProfile && (
+        <Button
+          className="bg-white/10 hover:bg-white/20 border-white/10"
+          radius="full"
+          size="sm"
+          startContent={<EditIcon size={16} />}
+          variant="bordered"
+          onClick={onClick}
+        >
+          Редактировать
+        </Button>
+      )}
+    </div>
   );
 }

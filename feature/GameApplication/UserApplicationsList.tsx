@@ -16,13 +16,26 @@ export function UserApplicationsList({
 }: UserApplicationsListProps) {
   if (!applications || applications.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-12 text-center">
-        <p className="text-lg font-semibold text-default-600">
-          Нет активных заявок
-        </p>
-        <p className="mt-2 text-sm text-default-400">
-          У пользователя пока нет активных заявок
-        </p>
+      <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+        <div className="rounded-full bg-white/10 p-4">
+          <svg
+            className="h-10 w-10 text-default-400"
+            fill="none"
+            stroke="currentColor"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="1.5"
+            viewBox="0 0 24 24"
+          >
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+        </div>
+        <div className="max-w-md space-y-2">
+          <h3 className="text-lg font-semibold">Нет активных заявок</h3>
+          <p className="text-sm text-default-500">
+            У пользователя пока нет активных заявок
+          </p>
+        </div>
       </div>
     );
   }
@@ -43,7 +56,10 @@ export function UserApplicationsList({
           );
 
           return (
-            <Card key={app.id} className="hover:shadow-lg transition-shadow">
+            <Card
+              key={app.id}
+              className="bg-white/5 border border-white/10 hover:bg-white/10 transition-all"
+            >
               <CardHeader className="flex gap-3">
                 <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-lg">
                   <Image
@@ -74,17 +90,17 @@ export function UserApplicationsList({
                 <p className="text-sm text-default-600">{app.description}</p>
                 <Spacer y={3} />
                 <div className="flex flex-wrap gap-2">
-                  <Chip size="sm" startContent="👥" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {app.accepted_players}/{app.max_players} игроков
                   </Chip>
-                  <Chip size="sm" startContent="🎮" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {getPlatformLabel(app.platform)}
                   </Chip>
-                  <Chip size="sm" startContent="🕐" variant="flat">
+                  <Chip size="sm" variant="flat">
                     {timeRange}
                   </Chip>
                   {app.with_voice_chat && (
-                    <Chip size="sm" startContent="🎤" variant="flat">
+                    <Chip size="sm" variant="flat">
                       Голосовой чат
                     </Chip>
                   )}

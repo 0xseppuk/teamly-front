@@ -32,6 +32,10 @@ export const useCreateApplicationResponse = () => {
       queryClient.invalidateQueries({
         queryKey: ['applications'],
       });
+      // Инвалидируем кэш чатов, чтобы обновить список conversations
+      queryClient.invalidateQueries({
+        queryKey: ['conversations'],
+      });
     },
   });
 };

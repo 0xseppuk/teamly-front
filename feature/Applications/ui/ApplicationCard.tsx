@@ -119,15 +119,13 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
             <Chip
               classNames={{ content: 'text-xs md:text-sm' }}
               size="sm"
-              startContent="👥"
               variant="flat"
             >
-              {application.accepted_players || 0}/{application.max_players}
+              {application.accepted_players || 0}/{application.max_players} игроков
             </Chip>
             <Chip
               classNames={{ content: 'text-xs md:text-sm' }}
               size="sm"
-              startContent="🎮"
               variant="flat"
             >
               {getPlatformLabel(application.platform)}
@@ -135,7 +133,6 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
             <Chip
               classNames={{ content: 'text-xs md:text-sm' }}
               size="sm"
-              startContent="🕐"
               variant="flat"
             >
               {timeRange}
@@ -144,7 +141,6 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
               <Chip
                 classNames={{ content: 'text-xs md:text-sm' }}
                 size="sm"
-                startContent="🎤"
                 variant="flat"
               >
                 Голосовой чат

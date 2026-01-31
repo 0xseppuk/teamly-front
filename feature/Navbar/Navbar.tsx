@@ -1,14 +1,5 @@
 'use client';
 
-import { Link } from '@heroui/link';
-import {
-  Navbar as HeroUINavbar,
-  NavbarBrand,
-  NavbarContent,
-  NavbarItem,
-  NavbarMenu,
-  NavbarMenuItem,
-} from '@heroui/navbar';
 import { link as linkStyles } from '@heroui/theme';
 import clsx from 'clsx';
 import NextLink from 'next/link';
@@ -20,66 +11,43 @@ import { ProfileDropdown } from '../ProfileDropdown/ProfileDropdown';
 
 export const Navbar = () => {
   return (
-    <HeroUINavbar maxWidth="xl" position="sticky">
-      <NavbarContent className="basis-1/5 sm:basis-full" justify="start">
-        <NavbarBrand as="li" className="gap-3 max-w-fit">
-          <NextLink className="flex justify-start items-center gap-2" href="/">
-            {/* <Image
-              unoptimized
-              alt="Teamly logo"
-              height={32}
-              src="/logo.png"
-              width={32}
-            /> */}
-            <p className="font-bold text-inherit">TEAMLY</p>
-          </NextLink>
-        </NavbarBrand>
-        <ul className="hidden lg:flex gap-4 justify-start ml-2">
-          {siteConfig.navItems.map((item) => (
-            <NavbarItem key={item.href}>
-              <NextLink
-                className={clsx(
-                  linkStyles({ color: 'foreground' }),
-                  'data-[active=true]:text-primary data-[active=true]:font-medium',
-                )}
-                color="foreground"
-                href={item.href}
-              >
-                {item.label}
-              </NextLink>
-            </NavbarItem>
-          ))}
-        </ul>
-      </NavbarContent>
+    <div className="sticky top-0 z-50 w-full pt-4 max-w-[80rem] mx-auto">
+      <nav className="rounded-2xl border border-white/10 bg-background/70 px-6 py-3 shadow-lg shadow-black/5 backdrop-blur-xl">
+        <div className="flex items-center justify-between">
+          {/* Logo & Navigation */}
+          <div className="flex items-center gap-8">
+            <NextLink
+              className="flex items-center gap-2 font-bold text-lg tracking-tight transition-opacity hover:opacity-80"
+              href="/"
+            >
+              TEAMLY
+            </NextLink>
 
-      <NavbarContent className="flex basis-1/5 sm:basis-full" justify="end">
-        <NavbarItem className="flex gap-2">
-          <ThemeSwitch />
-          <ProfileDropdown />
-        </NavbarItem>
-      </NavbarContent>
+            {/* Desktop Navigation */}
+            <ul className="hidden md:flex items-center gap-6">
+              {siteConfig.navItems.map((item) => (
+                <li key={item.href}>
+                  <NextLink
+                    className={clsx(
+                      linkStyles({ color: 'foreground' }),
+                      'text-sm font-medium text-default-500 transition-colors hover:text-foreground',
+                    )}
+                    href={item.href}
+                  >
+                    {item.label}
+                  </NextLink>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-      <NavbarMenu>
-        <div className="mx-4 mt-2 flex flex-col gap-2">
-          {siteConfig.navMenuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item}-${index}`}>
-              <Link
-                color={
-                  index === 2
-                    ? 'primary'
-                    : index === siteConfig.navMenuItems.length - 1
-                      ? 'danger'
-                      : 'foreground'
-                }
-                href="#"
-                size="lg"
-              >
-                {item.label}
-              </Link>
-            </NavbarMenuItem>
-          ))}
+          {/* Right side */}
+          <div className="flex items-center gap-3">
+            <ThemeSwitch />
+            <ProfileDropdown />
+          </div>
         </div>
-      </NavbarMenu>
-    </HeroUINavbar>
+      </nav>
+    </div>
   );
 };
