@@ -21,17 +21,13 @@ axiosInstanse.interceptors.response.use(
     // If 401, redirect to login
     // BUT: skip if it's a login/register request (those should show validation errors)
     // AND: skip if already on auth pages
-    // Auth-related pages that should not redirect on 401
-    const isAuthPage =
-      window.location.pathname.startsWith('/login') ||
-      window.location.pathname.startsWith('/register') ||
-      window.location.pathname.startsWith('/forgot-password') ||
-      window.location.pathname.startsWith('/reset-password');
-
     if (
       error.response?.status === 401 &&
       typeof window !== 'undefined' &&
-      !isAuthPage &&
+      !window.location.pathname.startsWith('/login') &&
+      !window.location.pathname.startsWith('/register') &&
+      !window.location.pathname.startsWith('/forgot-password') &&
+      !window.location.pathname.startsWith('/reset-password') &&
       !isAuthRequest
     ) {
       window.location.href = '/login';
