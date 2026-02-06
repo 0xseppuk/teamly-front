@@ -2,7 +2,7 @@ import { axiosInstanse } from '@/shared/services/axios';
 import { Message } from '@/shared/services/conversations';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { io, Socket } from 'socket.io-client';
-import { CHAT_SOCKET_URL } from '../constants';
+import { CHAT_SOCKET_PATH, CHAT_SOCKET_URL } from '../constants';
 
 type ConnectionStatus = 'connecting' | 'connected' | 'disconnected' | 'error';
 
@@ -94,6 +94,7 @@ export function useChatSocket({
       }
 
       socket = io(`${CHAT_SOCKET_URL}/chat`, {
+        path: CHAT_SOCKET_PATH,
         auth: { token },
         transports: ['websocket'],
         reconnection: true,
