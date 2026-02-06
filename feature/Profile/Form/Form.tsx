@@ -53,7 +53,7 @@ export function ProfileForm({
           isDisabled={isEditing}
           label="Discord"
           placeholder="username"
-          variant="bordered"
+          variant="flat"
         />
         <Input
           {...register('telegram')}
@@ -61,7 +61,7 @@ export function ProfileForm({
           isDisabled={isEditing}
           label="Telegram"
           placeholder="@username"
-          variant="bordered"
+          variant="flat"
         />
       </div>
 
@@ -76,7 +76,7 @@ export function ProfileForm({
               label="Пол"
               placeholder="Выберите пол"
               selectedKeys={field.value ? [field.value] : []}
-              variant="bordered"
+              variant="flat"
               onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
             >
               <SelectItem key="male">Мужской</SelectItem>
@@ -93,7 +93,7 @@ export function ProfileForm({
               isDisabled={isEditing}
               label="Дата рождения"
               value={parseISODate(field.value)}
-              variant="bordered"
+              variant="flat"
               onChange={(date) => field.onChange(formatToISODate(date))}
             />
           )}
@@ -111,7 +111,7 @@ export function ProfileForm({
             label="Страна"
             placeholder="Выберите страну"
             selectedKeys={field.value ? [field.value] : []}
-            variant="bordered"
+            variant="flat"
             onSelectionChange={(keys) => field.onChange(Array.from(keys)[0])}
           >
             {countries?.map((country) => (
@@ -137,7 +137,7 @@ export function ProfileForm({
             placeholder="Выберите языки"
             selectedKeys={field.value || []}
             selectionMode="multiple"
-            variant="bordered"
+            variant="flat"
             onSelectionChange={(keys) => field.onChange(Array.from(keys))}
           >
             <SelectItem key="russian">Русский</SelectItem>
@@ -157,7 +157,7 @@ export function ProfileForm({
         placeholder={
           isOwnProfile ? 'Расскажите о себе, своём игровом опыте...' : ''
         }
-        variant="bordered"
+        variant="flat"
       />
 
       {isOwnProfile && (

@@ -6,7 +6,7 @@ export const siteConfig = {
   navItems: [
     {
       label: 'Главная',
-      href: '/',
+      href: '/games',
     },
     {
       label: 'Заявки',

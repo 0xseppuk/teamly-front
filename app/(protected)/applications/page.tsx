@@ -79,9 +79,12 @@ export default async function ApplicationsPage({
   const total = applications.length;
 
   return (
-    <div className="container mx-auto px-4 py-4 md:py-8">
-      <div className="mb-4 flex items-center justify-between md:mb-8">
+    <div className="container mx-auto">
+      <div className="mb-6 md:mb-8">
         <h1 className="text-2xl font-bold md:text-3xl">Все заявки</h1>
+        <p className="mt-2 text-sm text-default-600 md:text-lg">
+          Найди нужную заявку или создай свою
+        </p>
       </div>
 
       {/* Client component for interactive filters */}

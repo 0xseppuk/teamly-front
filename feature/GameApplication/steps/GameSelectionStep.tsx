@@ -41,7 +41,7 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
         name="game_id"
         render={({ field, fieldState }) => (
           <div className="space-y-3">
-            <div className="grid gap-3 grid-cols-3">
+            <div className="grid gap-3 grid-cols-2">
               {games?.games.map((game) => (
                 <Card
                   key={game.id}
@@ -49,7 +49,7 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
                   isPressable
                   className={`border-2 transition-all ${
                     field.value === game.id.toString()
-                      ? 'border-primary bg-primary-50/50'
+                      ? 'border-secondary bg-secondary-50/50'
                       : 'border-transparent hover:border-default-300'
                   }`}
                   onPress={() => field.onChange(game.id)}
@@ -67,7 +67,7 @@ export function GameSelectionStep({ control }: GameSelectionStepProps) {
                       <h4 className="font-semibold">{game.name}</h4>
                     </div>
                     {field.value === game.id.toString() && (
-                      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-primary">
+                      <div className="flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-full bg-secondary">
                         <svg
                           className="h-4 w-4 text-white"
                           fill="none"

@@ -171,7 +171,7 @@ export function OwnApplicationModal({
             <Button variant="light" onPress={onOpenChange}>
               Закрыть
             </Button>
-            <Button color="primary" onPress={handleEdit}>
+            <Button color="secondary" onPress={handleEdit}>
               Редактировать
             </Button>
             <Button color="danger" variant="flat" onPress={handleDeleteClick}>

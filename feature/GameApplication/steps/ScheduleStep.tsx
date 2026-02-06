@@ -40,7 +40,7 @@ export function ScheduleStep({ control }: ScheduleStepProps) {
               isInvalid={!!fieldState.error}
               label="Начало"
               type="time"
-              variant="bordered"
+              variant="flat"
             />
           )}
         />
@@ -56,7 +56,7 @@ export function ScheduleStep({ control }: ScheduleStepProps) {
               isInvalid={!!fieldState.error}
               label="Конец"
               type="time"
-              variant="bordered"
+              variant="flat"
             />
           )}
         />

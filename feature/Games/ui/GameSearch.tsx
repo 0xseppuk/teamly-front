@@ -19,13 +19,13 @@ export function GameSearch() {
 
       if (value.trim()) {
         params.set('search', value.trim());
-        params.delete('page'); // Reset page on new search
+        params.delete('page');
       } else {
         params.delete('search');
       }
 
       startTransition(() => {
-        router.push(`/?${params.toString()}`);
+        router.push(`/games/?${params.toString()}`);
       });
     },
     [router, searchParams],

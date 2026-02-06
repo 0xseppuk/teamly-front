@@ -30,7 +30,7 @@ export function DetailsStep({ control }: DetailsStepProps) {
             isInvalid={!!fieldState.error}
             label="Название заявки"
             placeholder="Например: Прохождение кампании в кооперативе"
-            variant="bordered"
+            variant="flat"
           />
         )}
       />
@@ -48,7 +48,7 @@ export function DetailsStep({ control }: DetailsStepProps) {
             maxRows={8}
             minRows={4}
             placeholder="Опишите подробнее, чего вы ожидаете от игроков, какой у вас опыт, что планируете делать..."
-            variant="bordered"
+            variant="flat"
           />
         )}
       />

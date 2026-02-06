@@ -1,11 +1,8 @@
 import '@/shared/styles/globals.css';
-import clsx from 'clsx';
 import { Metadata, Viewport } from 'next';
 
-import { Providers } from '../shared/providers/providers';
-
-import { fontRubik } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
+import { Navbar } from '@/feature';
 
 export const metadata: Metadata = {
   title: {
@@ -25,24 +22,20 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default function ProtectedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <head />
-      <body
-        className={clsx(
-          'min-h-screen text-foreground font-rubik antialiased',
-          fontRubik.variable,
-        )}
-      >
-        <Providers themeProps={{ attribute: 'class', defaultTheme: 'dark' }}>
+    <>
+      <div className="fixed inset-0 bg-background" />
+      <div className="relative z-10 flex flex-col h-screen overflow-hidden">
+        <Navbar />
+        <main className="container mx-auto max-w-7xl px-4 pt-4 pb-4 flex-1 min-h-0 overflow-auto">
           {children}
-        </Providers>
-      </body>
-    </html>
+        </main>
+      </div>
+    </>
   );
 }

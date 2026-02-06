@@ -46,7 +46,7 @@ export function PlayersStep({ control }: PlayersStepProps) {
               placeholder="1"
               type="number"
               value={field.value?.toString() || ''}
-              variant="bordered"
+              variant="flat"
               onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
             />
           )}
@@ -66,7 +66,7 @@ export function PlayersStep({ control }: PlayersStepProps) {
               placeholder="5"
               type="number"
               value={field.value?.toString() || ''}
-              variant="bordered"
+              variant="flat"
               onChange={(e) => field.onChange(parseInt(e.target.value) || 1)}
             />
           )}
@@ -84,7 +84,7 @@ export function PlayersStep({ control }: PlayersStepProps) {
             label="Платформа"
             placeholder="Выберите платформу"
             selectedKeys={field.value ? [field.value] : []}
-            variant="bordered"
+            variant="flat"
             onSelectionChange={(keys) => {
               const value = Array.from(keys)[0];
 

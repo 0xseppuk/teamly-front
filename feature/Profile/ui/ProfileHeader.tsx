@@ -54,7 +54,7 @@ export function ProfileHeader({
           radius="full"
           size="sm"
           startContent={<EditIcon size={16} />}
-          variant="bordered"
+          variant="flat"
           onClick={onClick}
         >
           Редактировать

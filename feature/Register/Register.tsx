@@ -27,7 +27,6 @@ export function RegisterForm() {
 
   const { mutate: registerUser, isPending } = useRegister({
     onSuccess: () => {
-      // Cookie устанавливается сервером автоматически (HTTP-only)
       addToast({
         title: 'Добро пожаловать!',
         description: 'Аккаунт успешно создан',
@@ -71,100 +70,82 @@ export function RegisterForm() {
     }
   };
 
-  const inputClassNames = {
-    inputWrapper:
-      'bg-white/5 border-white/10 hover:bg-white/10 group-data-[focus=true]:bg-white/10',
-  };
-
   return (
-    <div className="w-full max-w-md">
-      {/* Glass card */}
-      <div className="relative rounded-2xl border border-white/10 bg-white/5 p-8 shadow-2xl backdrop-blur-xl">
-        {/* Gradient accent */}
-        <div className="absolute -top-px left-1/2 h-px w-1/2 -translate-x-1/2 bg-gradient-to-r from-transparent via-secondary/50 to-transparent" />
-
-        {/* Header */}
+    <div className="w-full max-w-sm">
+      <div className="rounded-2xl border border-default-200 bg-content1 p-6 shadow-sm">
         <div className="mb-6 text-center">
           <h1 className="text-3xl font-bold tracking-tight">Teamly</h1>
           <p className="mt-2 text-default-500">Создайте аккаунт</p>
         </div>
 
-        {/* Form */}
-        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-3" onSubmit={handleSubmit(onSubmit)}>
           <Input
             {...register('email')}
-            classNames={inputClassNames}
             errorMessage={errors.email?.message}
             isInvalid={!!errors.email}
             label="Email"
             placeholder="your@email.com"
             type="email"
-            variant="bordered"
+            variant="flat"
           />
 
           <Input
             {...register('nickname')}
-            classNames={inputClassNames}
             errorMessage={errors.nickname?.message}
             isInvalid={!!errors.nickname}
             label="Никнейм"
             placeholder="Введите никнейм"
             type="text"
-            variant="bordered"
+            variant="flat"
           />
 
           <Input
             {...register('password')}
-            classNames={inputClassNames}
             errorMessage={errors.password?.message}
             isInvalid={!!errors.password}
             label="Пароль"
             placeholder="Минимум 6 символов"
             type="password"
-            variant="bordered"
+            variant="flat"
           />
 
           <Input
             {...register('passwordRepeat')}
-            classNames={inputClassNames}
             errorMessage={errors.passwordRepeat?.message}
             isInvalid={!!errors.passwordRepeat}
             label="Повторите пароль"
             placeholder="Повторите пароль"
             type="password"
-            variant="bordered"
+            variant="flat"
           />
 
-          {/* Optional fields */}
-          <div className="pt-2">
-            <p className="mb-3 text-xs text-default-400">Необязательные поля</p>
-            <div className="space-y-4">
+          <div className="pt-1">
+            <p className="mb-2 text-xs text-default-400">Необязательные поля</p>
+            <div className="space-y-3">
               <Input
                 {...register('discord')}
-                classNames={inputClassNames}
                 errorMessage={errors.discord?.message}
                 isInvalid={!!errors.discord}
                 label="Discord"
                 placeholder="username"
                 type="text"
-                variant="bordered"
+                variant="flat"
               />
 
               <Input
                 {...register('telegram')}
-                classNames={inputClassNames}
                 errorMessage={errors.telegram?.message}
                 isInvalid={!!errors.telegram}
                 label="Telegram"
                 placeholder="@username"
                 type="text"
-                variant="bordered"
+                variant="flat"
               />
             </div>
           </div>
 
           <Button
-            className="w-full font-semibold mt-2"
+            className="w-full font-semibold mt-1"
             color="secondary"
             isLoading={isPending}
             size="lg"
@@ -173,23 +154,21 @@ export function RegisterForm() {
             Зарегистрироваться
           </Button>
         </form>
-
-        {/* Footer */}
-        <div className="mt-6 text-center text-sm">
-          <span className="text-default-500">Уже есть аккаунт? </span>
-          <Link
-            className="font-medium text-secondary hover:text-secondary-400 transition-colors"
-            href="/login"
-          >
-            Войти
-          </Link>
-        </div>
-
-        {/* reCAPTCHA notice */}
-        <p className="mt-4 text-center text-xs text-default-400">
-          Защищено reCAPTCHA
-        </p>
       </div>
+
+      <div className="mt-4 text-center text-sm">
+        <span className="text-default-500">Уже есть аккаунт? </span>
+        <Link
+          className="font-medium text-secondary hover:text-secondary-400 transition-colors"
+          href="/login"
+        >
+          Войти
+        </Link>
+      </div>
+
+      <p className="mt-3 text-center text-xs text-default-400">
+        Защищено reCAPTCHA
+      </p>
     </div>
   );
 }

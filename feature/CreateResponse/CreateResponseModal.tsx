@@ -134,7 +134,7 @@ export function CreateResponseModal({
                     label="Ваше сообщение"
                     minRows={6}
                     value={application.user_response_message}
-                    variant="bordered"
+                    variant="flat"
                   />
                 )}
             </>

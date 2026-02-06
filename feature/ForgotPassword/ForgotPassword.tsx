@@ -144,7 +144,7 @@ export function ForgotPasswordForm() {
             placeholder="your@email.com"
             size="lg"
             type="email"
-            variant="bordered"
+            variant="flat"
           />
 
           <Button

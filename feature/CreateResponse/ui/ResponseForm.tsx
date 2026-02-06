@@ -27,7 +27,7 @@ export function ResponseForm({ control, isDisabled }: ResponseFormProps) {
             maxRows={10}
             minRows={6}
             placeholder="Привет! Хочу присоединиться к вашей команде. Играю на позиции саппорта, ранк Gold Nova 3..."
-            variant="bordered"
+            variant="flat"
           />
         )}
       />

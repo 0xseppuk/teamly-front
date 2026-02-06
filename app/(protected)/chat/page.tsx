@@ -172,7 +172,7 @@ export default function ChatPage() {
 
   /* ==================== RENDER ==================== */
   return (
-    <div className="h-[calc(100vh-100px)]">
+    <div className="h-full overflow-hidden">
       <div className="flex h-full gap-4">
         <ChatSidebar
           conversations={conversations}

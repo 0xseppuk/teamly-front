@@ -179,7 +179,7 @@ export function ResetPasswordForm() {
             placeholder="Минимум 6 символов"
             size="lg"
             type="password"
-            variant="bordered"
+            variant="flat"
           />
 
           <Input
@@ -194,7 +194,7 @@ export function ResetPasswordForm() {
             placeholder="Повторите пароль"
             size="lg"
             type="password"
-            variant="bordered"
+            variant="flat"
           />
 
           <Button
