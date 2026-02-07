@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /auth/
+Disallow: /profile/
+Sitemap: https://playteamly.ru/sitemap.xml

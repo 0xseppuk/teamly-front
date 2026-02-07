@@ -135,7 +135,7 @@ export function ResponseItem({ response }: ResponseItemProps) {
 
       <CardFooter className="gap-2 flex-wrap">
         <Button
-          color="primary"
+          color="secondary"
           size="sm"
           startContent="💬"
           variant="flat"

@@ -8,6 +8,7 @@ import { fontRubik } from '@/config/fonts';
 import { siteConfig } from '@/config/site';
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://playteamly.ru'),
   title: {
     default: siteConfig.name,
     template: `%s - ${siteConfig.name}`,
@@ -31,8 +32,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html suppressHydrationWarning lang="en">
-      <head />
+    <html suppressHydrationWarning lang="ru">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: 'Teamly',
+              url: 'https://playteamly.ru',
+              description: 'Платформа для поиска команды в онлайн-играх',
+            }),
+          }}
+          type="application/ld+json"
+        />
+      </head>
       <body
         className={clsx(
           'min-h-screen text-foreground font-rubik antialiased',

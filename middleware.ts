@@ -7,6 +7,11 @@ const AUTHROUTE = [
   routes.register,
   routes.resetPassword,
   routes.forgotPassword,
+  routes.root,
+  routes.privacy,
+  routes.terms,
+  routes.robots,
+  routes.sitemaps,
 ];
 
 export function middleware(req: NextRequest) {
