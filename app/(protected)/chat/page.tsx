@@ -68,6 +68,7 @@ export default function ChatPage() {
         const target = conversationsData.find(
           (c) => c.id === conversationIdFromUrl,
         );
+
         if (target) {
           setSelectedConversation(target);
         }

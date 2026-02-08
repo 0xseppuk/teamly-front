@@ -157,7 +157,8 @@ export default function TermsPage() {
             </p>
             <ul className="list-none space-y-2 mt-4">
               <li>
-                Email: <span className="text-foreground">0xseppuk@gmail.com</span>
+                Email:{' '}
+                <span className="text-foreground">0xseppuk@gmail.com</span>
               </li>
               <li>
                 Сайт: <span className="text-foreground">playteamly.ru</span>
