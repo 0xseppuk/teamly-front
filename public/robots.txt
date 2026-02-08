@@ -1,5 +1,9 @@
 User-agent: *
 Allow: /
-Disallow: /auth/
-Disallow: /profile/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /profile
+Disallow: /chat
 Sitemap: https://playteamly.ru/sitemap.xml

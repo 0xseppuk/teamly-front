@@ -49,6 +49,9 @@ export async function generateMetadata({
       description,
       type: 'website',
     },
+    alternates: {
+      canonical: 'https://playteamly.ru/applications',
+    },
   };
 }
 

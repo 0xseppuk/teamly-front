@@ -36,7 +36,6 @@ export function MyResponseModal({
 
   const application = response.application;
 
-  console.log(application);
   const timeRange = formatTimeRange(
     application.prime_time_start,
     application.prime_time_end,

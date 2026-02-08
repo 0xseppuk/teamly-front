@@ -8,12 +8,12 @@ import Script from 'next/script';
 export const metadata: Metadata = {
   title: 'Найти тиммейтов — поиск команды для онлайн-игр | Teamly',
   description:
-    'Teamly - платформа для поиска тимейтов и создания команд в популярных онлайн-играх. Создавай заявки, находи игроков и общайся с командой.',
+    'Teamly — платформа для поиска тиммейтов и создания команд в популярных онлайн-играх. Создавай заявки, находи игроков и общайся с командой.',
   keywords:
-    'teamly, поиск команды, тимейты, cs2, counter-strike 2, dota 2, valorant, apex legends, pubg, поиск игроков, gaming, киберспорт',
+    'teamly, поиск команды, тиммейты, найти тиммейтов, cs2, counter-strike 2, dota 2, valorant, apex legends, pubg, поиск игроков, gaming, киберспорт, найти команду для игры',
   openGraph: {
-    title: 'Teamly - Найди команду для своей любимой игры',
-    description: 'Создавай заявки, находи тимейтов и общайся с игроками',
+    title: 'Teamly — Найди команду для своей любимой игры',
+    description: 'Создавай заявки, находи тиммейтов и общайся с игроками',
     type: 'website',
   },
   alternates: {
@@ -88,7 +88,7 @@ export default async function RootPage() {
         name: 'Бесплатно ли пользоваться Teamly?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Да, создание заявок и поиск тимейтов полностью бесплатны.',
+          text: 'Да, создание заявок и поиск тиммейтов полностью бесплатны.',
         },
       },
     ],
@@ -120,7 +120,7 @@ export default async function RootPage() {
               Найди тиммейтов и команду для онлайн-игр
             </h1>
             <p className="text-xl md:text-2xl text-default-500 mb-8 max-w-3xl mx-auto">
-              Создавай заявки на поиск тимейтов в CS2, Dota 2, Valorant, Apex
+              Создавай заявки на поиск тиммейтов в CS2, Dota 2, Valorant, Apex
               Legends и других играх. Находи игроков своего уровня и побеждай
               вместе.
             </p>
@@ -197,7 +197,7 @@ export default async function RootPage() {
               </div>
               <h3 className="text-xl font-bold mb-2">Встроенный чат</h3>
               <p className="text-default-500">
-                Общайся с потенциальными тимейтами прямо на платформе.
+                Общайся с потенциальными тиммейтами прямо на платформе.
                 Обсуждайте стратегии и договаривайтесь об игре.
               </p>
             </div>
@@ -381,7 +381,7 @@ export default async function RootPage() {
               <h3 className="text-xl font-bold mb-2">Получай отклики</h3>
               <p className="text-default-500">
                 Игроки видят твою заявку и откликаются. Просматривай профили и
-                выбирай подходящих тимейтов.
+                выбирай подходящих тиммейтов.
               </p>
             </div>
 

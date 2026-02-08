@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: 'https://playteamly.ru/terms',
+  },
 };
 
 export default function TermsPage() {
@@ -40,7 +43,7 @@ export default function TermsPage() {
               2. Описание сервиса
             </h2>
             <p>
-              Teamly — это платформа для поиска тимейтов и создания команд в
+              Teamly — это платформа для поиска тиммейтов и создания команд в
               онлайн-играх. Сервис позволяет пользователям:
             </p>
             <ul className="list-disc list-inside space-y-2">

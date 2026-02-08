@@ -6,13 +6,17 @@ import { ClientPagination } from '@/shared';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 
 export const metadata: Metadata = {
-  title: 'Teamly - Найдите команду для игры',
+  title: 'Игры для поиска команды | Teamly',
   description:
-    'Найдите команду для любой игры. Удобная система подбора игроков с фильтрами по платформе, времени и голосовому чату.',
+    'Выберите игру и найдите тиммейтов. CS2, Dota 2, Valorant, Apex Legends, PUBG и другие популярные онлайн-игры на Teamly.',
   openGraph: {
-    title: 'Teamly - Найдите команду для игры',
-    description: 'Удобная система подбора игроков для любой игры',
+    title: 'Игры для поиска команды | Teamly',
+    description:
+      'Выберите игру и найдите тиммейтов для совместной игры',
     type: 'website',
+  },
+  alternates: {
+    canonical: 'https://playteamly.ru/games',
   },
 };
 

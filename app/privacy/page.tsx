@@ -9,6 +9,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: 'https://playteamly.ru/privacy',
+  },
 };
 
 export default function PrivacyPage() {

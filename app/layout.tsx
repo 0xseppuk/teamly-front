@@ -16,6 +16,24 @@ export const metadata: Metadata = {
   description: siteConfig.description,
   icons: {
     icon: '/favicon.ico',
+    shortcut: '/favicon-32x32.png',
+  },
+  openGraph: {
+    siteName: 'Teamly',
+    locale: 'ru_RU',
+    type: 'website',
+    images: [
+      {
+        url: '/logo.png',
+        width: 512,
+        height: 512,
+        alt: 'Teamly — поиск команды для онлайн-игр',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: ['/logo.png'],
   },
 };
 
@@ -58,7 +76,11 @@ export default function RootLayout({
           sizes="16x16"
           type="image/png"
         />
-        <link href="/favicon-180.png" rel="apple-touch-icon" sizes="180x180" />
+        <link
+          href="/apple-touch-icon.png"
+          rel="apple-touch-icon"
+          sizes="180x180"
+        />
       </head>
       <body
         className={clsx(

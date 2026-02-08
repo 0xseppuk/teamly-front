@@ -17,12 +17,9 @@ export async function getCurrentUserServer(): Promise<User | null> {
       },
     });
 
-    console.log('[getCurrentUserServer] Success:', response.user);
-
     return response.user;
   } catch (error) {
     // User not authenticated or error occurred
-    console.log('[getCurrentUserServer] Error:', error);
 
     return null;
   }
