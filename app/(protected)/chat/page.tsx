@@ -15,9 +15,12 @@ import {
   useGetMe,
   useGetUserConversations,
 } from '@/shared';
+import { useSearchParams } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 export default function ChatPage() {
+  const searchParams = useSearchParams();
+  const conversationIdFromUrl = searchParams.get('id');
   /* ==================== UI STATE ==================== */
   const [selectedConversation, setSelectedConversation] =
     useState<ConversationResponse | null>(null);
@@ -59,8 +62,18 @@ export default function ChatPage() {
   useEffect(() => {
     if (conversationsData) {
       setConversations(conversationsData);
+
+      // Auto-select conversation from URL param (?id=...)
+      if (conversationIdFromUrl && !selectedConversation) {
+        const target = conversationsData.find(
+          (c) => c.id === conversationIdFromUrl,
+        );
+        if (target) {
+          setSelectedConversation(target);
+        }
+      }
     }
-  }, [conversationsData]);
+  }, [conversationsData, conversationIdFromUrl, selectedConversation]);
 
   const clearUnreadCount = useCallback((conversationId: string) => {
     setConversations((prev) =>

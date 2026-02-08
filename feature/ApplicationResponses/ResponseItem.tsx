@@ -77,13 +77,9 @@ export function ResponseItem({ response }: ResponseItemProps) {
   };
 
   const handleOpenChat = () => {
-    // TODO: Implement chat navigation when chat feature is ready
-    // router.push(`/chat/${response.conversation?.id}`);
-    addToast({
-      title: 'Чат',
-      description: 'Функция чатов в разработке',
-      color: 'warning',
-    });
+    if (response.conversation?.id) {
+      router.push(`/chat?id=${response.conversation.id}`);
+    }
   };
 
   const handleViewProfile = () => {
