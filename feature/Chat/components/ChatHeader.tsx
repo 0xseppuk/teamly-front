@@ -6,10 +6,16 @@ import { ArrowLeft, ExternalLink } from 'lucide-react';
 interface ChatHeaderProps {
   user: User;
   isTyping: boolean;
+  isMobileView?: boolean;
   onClose: () => void;
 }
 
-export function ChatHeader({ user, isTyping, onClose }: ChatHeaderProps) {
+export function ChatHeader({
+  user,
+  isTyping,
+  isMobileView = false,
+  onClose,
+}: ChatHeaderProps) {
   const avatarColor = getAvatarColor(user.id);
 
   const handleProfileClick = () => {
@@ -19,14 +25,16 @@ export function ChatHeader({ user, isTyping, onClose }: ChatHeaderProps) {
   return (
     <div className="relative">
       {/* Glass header */}
-      <div className="flex items-center gap-4 h-[72px] px-6 bg-white/60 dark:bg-default-50/60 backdrop-blur-xl border-b border-white/20 dark:border-default-100/20">
-        {/* Back button */}
-        <button
-          className="flex items-center justify-center w-10 h-10 rounded-xl bg-default-100/50 hover:bg-default-200/50 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
-          onClick={onClose}
-        >
-          <ArrowLeft className="text-default-600" size={20} />
-        </button>
+      <div className="flex items-center gap-4 h-[72px] px-4 sm:px-6 bg-white/60 dark:bg-default-50/60 backdrop-blur-xl border-b border-white/20 dark:border-default-100/20">
+        {/* Back button - показываем только на мобильных */}
+        {isMobileView && (
+          <button
+            className="flex items-center justify-center w-10 h-10 rounded-xl bg-default-100/50 hover:bg-default-200/50 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer"
+            onClick={onClose}
+          >
+            <ArrowLeft className="text-default-600" size={20} />
+          </button>
+        )}
 
         {/* User info - clickable */}
         <button

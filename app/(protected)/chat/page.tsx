@@ -28,7 +28,20 @@ export default function ChatPage() {
   const [isTyping, setIsTyping] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  /* ==================== MOBILE DETECTION ==================== */
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobileView(window.innerWidth < 768); // md breakpoint
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   /* ==================== API ==================== */
   const { data: meData } = useGetMe();
@@ -171,48 +184,68 @@ export default function ChatPage() {
   }, []);
 
   /* ==================== RENDER ==================== */
+  // На мобильных: показываем либо sidebar, либо chat
+  const showSidebar = isMobileView ? !selectedConversation : true;
+  const showChat = isMobileView ? !!selectedConversation : true;
+
   return (
     <div className="h-full overflow-hidden">
-      <div className="flex h-full gap-4">
-        <ChatSidebar
-          conversations={conversations}
-          isCollapsed={isSidebarCollapsed}
-          isLoading={isLoadingConversations}
-          selectedConversationId={selectedConversation?.id || null}
-          onSelectConversation={handleSelectConversation}
-          onToggleCollapse={() => setIsSidebarCollapsed((prev) => !prev)}
-        />
+      <div className="flex h-full md:gap-4">
+        {/* Sidebar - на мобильных занимает весь экран */}
+        {showSidebar && (
+          <div className={isMobileView ? 'w-full h-full' : ''}>
+            <ChatSidebar
+              conversations={conversations}
+              isCollapsed={isSidebarCollapsed}
+              isLoading={isLoadingConversations}
+              isMobileView={isMobileView}
+              selectedConversationId={selectedConversation?.id || null}
+              onSelectConversation={handleSelectConversation}
+              onToggleCollapse={() => setIsSidebarCollapsed((prev) => !prev)}
+            />
+          </div>
+        )}
 
-        <div className="flex-1 flex flex-col min-w-0 bg-white/60 dark:bg-default-50/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-default-100/20 overflow-hidden shadow-xl shadow-black/5">
-          {selectedConversation ? (
-            <>
-              <ChatHeader
-                isTyping={isTyping}
-                user={selectedConversation.other_user}
-                onClose={handleCloseChat}
-              />
+        {/* Chat - на мобильных занимает весь экран */}
+        {showChat && (
+          <div
+            className={`flex-1 flex flex-col min-w-0 bg-white/60 dark:bg-default-50/60 backdrop-blur-xl overflow-hidden shadow-xl shadow-black/5 ${
+              isMobileView
+                ? 'w-full h-full rounded-none border-0'
+                : 'rounded-3xl border border-white/20 dark:border-default-100/20'
+            }`}
+          >
+            {selectedConversation ? (
+              <>
+                <ChatHeader
+                  isMobileView={isMobileView}
+                  isTyping={isTyping}
+                  user={selectedConversation.other_user}
+                  onClose={handleCloseChat}
+                />
 
-              <ChatMessages
-                ref={messagesEndRef}
-                currentUser={meData?.user}
-                currentUserId={currentUserId}
-                messages={messages}
-                otherUser={selectedConversation.other_user}
-              />
+                <ChatMessages
+                  ref={messagesEndRef}
+                  currentUser={meData?.user}
+                  currentUserId={currentUserId}
+                  messages={messages}
+                  otherUser={selectedConversation.other_user}
+                />
 
-              <ChatInput
-                isSending={isSending}
-                value={messageInput}
-                onChange={setMessageInput}
-                onSend={handleSendMessage}
-                onTypingEnd={() => sendTyping(false)}
-                onTypingStart={() => sendTyping(true)}
-              />
-            </>
-          ) : (
-            <EmptyState />
-          )}
-        </div>
+                <ChatInput
+                  isSending={isSending}
+                  value={messageInput}
+                  onChange={setMessageInput}
+                  onSend={handleSendMessage}
+                  onTypingEnd={() => sendTyping(false)}
+                  onTypingStart={() => sendTyping(true)}
+                />
+              </>
+            ) : (
+              <EmptyState />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

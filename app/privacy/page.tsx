@@ -87,7 +87,7 @@ export default function PrivacyPage() {
             <p>
               По всем вопросам, связанным с обработкой персональных данных, вы
               можете связаться с нами по адресу:{' '}
-              <span className="text-white">support@playteamly.ru</span>
+              <span className="text-white">0xseppuk@gmail.com</span>
             </p>
 
             <p className="text-sm text-default-500 mt-10">

@@ -11,6 +11,7 @@ export interface GetApplicationsParams {
   game_id?: string;
   platform?: string;
   with_voice_chat?: boolean;
+  revalidate?: number;
 }
 
 /**
@@ -18,8 +19,9 @@ export interface GetApplicationsParams {
  * Dynamic data, should not be cached aggressively
  */
 export async function getAllApplicationsServer(
-  params?: GetApplicationsParams,
+  options?: GetApplicationsParams,
 ): Promise<ApplicationsResponse> {
+  const { revalidate, ...params } = options || {};
   const queryString = params
     ? buildQueryString(
         params as Record<string, string | number | boolean | undefined>,
@@ -29,6 +31,7 @@ export async function getAllApplicationsServer(
   return serverFetch<ApplicationsResponse>(`/applications${queryString}`, {
     cache: 'no-store', // Always fresh data for applications
     next: {
+      revalidate: revalidate ?? 3600,
       tags: ['applications'],
     },
   });

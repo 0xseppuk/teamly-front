@@ -3,6 +3,10 @@
 @config "../../tailwind.config.js";
 
 /* Scrollbar - тонкий и аккуратный */
+
+html {
+  scroll-behavior: smooth;
+}
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

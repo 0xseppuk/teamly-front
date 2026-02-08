@@ -1,11 +1,9 @@
-import { Button } from '@heroui/button';
-import { link as linkStyles } from '@heroui/theme';
-import clsx from 'clsx';
+import { ApplicationCard, Navbar } from '@/feature';
+import { getAllApplicationsServer } from '@/shared/services/applications/server';
+import { getGamesServer } from '@/shared/services/games/server/games.server';
 import type { Metadata } from 'next';
 import NextLink from 'next/link';
 import Script from 'next/script';
-
-import { getGamesServer } from '@/shared/services/games/server/games.server';
 
 export const metadata: Metadata = {
   title: 'Найти тиммейтов — поиск команды для онлайн-игр | Teamly',
@@ -27,6 +25,9 @@ export const metadata: Metadata = {
   },
 };
 
+export const dynamic = 'force-static';
+export const revalidate = 3600;
+
 const gameGradients: Record<string, string> = {
   'Counter-Strike 2': 'from-orange-500 to-yellow-500',
   'Dota 2': 'from-red-500 to-orange-500',
@@ -36,9 +37,15 @@ const gameGradients: Record<string, string> = {
 };
 
 export default async function RootPage() {
-  const gamesData = await getGamesServer({ limit: 10, revalidate: 3600 });
+  const [gamesData, applicationsData] = await Promise.all([
+    getGamesServer({ limit: 10, revalidate: 3600 }),
+    getAllApplicationsServer({ revalidate: 60 }),
+  ]);
   const games = gamesData.games || [];
+
   const totalGames = gamesData.total || gamesData.count || games.length;
+
+  const applications = applicationsData.applications?.slice(0, 6) || [];
 
   const gamesStructuredData = {
     '@context': 'https://schema.org',
@@ -101,60 +108,13 @@ export default async function RootPage() {
         id="faq-data"
         type="application/ld+json"
       />
-      <div className="min-h-screen bg-black">
-        {/* Header */}
-        <div className="sticky top-0 z-50 w-full pt-4 max-w-[80rem] mx-auto px-4">
-          <nav className="rounded-2xl border border-default-200 bg-content1/80 px-6 py-3 shadow-sm backdrop-blur-xl">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-8">
-                <NextLink
-                  className="flex items-center gap-2 font-bold text-lg tracking-tight transition-opacity hover:opacity-80"
-                  href="/"
-                >
-                  TEAMLY
-                </NextLink>
-                <ul className="hidden md:flex items-center gap-6">
-                  <li>
-                    <a
-                      className={clsx(
-                        linkStyles({ color: 'foreground' }),
-                        'text-sm font-medium text-default-500 transition-colors hover:text-foreground',
-                      )}
-                      href="#features"
-                    >
-                      Возможности
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={clsx(
-                        linkStyles({ color: 'foreground' }),
-                        'text-sm font-medium text-default-500 transition-colors hover:text-foreground',
-                      )}
-                      href="#games"
-                    >
-                      Игры
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      className={clsx(
-                        linkStyles({ color: 'foreground' }),
-                        'text-sm font-medium text-default-500 transition-colors hover:text-foreground',
-                      )}
-                      href="#how-it-works"
-                    >
-                      Как это работает
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </nav>
+      <div className="min-h-screen bg-black scroll-smooth">
+        <div className="sticky top-0 z-50 w-full max-w-[80rem] mx-auto">
+          <Navbar />
         </div>
 
         {/* Hero Section */}
-        <section className="max-w-[80rem] mx-auto px-4 py-20 md:py-32">
+        <section className="max-w-[80rem] mx-auto px-4 py-10 md:py-20">
           <div className="text-center">
             <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-default-500 to-default-300 bg-clip-text text-transparent">
               Найди тиммейтов и команду для онлайн-игр
@@ -166,21 +126,24 @@ export default async function RootPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <NextLink href="/profile">
-                <Button className="text-lg px-8" color="secondary" size="lg">
-                  Создать заявку бесплатно
-                </Button>
+                <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
+                  Создать заявку
+                </button>
               </NextLink>
               <NextLink href="/applications">
-                <Button className="text-lg px-8" size="lg" variant="bordered">
+                <button className="text-lg px-8 border-2 border-default rounded-xl h-[48px] hover:opacity-90 cursor-pointer">
                   Найти команду
-                </Button>
+                </button>
               </NextLink>
             </div>
           </div>
         </section>
 
         {/* Features Section */}
-        <section className="max-w-[80rem] mx-auto px-4 py-20" id="features">
+        <section
+          className="max-w-[80rem] mx-auto px-4 py-10 scroll-mt-20"
+          id="features"
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Почему выбирают Teamly?
@@ -265,8 +228,53 @@ export default async function RootPage() {
           </div>
         </section>
 
+        {/* Latest Applications Section */}
+        <section
+          className="max-w-[80rem] mx-auto px-4 py-10 scroll-mt-20"
+          id="latest-applications"
+        >
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold mb-4">
+              Последние заявки
+            </h2>
+            <p className="text-lg text-default-500">
+              Игроки уже ищут команду — присоединяйся!
+            </p>
+          </div>
+
+          {applications.length > 0 ? (
+            <>
+              <div className="grid gap-3 sm:grid-cols-2 md:gap-4 lg:grid-cols-3">
+                {applications.map((app) => (
+                  <ApplicationCard key={app.id} application={app} />
+                ))}
+              </div>
+
+              <div className="text-center mt-8">
+                <NextLink href="/applications">
+                  <button className="text-lg px-8 border-2 border-default rounded-xl h-[48px] cursor-pointer">
+                    Посмотреть все заявки
+                  </button>
+                </NextLink>
+              </div>
+            </>
+          ) : (
+            <div className="text-center text-default-500 py-12">
+              <p className="mb-4">Пока нет активных заявок</p>
+              <NextLink href="/profile">
+                <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
+                  Создай первую заявку
+                </button>
+              </NextLink>
+            </div>
+          )}
+        </section>
+
         {/* Games Section */}
-        <section className="max-w-[80rem] mx-auto px-4 py-20" id="games">
+        <section
+          className="max-w-[80rem] mx-auto px-4 py-10 scroll-mt-20"
+          id="games"
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Поддерживаемые игры
@@ -319,12 +327,12 @@ export default async function RootPage() {
               </div>
 
               <div className="text-center mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
-                <NextLink href="/applications">
-                  <Button size="lg" variant="bordered">
+                <NextLink href="/games">
+                  <button className="text-lg px-8 border-2 border-default rounded-xl h-[48px] hover:opacity-90 cursor-pointer">
                     {totalGames > 10
                       ? `Посмотреть все ${totalGames} ${totalGames < 5 ? 'игры' : 'игр'}`
                       : 'Посмотреть все поддерживаемые игры'}
-                  </Button>
+                  </button>
                 </NextLink>
                 {totalGames > 10 && (
                   <p className="text-sm text-default-500">
@@ -341,7 +349,10 @@ export default async function RootPage() {
         </section>
 
         {/* How it works */}
-        <section className="max-w-[80rem] mx-auto px-4 py-20" id="how-it-works">
+        <section
+          className="max-w-[80rem] mx-auto px-4 py-10 scroll-mt-20"
+          id="how-it-works"
+        >
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold mb-4">
               Как это работает?
@@ -388,7 +399,7 @@ export default async function RootPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="max-w-[80rem] mx-auto px-4 py-20">
+        <section className="max-w-[80rem] mx-auto px-4 py-10">
           <div className="rounded-2xl border border-default-200 bg-gradient-to-r from-secondary/10 to-secondary/10 p-12 md:p-20 text-center backdrop-blur-sm">
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
               Готов найти свою команду?
@@ -397,10 +408,10 @@ export default async function RootPage() {
               Присоединяйся к Teamly прямо сейчас и начни играть с лучшими
               игроками
             </p>
-            <NextLink href="/applications">
-              <Button className="text-lg px-10" color="secondary" size="lg">
+            <NextLink href="/login">
+              <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
                 Начать бесплатно
-              </Button>
+              </button>
             </NextLink>
           </div>
         </section>

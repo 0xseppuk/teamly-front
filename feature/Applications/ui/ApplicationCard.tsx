@@ -39,6 +39,8 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
     application.prime_time_end,
   );
 
+  const isAuth = !!meData?.user;
+
   return (
     <>
       <Card
@@ -121,7 +123,8 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
               size="sm"
               variant="flat"
             >
-              {application.accepted_players || 0}/{application.max_players} игроков
+              {application.accepted_players || 0}/{application.max_players}{' '}
+              игроков
             </Chip>
             <Chip
               classNames={{ content: 'text-xs md:text-sm' }}
@@ -179,6 +182,7 @@ export function ApplicationCard({ application }: ApplicationCardProps) {
       ) : (
         <CreateResponseModal
           application={application}
+          isAuth={isAuth}
           isOpen={isOpen}
           onOpenChange={onOpenChange}
         />

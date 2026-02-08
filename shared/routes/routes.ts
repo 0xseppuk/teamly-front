@@ -10,4 +10,6 @@ export const routes = {
   terms: '/terms',
   robots: '/robots.txt',
   sitemaps: '/sitemap.xml',
+  application: '/applications',
+  profile: '/profile',
 };

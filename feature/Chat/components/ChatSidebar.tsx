@@ -14,6 +14,7 @@ interface ChatSidebarProps {
   isLoading: boolean;
   selectedConversationId: string | null;
   isCollapsed: boolean;
+  isMobileView?: boolean;
   onSelectConversation: (conversation: ConversationResponse) => void;
   onToggleCollapse: () => void;
 }
@@ -23,6 +24,7 @@ export function ChatSidebar({
   isLoading,
   selectedConversationId,
   isCollapsed,
+  isMobileView = false,
   onSelectConversation,
   onToggleCollapse,
 }: ChatSidebarProps) {
@@ -54,8 +56,12 @@ export function ChatSidebar({
 
   return (
     <div
-      className={`flex flex-col bg-white/60 dark:bg-default-50/60 backdrop-blur-xl rounded-3xl border border-white/20 dark:border-default-100/20 overflow-hidden transition-all duration-300 ease-out ${
-        isCollapsed ? 'w-[80px]' : 'w-[320px]'
+      className={`flex flex-col bg-white/60 dark:bg-default-50/60 backdrop-blur-xl overflow-hidden transition-all duration-300 ease-out ${
+        isMobileView
+          ? 'w-full h-full rounded-none border-0'
+          : `rounded-3xl border border-white/20 dark:border-default-100/20 ${
+              isCollapsed ? 'w-[80px]' : 'w-[320px]'
+            }`
       }`}
     >
       {/* Header */}
@@ -73,18 +79,21 @@ export function ChatSidebar({
             </div>
           </div>
         )}
-        <button
-          className={`flex items-center justify-center w-10 h-10 rounded-xl bg-default-100/50 hover:bg-default-200/50 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
-            isCollapsed ? 'mx-auto' : ''
-          }`}
-          onClick={onToggleCollapse}
-        >
-          {isCollapsed ? (
-            <PanelLeftOpen className="text-default-600" size={18} />
-          ) : (
-            <PanelLeftClose className="text-default-600" size={18} />
-          )}
-        </button>
+        {/* Скрываем кнопку сворачивания на мобильных */}
+        {!isMobileView && (
+          <button
+            className={`flex items-center justify-center w-10 h-10 rounded-xl bg-default-100/50 hover:bg-default-200/50 transition-all duration-200 hover:scale-105 active:scale-95 cursor-pointer ${
+              isCollapsed ? 'mx-auto' : ''
+            }`}
+            onClick={onToggleCollapse}
+          >
+            {isCollapsed ? (
+              <PanelLeftOpen className="text-default-600" size={18} />
+            ) : (
+              <PanelLeftClose className="text-default-600" size={18} />
+            )}
+          </button>
+        )}
       </div>
 
       {/* Search */}

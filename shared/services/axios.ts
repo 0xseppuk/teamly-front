@@ -18,6 +18,12 @@ axiosInstanse.interceptors.response.use(
       error.config?.url?.includes('/auth/login') ||
       error.config?.url?.includes('/auth/register');
 
+    const publicPages = ['/games', '/application', '/'];
+
+    const isOnPublicPage =
+      typeof window !== 'undefined' &&
+      publicPages.some((page) => window.location.pathname.startsWith(page));
+
     // If 401, redirect to login
     // BUT: skip if it's a login/register request (those should show validation errors)
     // AND: skip if already on auth pages
@@ -28,7 +34,8 @@ axiosInstanse.interceptors.response.use(
       !window.location.pathname.startsWith('/register') &&
       !window.location.pathname.startsWith('/forgot-password') &&
       !window.location.pathname.startsWith('/reset-password') &&
-      !isAuthRequest
+      !isAuthRequest &&
+      !isOnPublicPage
     ) {
       window.location.href = '/login';
     }

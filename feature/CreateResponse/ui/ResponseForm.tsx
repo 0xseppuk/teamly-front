@@ -8,9 +8,14 @@ import { Control, Controller } from 'react-hook-form';
 interface ResponseFormProps {
   control: Control<CreateResponseFormData>;
   isDisabled?: boolean;
+  placeholder: string;
 }
 
-export function ResponseForm({ control, isDisabled }: ResponseFormProps) {
+export function ResponseForm({
+  control,
+  isDisabled,
+  placeholder,
+}: ResponseFormProps) {
   return (
     <div className="space-y-4">
       <Controller
@@ -26,7 +31,7 @@ export function ResponseForm({ control, isDisabled }: ResponseFormProps) {
             label="Сопроводительное сообщение"
             maxRows={10}
             minRows={6}
-            placeholder="Привет! Хочу присоединиться к вашей команде. Играю на позиции саппорта, ранк Gold Nova 3..."
+            placeholder={placeholder}
             variant="flat"
           />
         )}

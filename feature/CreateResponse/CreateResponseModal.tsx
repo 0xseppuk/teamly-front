@@ -19,30 +19,39 @@ import { useForm } from 'react-hook-form';
 import { createResponseSchema, type CreateResponseFormData } from './schema';
 import { ResponseForm } from './ui/ResponseForm';
 
+import { routes } from '@/shared';
 import { useCreateApplicationResponse } from '@/shared/services/responses/responses.hooks';
 import { formatTimeRange, getPlatformLabel } from '@/shared/utils';
+import { useRouter } from 'next/navigation';
 
 interface CreateResponseModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   application: GameApplication;
+  isAuth?: boolean;
 }
 
 export function CreateResponseModal({
   isOpen,
   onOpenChange,
   application,
+  isAuth,
 }: CreateResponseModalProps) {
   const { control, handleSubmit, reset } = useForm<CreateResponseFormData>({
     resolver: zodResolver(createResponseSchema),
     defaultValues: { message: '' },
   });
 
+  const router = useRouter();
+
   const createMutation = useCreateApplicationResponse();
 
-  // Используем данные из самой заявки
   const hasResponded = application.user_has_responded || false;
   const responseStatus = application.user_response_status;
+
+  const redirectSubmit = () => {
+    router.push(routes.login);
+  };
 
   const onSubmit = async (data: CreateResponseFormData) => {
     try {
@@ -72,6 +81,10 @@ export function CreateResponseModal({
     reset();
     onOpenChange(false);
   };
+
+  const textAreaPlaceholder = isAuth
+    ? 'Привет! Хочу присоединиться к вашей команде. Играю на позиции саппорта, ранк Gold Nova 3...'
+    : 'Войдите чтобы откликнуться';
 
   return (
     <Modal
@@ -144,7 +157,8 @@ export function CreateResponseModal({
           {!hasResponded && (
             <ResponseForm
               control={control}
-              isDisabled={createMutation.isPending}
+              isDisabled={createMutation.isPending || !isAuth}
+              placeholder={textAreaPlaceholder}
             />
           )}
         </ModalBody>
@@ -153,13 +167,18 @@ export function CreateResponseModal({
           <Button variant="light" onPress={handleClose}>
             {hasResponded ? 'Закрыть' : 'Отмена'}
           </Button>
-          {!hasResponded && (
+          {!hasResponded && isAuth && (
             <Button
               color="secondary"
               isLoading={createMutation.isPending}
               onPress={() => handleSubmit(onSubmit)()}
             >
               Отправить отклик
+            </Button>
+          )}
+          {!isAuth && (
+            <Button color="secondary" onPress={redirectSubmit}>
+              Войти
             </Button>
           )}
         </ModalFooter>
