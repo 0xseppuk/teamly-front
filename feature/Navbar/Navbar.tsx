@@ -1,16 +1,16 @@
 'use client';
 
+import { ThemeSwitch } from '@/components/theme-switch';
+import { siteConfig } from '@/config/site';
+import { Button } from '@heroui/button';
 import { link as linkStyles } from '@heroui/theme';
 import clsx from 'clsx';
 import { AnimatePresence, motion } from 'framer-motion';
 import NextLink from 'next/link';
 import { useState } from 'react';
 
-import { ThemeSwitch } from '@/components/theme-switch';
-import { siteConfig } from '@/config/site';
-
 import { useAuth } from '@/shared';
-import { Button } from '@heroui/button';
+import { Logo } from '@/shared/components/Logo/Logo';
 import { ProfileDropdown } from '../ProfileDropdown/ProfileDropdown';
 
 export const Navbar = () => {
@@ -76,6 +76,7 @@ export const Navbar = () => {
               className="flex items-center gap-2 font-bold text-lg tracking-tight transition-opacity hover:opacity-80"
               href="/games"
             >
+              <Logo height={32} width={32} />
               TEAMLY
             </NextLink>
 
