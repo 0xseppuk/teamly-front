@@ -11,8 +11,7 @@ export const metadata: Metadata = {
     'Выберите игру и найдите тиммейтов. CS2, Dota 2, Valorant, Apex Legends, PUBG и другие популярные онлайн-игры на Teamly.',
   openGraph: {
     title: 'Игры для поиска команды | Teamly',
-    description:
-      'Выберите игру и найдите тиммейтов для совместной игры',
+    description: 'Выберите игру и найдите тиммейтов для совместной игры',
     type: 'website',
   },
   alternates: {

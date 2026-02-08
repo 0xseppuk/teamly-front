@@ -2,7 +2,13 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 import { ApiError } from '../axios';
 
-import { forgotPassword, login, logout, register, resetPassword } from './auth.api';
+import {
+  forgotPassword,
+  login,
+  logout,
+  register,
+  resetPassword,
+} from './auth.api';
 import {
   ForgotPasswordRequest,
   ForgotPasswordResponse,
