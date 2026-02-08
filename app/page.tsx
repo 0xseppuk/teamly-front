@@ -108,7 +108,7 @@ export default async function RootPage() {
         id="faq-data"
         type="application/ld+json"
       />
-      <div className="min-h-screen bg-black scroll-smooth">
+      <div className="min-h-screen bg-background scroll-smooth">
         <div className="sticky top-0 z-50 w-full max-w-[80rem] mx-auto">
           <Navbar />
         </div>
@@ -116,7 +116,7 @@ export default async function RootPage() {
         {/* Hero Section */}
         <section className="max-w-[80rem] mx-auto px-4 py-10 md:py-20">
           <div className="text-center">
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-default-500 to-default-300 bg-clip-text text-transparent">
+            <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-foreground via-default-500 to-default-300 bg-clip-text text-transparent">
               Найди тиммейтов и команду для онлайн-игр
             </h1>
             <p className="text-xl md:text-2xl text-default-500 mb-8 max-w-3xl mx-auto">
@@ -126,7 +126,7 @@ export default async function RootPage() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <NextLink href="/profile">
-                <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
+                <button className="text-lg px-8 rounded-xl bg-secondary text-secondary-foreground h-[48px] hover:opacity-90 cursor-pointer">
                   Создать заявку
                 </button>
               </NextLink>
@@ -262,7 +262,7 @@ export default async function RootPage() {
             <div className="text-center text-default-500 py-12">
               <p className="mb-4">Пока нет активных заявок</p>
               <NextLink href="/profile">
-                <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
+                <button className="text-lg px-8 rounded-xl bg-secondary text-secondary-foreground h-[48px] hover:opacity-90 cursor-pointer">
                   Создай первую заявку
                 </button>
               </NextLink>
@@ -296,17 +296,20 @@ export default async function RootPage() {
                   return (
                     <NextLink
                       key={game.id}
-                      className="block aspect-[3/4] rounded-xl border border-default-200 bg-content1/50 p-6 backdrop-blur-sm hover:scale-105 transition-transform cursor-pointer relative overflow-hidden group"
+                      className="block aspect-[3/4] rounded-xl border border-default-200 p-6 hover:scale-105 transition-transform cursor-pointer relative overflow-hidden group"
                       href={`/applications?game_id=${game.id}`}
                     >
+                      {/* Dark overlay for text readability */}
+                      <div className="absolute inset-0 bg-black" />
+
                       {/* Gradient background */}
                       <div
-                        className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-10 group-hover:opacity-20 transition-opacity`}
+                        className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-20 group-hover:opacity-30 transition-opacity`}
                       />
 
                       {/* Game image if available */}
                       {game.icon_url && (
-                        <div className="absolute inset-0 opacity-30 group-hover:opacity-40 transition-opacity">
+                        <div className="absolute inset-0 opacity-40 group-hover:opacity-50 transition-opacity">
                           <img
                             alt={game.name}
                             className="w-full h-full object-cover"
@@ -409,7 +412,7 @@ export default async function RootPage() {
               игроками
             </p>
             <NextLink href="/login">
-              <button className="text-lg px-8 rounded-xl bg-secondary h-[48px] hover:opacity-90 cursor-pointer">
+              <button className="text-lg px-8 rounded-xl bg-secondary text-secondary-foreground h-[48px] hover:opacity-90 cursor-pointer">
                 Начать бесплатно
               </button>
             </NextLink>

@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <div className="max-w-[80rem] mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-8">
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
               собирает платформа Teamly и как эти данные используются.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               1. Общие положения
             </h2>
             <p>
@@ -38,7 +38,7 @@ export default function PrivacyPage() {
               данных.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               2. Какие данные мы собираем
             </h2>
             <ul className="list-disc list-inside space-y-2">
@@ -48,7 +48,7 @@ export default function PrivacyPage() {
               <li>Техническая информация (IP-адрес, cookies, user-agent)</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               3. Как мы используем данные
             </h2>
             <ul className="list-disc list-inside space-y-2">
@@ -58,7 +58,7 @@ export default function PrivacyPage() {
               <li>Для обеспечения безопасности</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               4. Передача данных третьим лицам
             </h2>
             <p>
@@ -67,7 +67,7 @@ export default function PrivacyPage() {
               необходимых для работы сервиса.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               5. Cookies
             </h2>
             <p>
@@ -75,7 +75,7 @@ export default function PrivacyPage() {
               пользовательского опыта.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               6. Защита данных
             </h2>
             <p>
@@ -84,13 +84,13 @@ export default function PrivacyPage() {
               и раскрытия.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               7. Контакты
             </h2>
             <p>
               По всем вопросам, связанным с обработкой персональных данных, вы
               можете связаться с нами по адресу:{' '}
-              <span className="text-white">0xseppuk@gmail.com</span>
+              <span className="text-foreground">0xseppuk@gmail.com</span>
             </p>
 
             <p className="text-sm text-default-500 mt-10">

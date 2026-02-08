@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function TermsPage() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-background">
       <div className="max-w-[80rem] mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl font-bold mb-8">
@@ -30,7 +30,7 @@ export default function TermsPage() {
               данными условиями.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               1. Принятие условий
             </h2>
             <p>
@@ -39,7 +39,7 @@ export default function TermsPage() {
               Политику конфиденциальности.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               2. Описание сервиса
             </h2>
             <p>
@@ -53,7 +53,7 @@ export default function TermsPage() {
               <li>Управлять своим профилем и настройками</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               3. Регистрация и аккаунт
             </h2>
             <p>
@@ -70,7 +70,7 @@ export default function TermsPage() {
               </li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               4. Правила использования
             </h2>
             <p>При использовании Сервиса запрещается:</p>
@@ -91,7 +91,7 @@ export default function TermsPage() {
               <li>Создавать фейковые заявки или аккаунты</li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               5. Контент пользователей
             </h2>
             <p>
@@ -105,7 +105,7 @@ export default function TermsPage() {
               настоящие Условия или законодательство.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               6. Ответственность
             </h2>
             <p>
@@ -121,7 +121,7 @@ export default function TermsPage() {
               </li>
             </ul>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               7. Прекращение использования
             </h2>
             <p>
@@ -130,7 +130,7 @@ export default function TermsPage() {
               Сервису при нарушении настоящих Условий.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               8. Изменения условий
             </h2>
             <p>
@@ -139,7 +139,7 @@ export default function TermsPage() {
               электронной почте или через Сервис.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               9. Применимое право
             </h2>
             <p>
@@ -148,7 +148,7 @@ export default function TermsPage() {
               действующим законодательством РФ.
             </p>
 
-            <h2 className="text-2xl font-semibold text-white mt-10">
+            <h2 className="text-2xl font-semibold text-foreground mt-10">
               10. Контакты
             </h2>
             <p>
@@ -157,10 +157,10 @@ export default function TermsPage() {
             </p>
             <ul className="list-none space-y-2 mt-4">
               <li>
-                Email: <span className="text-white">0xseppuk@gmail.com</span>
+                Email: <span className="text-foreground">0xseppuk@gmail.com</span>
               </li>
               <li>
-                Сайт: <span className="text-white">playteamly.ru</span>
+                Сайт: <span className="text-foreground">playteamly.ru</span>
               </li>
             </ul>
 
