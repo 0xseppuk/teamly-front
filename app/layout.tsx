@@ -58,8 +58,16 @@ export default function RootLayout({
               '@context': 'https://schema.org',
               '@type': 'WebSite',
               name: 'Teamly',
+              alternateName: 'Найти тиммейтов',
               url: 'https://playteamly.ru',
-              description: 'Платформа для поиска команды в онлайн-играх',
+              description:
+                'Найти тиммейтов и команду для любой онлайн-игры. Бесплатная платформа для поиска игроков.',
+              potentialAction: {
+                '@type': 'SearchAction',
+                target:
+                  'https://playteamly.ru/games?search={search_term_string}',
+                'query-input': 'required name=search_term_string',
+              },
             }),
           }}
           type="application/ld+json"

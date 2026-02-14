@@ -35,6 +35,7 @@ interface CreateApplicationModalProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
   editApplication?: GameApplication;
+  defaultGameId?: string;
   onSuccess?: () => void;
 }
 
@@ -42,6 +43,7 @@ export function CreateApplicationModal({
   isOpen,
   onOpenChange,
   editApplication,
+  defaultGameId,
   onSuccess,
 }: CreateApplicationModalProps) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -87,9 +89,8 @@ export function CreateApplicationModal({
           platform: editApplication.platform,
         });
       } else {
-        // Сбрасываем к дефолтным значениям при создании новой заявки
         form.reset({
-          game_id: '',
+          game_id: defaultGameId || '',
           title: '',
           description: '',
           min_players: 2,
@@ -99,9 +100,13 @@ export function CreateApplicationModal({
           with_voice_chat: false,
           platform: 'pc',
         });
+        // Пропускаем шаг выбора игры если игра уже выбрана
+        if (defaultGameId) {
+          setCurrentStep(1);
+        }
       }
     }
-  }, [editApplication, isOpen, form]);
+  }, [editApplication, defaultGameId, isOpen, form]);
 
   const handleNext = async () => {
     const fieldsToValidate = getFieldsForStep(currentStep);
@@ -143,7 +148,6 @@ export function CreateApplicationModal({
     } catch (error: any) {
       const errorMessage = error?.response?.data?.error || 'Произошла ошибка';
 
-      // Обработка rate limit ошибки
       if (error?.response?.status === 429 || errorMessage.includes('лимит')) {
         addToast({
           title: 'Лимит достигнут',
@@ -194,14 +198,13 @@ export function CreateApplicationModal({
 
         <ModalBody>
           {/* Степпер */}
-          <div className="mb-8 w-full">
+          <div className="w-full">
             <div className="flex items-center justify-between">
               {STEPS.map((step, index) => (
                 <div key={step.id}>
-                  {/* Step Column */}
-                  <div className="flex flex-col items-center gap-3">
+                  <div className="flex flex-col items-center gap-2 sm:gap-3">
                     <div
-                      className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-full font-semibold shadow-sm transition-all ${
+                      className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-full text-sm font-semibold shadow-sm transition-all sm:h-11 sm:w-11 sm:text-base ${
                         index < currentStep
                           ? 'border-success bg-success text-white shadow-success/20'
                           : index === currentStep
@@ -211,7 +214,7 @@ export function CreateApplicationModal({
                     >
                       {index < currentStep ? (
                         <svg
-                          className="h-6 w-6"
+                          className="h-5 w-5 sm:h-6 sm:w-6"
                           fill="none"
                           stroke="currentColor"
                           strokeLinecap="round"
@@ -227,7 +230,7 @@ export function CreateApplicationModal({
                     </div>
                     <div className="text-center">
                       <p
-                        className={`text-sm font-semibold transition-colors ${
+                        className={`text-xs font-semibold transition-colors sm:text-sm ${
                           index <= currentStep
                             ? 'text-foreground'
                             : 'text-default-400'
@@ -235,7 +238,7 @@ export function CreateApplicationModal({
                       >
                         {step.title}
                       </p>
-                      <p className="text-xs text-default-400">
+                      <p className="hidden text-xs text-default-400 sm:block">
                         {step.description}
                       </p>
                     </div>

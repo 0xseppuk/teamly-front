@@ -51,3 +51,18 @@ export async function getGameByIdServer(
     },
   });
 }
+
+/**
+ * Fetch single game by slug on the server
+ */
+export async function getGameBySlugServer(
+  slug: string,
+  options?: { revalidate?: number },
+): Promise<Game> {
+  return serverFetch<Game>(`/games/slug/${slug}`, {
+    next: {
+      revalidate: options?.revalidate ?? 3600,
+      tags: ['games', `game-slug-${slug}`],
+    },
+  });
+}

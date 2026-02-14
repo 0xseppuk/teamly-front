@@ -149,7 +149,15 @@ export const Navbar = () => {
               </svg>
             </Button>
 
-            <ProfileDropdown />
+            {user ? (
+              <ProfileDropdown />
+            ) : (
+              <NextLink className="hidden md:block" href="/login">
+                <Button color="secondary" size="sm" variant="flat">
+                  Войти
+                </Button>
+              </NextLink>
+            )}
           </div>
         </div>
 
@@ -179,6 +187,34 @@ export const Navbar = () => {
                     </motion.li>
                   ))}
                 </ul>
+
+                {!user && (
+                  <div className="mt-3 pt-3 border-t border-default-200 flex gap-2">
+                    <NextLink
+                      className="flex-1"
+                      href="/login"
+                      onClick={closeMobileMenu}
+                    >
+                      <Button
+                        className="w-full"
+                        color="secondary"
+                        size="sm"
+                        variant="flat"
+                      >
+                        Войти
+                      </Button>
+                    </NextLink>
+                    <NextLink
+                      className="flex-1"
+                      href="/register"
+                      onClick={closeMobileMenu}
+                    >
+                      <Button className="w-full" color="secondary" size="sm">
+                        Регистрация
+                      </Button>
+                    </NextLink>
+                  </div>
+                )}
               </div>
             </motion.div>
           )}

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
+import { routes } from '@/shared/routes/routes';
 import { Game } from '@/shared/services/games/games.types';
 
 interface GameCardProps {
@@ -19,7 +20,7 @@ export function GameCard({ game }: GameCardProps) {
   const [imageError, setImageError] = useState(false);
 
   const handleClick = () => {
-    router.push(`/applications?game_id=${game.id}`);
+    router.push(routes.game(game.slug));
   };
 
   return (

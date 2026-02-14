@@ -14,7 +14,7 @@ export function EmptyState({ hasFilters = false }: EmptyStateProps) {
         <h3 className="text-lg font-semibold">Заявок не найдено</h3>
         <p className="text-sm text-default-500">
           {hasFilters
-            ? 'Для выбранной игры нет активных заявок. Попробуйте выбрать другую игру.'
+            ? 'Для выбранной игры нет активных заявок. Попробуйте выбрать другую игру или создать заявку первым.'
             : 'Пока нет активных заявок. Создайте первую!'}
         </p>
       </div>

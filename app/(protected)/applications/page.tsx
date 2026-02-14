@@ -6,6 +6,7 @@ import {
   ApplicationFiltersClient,
   EmptyState,
 } from '@/feature';
+import { CreateApplicationButton } from '@/feature/GameApplication';
 import { ClientPagination } from '@/shared';
 import { getAllApplicationsServer } from '@/shared/services/applications/server/applications.server';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
@@ -83,11 +84,14 @@ export default async function ApplicationsPage({
 
   return (
     <div className="container mx-auto">
-      <div className="mb-6 md:mb-8">
-        <h1 className="text-2xl font-bold md:text-3xl">Все заявки</h1>
-        <p className="mt-2 text-sm text-default-600 md:text-lg">
-          Найди нужную заявку или создай свою
-        </p>
+      <div className="mb-6 flex items-start justify-between md:mb-8">
+        <div>
+          <h1 className="text-2xl font-bold md:text-3xl">Все заявки</h1>
+          <p className="mt-2 text-sm text-default-600 md:text-lg">
+            Найди нужную заявку или создай свою
+          </p>
+        </div>
+        <CreateApplicationButton />
       </div>
 
       {/* Client component for interactive filters */}

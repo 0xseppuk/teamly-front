@@ -19,11 +19,15 @@ const PUBLIC_ROUTES = [
   routes.application,
 ];
 
+const PUBLIC_PREFIXES = ['/games/'];
+
 export function middleware(req: NextRequest) {
   const token = req.cookies.get('auth_token')?.value;
   const { pathname } = req.nextUrl;
 
-  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
+  const isPublicRoute =
+    PUBLIC_ROUTES.includes(pathname) ||
+    PUBLIC_PREFIXES.some((prefix) => pathname.startsWith(prefix));
   const isOnlyUnauthRoute = ONLY_UNAUTH_ROUTES.includes(pathname);
 
   if (!token && !isPublicRoute && !isOnlyUnauthRoute) {

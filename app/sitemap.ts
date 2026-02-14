@@ -1,3 +1,4 @@
+import { routes } from '@/shared/routes/routes';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 import { MetadataRoute } from 'next';
 
@@ -39,7 +40,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     },
     ...games.map((game) => ({
-      url: `${baseUrl}/applications?game_id=${game.id}`,
+      url: `${baseUrl}${routes.game(game.slug)}`,
       lastModified: new Date(),
       changeFrequency: 'daily' as const,
       priority: 0.7,

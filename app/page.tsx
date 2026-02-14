@@ -1,4 +1,5 @@
 import { ApplicationCard, Navbar } from '@/feature';
+import { routes } from '@/shared/routes/routes';
 import { getAllApplicationsServer } from '@/shared/services/applications/server';
 import { getGamesServer } from '@/shared/services/games/server/games.server';
 import type { Metadata } from 'next';
@@ -6,14 +7,15 @@ import NextLink from 'next/link';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
-  title: 'Найти тиммейтов — поиск команды для онлайн-игр | Teamly',
+  title: 'Найти тиммейтов для CS2, Dota 2, Valorant, Apex, PUBG и других игр',
   description:
-    'Teamly — платформа для поиска тиммейтов и создания команд в популярных онлайн-играх. Создавай заявки, находи игроков и общайся с командой.',
+    'Найти тиммейтов и команду для онлайн-игр. Создавай заявки на поиск тиммейтов, находи игроков и играй вместе. Бесплатная платформа для поиска команды.',
   keywords:
-    'teamly, поиск команды, тиммейты, найти тиммейтов, cs2, counter-strike 2, dota 2, valorant, apex legends, pubg, поиск игроков, gaming, киберспорт, найти команду для игры',
+    'найти тиммейтов, поиск тиммейтов, найти тиммейтов cs2, тиммейты dota 2, тиммейты valorant, найти команду для игры, поиск команды, найти игроков, apex legends тиммейты, pubg найти команду',
   openGraph: {
-    title: 'Teamly — Найди команду для своей любимой игры',
-    description: 'Создавай заявки, находи тиммейтов и общайся с игроками',
+    title: 'Найти тиммейтов для CS2, Dota 2, Valorant, Apex, PUBG и других игр',
+    description:
+      'Найти тиммейтов и команду для онлайн-игр. Создавай заявки, находи игроков и играй вместе.',
     type: 'website',
   },
   alternates: {
@@ -58,7 +60,7 @@ export default async function RootPage() {
       item: {
         '@type': 'VideoGame',
         name: game.name,
-        url: `https://playteamly.ru/applications?game_id=${game.id}`,
+        url: `https://playteamly.ru${routes.game(game.slug)}`,
       },
     })),
   };
@@ -297,7 +299,7 @@ export default async function RootPage() {
                     <NextLink
                       key={game.id}
                       className="block aspect-[3/4] rounded-xl border border-default-200 p-6 hover:scale-105 transition-transform cursor-pointer relative overflow-hidden group"
-                      href={`/applications?game_id=${game.id}`}
+                      href={routes.game(game.slug)}
                     >
                       {/* Dark overlay for text readability */}
                       <div className="absolute inset-0 bg-black" />
@@ -334,7 +336,7 @@ export default async function RootPage() {
                   <button className="text-lg px-8 border-2 border-default rounded-xl h-[48px] hover:opacity-90 cursor-pointer">
                     {totalGames > 10
                       ? `Посмотреть все ${totalGames} ${totalGames < 5 ? 'игры' : 'игр'}`
-                      : 'Посмотреть все поддерживаемые игры'}
+                      : 'Посмотреть все игры'}
                   </button>
                 </NextLink>
                 {totalGames > 10 && (

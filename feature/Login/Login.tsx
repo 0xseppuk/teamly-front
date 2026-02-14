@@ -5,7 +5,6 @@ import { Input } from '@heroui/input';
 import { addToast } from '@heroui/toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 
@@ -14,7 +13,6 @@ import { LoginFormData, loginSchema } from './validation.schema';
 import { useLogin } from '@/shared';
 
 export function LoginForm() {
-  const router = useRouter();
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const {
@@ -32,7 +30,8 @@ export function LoginForm() {
         description: 'Вы успешно вошли в аккаунт',
         color: 'success',
       });
-      router.push('/');
+      // Hard navigation to ensure middleware picks up the new auth cookie
+      window.location.href = '/';
     },
     onError: (error: any) => {
       const errorMessage =

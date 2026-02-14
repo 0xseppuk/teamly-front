@@ -1,6 +1,7 @@
 export const routes = {
   root: '/',
   games: '/games',
+  game: (slug: string) => `/games/${slug}`,
   login: '/login',
   register: '/register',
   forgotPassword: '/forgot-password',

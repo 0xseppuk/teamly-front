@@ -2,7 +2,8 @@ export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
   name: 'Teamly',
-  description: 'Платформа для поиска команды в онлайн-играх',
+  description:
+    'Найти тиммейтов и команду для любой онлайн-игры. Создавай заявки на поиск игроков и играй вместе.',
   publicNavItems: [
     {
       label: 'Главная',

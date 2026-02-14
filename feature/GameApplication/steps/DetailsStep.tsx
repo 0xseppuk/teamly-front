@@ -12,7 +12,7 @@ interface DetailsStepProps {
 
 export function DetailsStep({ control }: DetailsStepProps) {
   return (
-    <div className="space-y-4">
+    <div className="space-y-2">
       <div>
         <h3 className="text-lg font-semibold">Детали заявки</h3>
         <p className="text-sm text-default-500">Расскажите о вашей заявке</p>
