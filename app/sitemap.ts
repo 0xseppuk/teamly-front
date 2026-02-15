@@ -9,6 +9,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   try {
     const gamesData = await getGamesServer({ limit: 100 });
+
     games = gamesData.games || [];
   } catch {
     // Fallback: generate sitemap without game pages if fetch fails

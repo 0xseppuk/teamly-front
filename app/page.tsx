@@ -39,15 +39,23 @@ const gameGradients: Record<string, string> = {
 };
 
 export default async function RootPage() {
-  const [gamesData, applicationsData] = await Promise.all([
-    getGamesServer({ limit: 10, revalidate: 3600 }),
-    getAllApplicationsServer({ revalidate: 60 }),
-  ]);
-  const games = gamesData.games || [];
+  let games: Awaited<ReturnType<typeof getGamesServer>>['games'] = [];
+  let totalGames = 0;
+  let applications: Awaited<
+    ReturnType<typeof getAllApplicationsServer>
+  >['applications'] = [];
 
-  const totalGames = gamesData.total || gamesData.count || games.length;
-
-  const applications = applicationsData.applications?.slice(0, 6) || [];
+  try {
+    const [gamesData, applicationsData] = await Promise.all([
+      getGamesServer({ limit: 10, revalidate: 3600 }),
+      getAllApplicationsServer({ revalidate: 60 }),
+    ]);
+    games = gamesData.games || [];
+    totalGames = gamesData.total || gamesData.count || games.length;
+    applications = applicationsData.applications?.slice(0, 6) || [];
+  } catch {
+    // Fallback to empty data if backend is unavailable during build
+  }
 
   const gamesStructuredData = {
     '@context': 'https://schema.org',
