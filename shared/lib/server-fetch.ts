@@ -2,7 +2,7 @@ import 'server-only';
 
 import { cookies } from 'next/headers';
 
-const BACKEND_URL = 'http://localhost:3003/api';
+const BACKEND_URL = process.env.BACKEND_BASE_URL || 'http://localhost:3003/api';
 
 /**
  * Server-side fetch utility with automatic cookie forwarding
