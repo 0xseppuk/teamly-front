@@ -75,7 +75,7 @@ export default async function ApplicationsPage({
         with_voice_chat: params.with_voice_chat === 'true',
       }),
     }),
-    getGamesServer({ revalidate: 3600 }), // Cache games for 1 hour
+    getGamesServer({ limit: 50, revalidate: 3600 }),
   ]);
 
   const applications = applicationsData.applications || [];

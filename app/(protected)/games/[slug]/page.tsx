@@ -89,7 +89,7 @@ export default async function GamePage({
         with_voice_chat: filters.with_voice_chat === 'true',
       }),
     }),
-    getGamesServer({ revalidate: 3600 }),
+    getGamesServer({ limit: 50, revalidate: 3600 }),
   ]);
 
   const applications = applicationsData.applications || [];
