@@ -5,8 +5,14 @@ import { MetadataRoute } from 'next';
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://playteamly.ru';
 
-  const gamesData = await getGamesServer({ limit: 100 });
-  const games = gamesData.games || [];
+  let games: Awaited<ReturnType<typeof getGamesServer>>['games'] = [];
+
+  try {
+    const gamesData = await getGamesServer({ limit: 100 });
+    games = gamesData.games || [];
+  } catch {
+    // Fallback: generate sitemap without game pages if fetch fails
+  }
 
   return [
     {
